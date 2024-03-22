@@ -642,7 +642,7 @@ export interface ApiItemItem extends Schema.CollectionType {
     }
     attributes: {
         variant: Attribute.Relation<'api::item.item', 'manyToOne', 'api::variant.variant'>
-        count: Attribute.Integer
+        count: Attribute.Integer & Attribute.Required & Attribute.DefaultTo<1>
         product: Attribute.Relation<'api::item.item', 'manyToOne', 'api::product.product'>
         carts: Attribute.Relation<'api::item.item', 'manyToMany', 'api::cart.cart'>
         createdAt: Attribute.DateTime

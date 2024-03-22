@@ -2,17 +2,25 @@ import { Strapi } from '@strapi/strapi'
 
 export default ({ strapi }: { strapi: Strapi }) => ({
     async registerWithWallet({ address }: { address: string }) {
-        let walletObj = await strapi.entityService?.create('api::wallet.wallet', {
+        const walletObj = await strapi.entityService?.create('api::wallet.wallet', {
             data: {
                 address
             }
         })
 
-        return await strapi.db?.query('plugin::users-permissions.user').create({
+        const user = await strapi.db?.query('plugin::users-permissions.user').create({
             data: {
                 wallet: walletObj?.id
             }
         })
+
+        const cart = await strapi.entityService?.create('api::cart.cart', {
+            data: {
+                user: user.id
+            }
+        })
+
+        return strapi.plugin('users-permissions').service('jwt').issue({ id: user.id })
     },
 
     async loginWithWallet({ id }: { id: number }) {

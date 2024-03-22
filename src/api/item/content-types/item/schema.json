@@ -1,37 +1,39 @@
 {
-    "kind": "collectionType",
-    "collectionName": "items",
-    "info": {
-        "singularName": "item",
-        "pluralName": "items",
-        "displayName": "Item",
-        "description": ""
+  "kind": "collectionType",
+  "collectionName": "items",
+  "info": {
+    "singularName": "item",
+    "pluralName": "items",
+    "displayName": "Item",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "variant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::variant.variant",
+      "inversedBy": "items"
     },
-    "options": {
-        "draftAndPublish": true
+    "count": {
+      "type": "integer",
+      "required": true,
+      "default": 1
     },
-    "pluginOptions": {},
-    "attributes": {
-        "variant": {
-            "type": "relation",
-            "relation": "manyToOne",
-            "target": "api::variant.variant",
-            "inversedBy": "items"
-        },
-        "count": {
-            "type": "integer"
-        },
-        "product": {
-            "type": "relation",
-            "relation": "manyToOne",
-            "target": "api::product.product",
-            "inversedBy": "items"
-        },
-        "carts": {
-            "type": "relation",
-            "relation": "manyToMany",
-            "target": "api::cart.cart",
-            "mappedBy": "items"
-        }
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "items"
+    },
+    "carts": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::cart.cart",
+      "mappedBy": "items"
     }
+  }
 }
