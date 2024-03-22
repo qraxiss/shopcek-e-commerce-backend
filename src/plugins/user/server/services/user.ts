@@ -1,8 +1,7 @@
 import { Strapi } from '@strapi/strapi'
 
 export default ({ strapi }: { strapi: Strapi }) => ({
-    async registerWithWallet({address}: {address: string}) {
-
+    async registerWithWallet({ address }: { address: string }) {
         let walletObj = await strapi.entityService?.create('api::wallet.wallet', {
             data: {
                 address
@@ -14,27 +13,26 @@ export default ({ strapi }: { strapi: Strapi }) => ({
                 wallet: walletObj?.id
             }
         })
-        
     },
 
-    async loginWithWallet({id}: {id: number}){
-        return strapi.plugin('users-permissions').service('jwt').issue({id})
+    async loginWithWallet({ id }: { id: number }) {
+        return strapi.plugin('users-permissions').service('jwt').issue({ id })
     },
 
-    async connectWallet({address}: {address: string}){
-        const user =  await strapi.db?.query('api::wallet.wallet').findOne({
+    async connectWallet({ address }: { address: string }) {
+        const user = await strapi.db?.query('api::wallet.wallet').findOne({
             where: {
                 address
             },
             populate: {
-                user: "*"
+                user: '*'
             }
         })
 
-        if (!user){
-            return strapi.plugin('user').service('wallet').registerWithWallet({address})
+        if (!user) {
+            return strapi.plugin('user').service('wallet').registerWithWallet({ address })
         }
 
-        return strapi.plugin('user').service('wallet').loginWithWallet({id:user.id})
+        return strapi.plugin('user').service('wallet').loginWithWallet(user)
     }
 })

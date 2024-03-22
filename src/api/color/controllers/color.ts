@@ -4,4 +4,4 @@
 
 import { factories } from '@strapi/strapi'
 
-export default factories.createCoreController('api::color.color');
+export default factories.createCoreController('api::color.color')

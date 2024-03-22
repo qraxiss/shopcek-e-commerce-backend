@@ -2,6 +2,6 @@
  * variant router
  */
 
-import { factories } from '@strapi/strapi';
+import { factories } from '@strapi/strapi'
 
-export default factories.createCoreRouter('api::variant.variant');
+export default factories.createCoreRouter('api::variant.variant')

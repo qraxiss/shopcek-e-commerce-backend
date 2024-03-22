@@ -1,55 +1,55 @@
 {
-  "kind": "collectionType",
-  "collectionName": "products",
-  "info": {
-    "singularName": "product",
-    "pluralName": "products",
-    "displayName": "Product",
-    "description": ""
-  },
-  "options": {
-    "draftAndPublish": false
-  },
-  "pluginOptions": {},
-  "attributes": {
-    "name": {
-      "type": "string"
+    "kind": "collectionType",
+    "collectionName": "products",
+    "info": {
+        "singularName": "product",
+        "pluralName": "products",
+        "displayName": "Product",
+        "description": ""
     },
-    "variants": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::variant.variant",
-      "mappedBy": "product"
+    "options": {
+        "draftAndPublish": false
     },
-    "description": {
-      "type": "text"
-    },
-    "sizes": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::size.size",
-      "inversedBy": "products"
-    },
-    "colors": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::color.color",
-      "inversedBy": "products"
-    },
-    "image": {
-      "type": "string"
-    },
-    "price": {
-      "type": "float"
-    },
-    "items": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::item.item",
-      "mappedBy": "product"
-    },
-    "printful_id": {
-      "type": "biginteger"
+    "pluginOptions": {},
+    "attributes": {
+        "name": {
+            "type": "string"
+        },
+        "variants": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::variant.variant",
+            "mappedBy": "product"
+        },
+        "description": {
+            "type": "text"
+        },
+        "sizes": {
+            "type": "relation",
+            "relation": "manyToMany",
+            "target": "api::size.size",
+            "inversedBy": "products"
+        },
+        "colors": {
+            "type": "relation",
+            "relation": "manyToMany",
+            "target": "api::color.color",
+            "inversedBy": "products"
+        },
+        "image": {
+            "type": "string"
+        },
+        "price": {
+            "type": "float"
+        },
+        "items": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::item.item",
+            "mappedBy": "product"
+        },
+        "printful_id": {
+            "type": "biginteger"
+        }
     }
-  }
 }
