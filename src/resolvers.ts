@@ -27,7 +27,21 @@ async function test(obj, args, context) {
 
     // return cartesian([1,2,3], [4,5,6])
 
-    return strapi.plugin('user').service('wallet').connectWallet({ address: 'b3131' })
+    return await strapi.service('api::cart.cart').updateCount({
+        itemId: 3,
+        count: 5
+    })
+
+    return await strapi.entityService.findOne('api::cart.cart', 2, {
+        populate: {
+            'items': true
+        }
+    })
+
+
+    return strapi.requestContext.get().state.user
+
+    return strapi.plugin('user').service('wallet').connectWallet({ address: 'b313dssd1' })
 
     return [
         await strapi.db.query('api::variant.variant').deleteMany({

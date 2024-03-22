@@ -638,16 +638,15 @@ export interface ApiItemItem extends Schema.CollectionType {
         description: ''
     }
     options: {
-        draftAndPublish: true
+        draftAndPublish: false
     }
     attributes: {
         variant: Attribute.Relation<'api::item.item', 'manyToOne', 'api::variant.variant'>
-        count: Attribute.Integer & Attribute.Required & Attribute.DefaultTo<1>
+        count: Attribute.Integer & Attribute.DefaultTo<1>
         product: Attribute.Relation<'api::item.item', 'manyToOne', 'api::product.product'>
         carts: Attribute.Relation<'api::item.item', 'manyToMany', 'api::cart.cart'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
-        publishedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::item.item', 'oneToOne', 'admin::user'> & Attribute.Private
         updatedBy: Attribute.Relation<'api::item.item', 'oneToOne', 'admin::user'> & Attribute.Private
     }
@@ -662,7 +661,7 @@ export interface ApiOrderOrder extends Schema.CollectionType {
         description: ''
     }
     options: {
-        draftAndPublish: true
+        draftAndPublish: false
     }
     attributes: {
         user: Attribute.Relation<'api::order.order', 'manyToOne', 'plugin::users-permissions.user'>
@@ -670,7 +669,6 @@ export interface ApiOrderOrder extends Schema.CollectionType {
         cart: Attribute.Relation<'api::order.order', 'oneToOne', 'api::cart.cart'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
-        publishedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::order.order', 'oneToOne', 'admin::user'> & Attribute.Private
         updatedBy: Attribute.Relation<'api::order.order', 'oneToOne', 'admin::user'> & Attribute.Private
     }

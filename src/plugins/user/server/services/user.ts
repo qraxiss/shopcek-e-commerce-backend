@@ -10,7 +10,8 @@ export default ({ strapi }: { strapi: Strapi }) => ({
 
         const user = await strapi.db?.query('plugin::users-permissions.user').create({
             data: {
-                wallet: walletObj?.id
+                wallet: walletObj?.id,
+                role: [1]
             }
         })
 
@@ -23,8 +24,9 @@ export default ({ strapi }: { strapi: Strapi }) => ({
         return strapi.plugin('users-permissions').service('jwt').issue({ id: user.id })
     },
 
-    async loginWithWallet({ id }: { id: number }) {
-        return strapi.plugin('users-permissions').service('jwt').issue({ id })
+    async loginWithWallet({ id, cart_id }: { id: number, cart_id: number}) {
+        console.log(id)
+        return strapi.plugin('users-permissions').service('jwt').issue({ id: id })
     },
 
     async connectWallet({ address }: { address: string }) {
@@ -33,7 +35,8 @@ export default ({ strapi }: { strapi: Strapi }) => ({
                 address
             },
             populate: {
-                user: '*'
+                user: '*',
+                cart: '*'
             }
         })
 
@@ -41,6 +44,6 @@ export default ({ strapi }: { strapi: Strapi }) => ({
             return strapi.plugin('user').service('wallet').registerWithWallet({ address })
         }
 
-        return strapi.plugin('user').service('wallet').loginWithWallet(user)
+        return strapi.plugin('user').service('wallet').loginWithWallet({user, cart_id: user.cart.id})
     }
 })

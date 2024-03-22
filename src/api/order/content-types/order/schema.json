@@ -1,33 +1,33 @@
 {
-    "kind": "collectionType",
-    "collectionName": "orders",
-    "info": {
-        "singularName": "order",
-        "pluralName": "orders",
-        "displayName": "Order",
-        "description": ""
+  "kind": "collectionType",
+  "collectionName": "orders",
+  "info": {
+    "singularName": "order",
+    "pluralName": "orders",
+    "displayName": "Order",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "orders"
     },
-    "options": {
-        "draftAndPublish": true
+    "transaction": {
+      "type": "string",
+      "required": false,
+      "unique": true
     },
-    "pluginOptions": {},
-    "attributes": {
-        "user": {
-            "type": "relation",
-            "relation": "manyToOne",
-            "target": "plugin::users-permissions.user",
-            "inversedBy": "orders"
-        },
-        "transaction": {
-            "type": "string",
-            "required": false,
-            "unique": true
-        },
-        "cart": {
-            "type": "relation",
-            "relation": "oneToOne",
-            "target": "api::cart.cart",
-            "inversedBy": "order"
-        }
+    "cart": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::cart.cart",
+      "inversedBy": "order"
     }
+  }
 }
