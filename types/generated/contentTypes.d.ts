@@ -575,7 +575,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
         role: Attribute.Relation<'plugin::users-permissions.user', 'manyToOne', 'plugin::users-permissions.role'>
         cart: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'api::cart.cart'>
         orders: Attribute.Relation<'plugin::users-permissions.user', 'oneToMany', 'api::order.order'>
-        order_items: Attribute.Relation<'plugin::users-permissions.user', 'oneToMany', 'api::order-item.order-item'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'admin::user'> & Attribute.Private
@@ -597,6 +596,9 @@ export interface ApiCartCart extends Schema.CollectionType {
     attributes: {
         user: Attribute.Relation<'api::cart.cart', 'oneToOne', 'plugin::users-permissions.user'>
         items: Attribute.Relation<'api::cart.cart', 'manyToMany', 'api::item.item'>
+        price: Attribute.Float & Attribute.Required & Attribute.DefaultTo<0>
+        count: Attribute.Integer & Attribute.Required & Attribute.DefaultTo<0>
+        order: Attribute.Relation<'api::cart.cart', 'oneToOne', 'api::order.order'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::cart.cart', 'oneToOne', 'admin::user'> & Attribute.Private
@@ -641,7 +643,6 @@ export interface ApiItemItem extends Schema.CollectionType {
         variant: Attribute.Relation<'api::item.item', 'manyToOne', 'api::variant.variant'>
         count: Attribute.Integer
         product: Attribute.Relation<'api::item.item', 'manyToOne', 'api::product.product'>
-        order_items: Attribute.Relation<'api::item.item', 'manyToMany', 'api::order-item.order-item'>
         carts: Attribute.Relation<'api::item.item', 'manyToMany', 'api::cart.cart'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
@@ -663,38 +664,14 @@ export interface ApiOrderOrder extends Schema.CollectionType {
         draftAndPublish: true
     }
     attributes: {
-        items: Attribute.Relation<'api::order.order', 'oneToMany', 'api::order-item.order-item'>
         user: Attribute.Relation<'api::order.order', 'manyToOne', 'plugin::users-permissions.user'>
         transaction: Attribute.String & Attribute.Unique
+        cart: Attribute.Relation<'api::order.order', 'oneToOne', 'api::cart.cart'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         publishedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::order.order', 'oneToOne', 'admin::user'> & Attribute.Private
         updatedBy: Attribute.Relation<'api::order.order', 'oneToOne', 'admin::user'> & Attribute.Private
-    }
-}
-
-export interface ApiOrderItemOrderItem extends Schema.CollectionType {
-    collectionName: 'order_items'
-    info: {
-        singularName: 'order-item'
-        pluralName: 'order-items'
-        displayName: 'Order Item'
-        description: ''
-    }
-    options: {
-        draftAndPublish: true
-    }
-    attributes: {
-        items: Attribute.Relation<'api::order-item.order-item', 'manyToMany', 'api::item.item'>
-        sub_total: Attribute.Float
-        item_count: Attribute.Integer
-        user: Attribute.Relation<'api::order-item.order-item', 'manyToOne', 'plugin::users-permissions.user'>
-        createdAt: Attribute.DateTime
-        updatedAt: Attribute.DateTime
-        publishedAt: Attribute.DateTime
-        createdBy: Attribute.Relation<'api::order-item.order-item', 'oneToOne', 'admin::user'> & Attribute.Private
-        updatedBy: Attribute.Relation<'api::order-item.order-item', 'oneToOne', 'admin::user'> & Attribute.Private
     }
 }
 
@@ -796,7 +773,6 @@ declare module '@strapi/types' {
             'api::color.color': ApiColorColor
             'api::item.item': ApiItemItem
             'api::order.order': ApiOrderOrder
-            'api::order-item.order-item': ApiOrderItemOrderItem
             'api::product.product': ApiProductProduct
             'api::size.size': ApiSizeSize
             'api::variant.variant': ApiVariantVariant

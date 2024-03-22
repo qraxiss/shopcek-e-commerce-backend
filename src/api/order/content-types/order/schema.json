@@ -12,11 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "items": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::order-item.order-item"
-    },
     "user": {
       "type": "relation",
       "relation": "manyToOne",
@@ -27,6 +22,12 @@
       "type": "string",
       "required": false,
       "unique": true
+    },
+    "cart": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::cart.cart",
+      "inversedBy": "order"
     }
   }
 }

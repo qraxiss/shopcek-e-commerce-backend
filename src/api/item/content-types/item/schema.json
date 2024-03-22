@@ -27,12 +27,6 @@
       "target": "api::product.product",
       "inversedBy": "items"
     },
-    "order_items": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::order-item.order-item",
-      "mappedBy": "items"
-    },
     "carts": {
       "type": "relation",
       "relation": "manyToMany",

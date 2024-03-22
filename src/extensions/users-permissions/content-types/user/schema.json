@@ -77,12 +77,6 @@
       "relation": "oneToMany",
       "target": "api::order.order",
       "mappedBy": "user"
-    },
-    "order_items": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::order-item.order-item",
-      "mappedBy": "user"
     }
   }
 }
