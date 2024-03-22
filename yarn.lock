@@ -8063,6 +8063,18 @@ randombytes@^2.1.0:
   dependencies:
     safe-buffer "^5.1.0"
 
+randombytes@2.0.3:
+  version "2.0.3"
+  resolved "https://registry.npmjs.org/randombytes/-/randombytes-2.0.3.tgz"
+  integrity sha512-lDVjxQQFoCG1jcrP06LNo2lbWp4QTShEXnhActFBwYuHprllQV6VUpwreApsYqCgD+N1mHoqJ/BI/4eV4R2GYg==
+
+randomstring@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.npmjs.org/randomstring/-/randomstring-1.3.0.tgz"
+  integrity sha512-gY7aQ4i1BgwZ8I1Op4YseITAyiDiajeZOPQUbIq9TPGPhUm5FX59izIaOpmKbME1nmnEiABf28d9K2VSii6BBg==
+  dependencies:
+    randombytes "2.0.3"
+
 range-parser@^1.2.1:
   version "1.2.1"
   resolved "https://registry.npmjs.org/range-parser/-/range-parser-1.2.1.tgz"
@@ -9015,6 +9027,11 @@ slate@>=0.65.3, slate@0.94.1:
     immer "^9.0.6"
     is-plain-object "^5.0.0"
     tiny-warning "^1.0.3"
+
+slugify@^1.6.6:
+  version "1.6.6"
+  resolved "https://registry.npmjs.org/slugify/-/slugify-1.6.6.tgz"
+  integrity sha512-h+z7HKHYXj6wJU+AnS/+IH8Uh9fdcX1Lrhg1/VMdf9PwoBQXFcXiAdsy2tSK0P6gKwJLXp02r90ahUCqHk9rrw==
 
 snake-case@^2.1.0:
   version "2.1.0"

@@ -695,6 +695,7 @@ export interface ApiProductProduct extends Schema.CollectionType {
         price: Attribute.Float
         items: Attribute.Relation<'api::product.product', 'oneToMany', 'api::item.item'>
         printful_id: Attribute.BigInteger
+        slug: Attribute.String & Attribute.Required & Attribute.Unique
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::product.product', 'oneToOne', 'admin::user'> & Attribute.Private

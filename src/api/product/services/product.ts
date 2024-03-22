@@ -4,6 +4,8 @@
 
 import { factories, Strapi } from '@strapi/strapi'
 import { getAllProductsDetails } from '../../../helpers/printful'
+import randomstring from 'randomstring'
+import slugify from 'slugify'
 
 interface Product {
     name: string
@@ -50,6 +52,20 @@ function services({ strapi: Strapi }) {
         },
 
         async syncPrintfulMarket() {
+            // await strapi.db.query('api::variant.variant').deleteMany({
+            //     count: false
+            // }),
+            // await strapi.db.query('api::product.product').deleteMany({
+            //     count: false
+            // }),
+            // await strapi.db.query('api::size.size').deleteMany({
+            //     count: false
+            // }),
+            // await strapi.db.query('api::color.color').deleteMany({
+            //     count: false
+            // })
+
+
             const products = await getAllProductsDetails()
             const result = []
             for (let index = 0; index < products.length; index++) {
@@ -71,11 +87,20 @@ function services({ strapi: Strapi }) {
                 return size.id
             })
 
+            const slug = `${slugify(name, {
+                lower: true
+            })}-${randomstring.generate({
+                length: 5,
+                charset: 'alphabetic',
+                capitalization: 'lowercase'
+            })}`
+
             const product = await strapi.entityService.create('api::product.product', {
                 data: {
                     name,
                     price,
                     description,
+                    slug,
                     image,
                     colors: colorIds,
                     sizes: sizeIds

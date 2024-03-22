@@ -50,6 +50,11 @@
     },
     "printful_id": {
       "type": "biginteger"
+    },
+    "slug": {
+      "type": "string",
+      "required": true,
+      "unique": true
     }
   }
 }
