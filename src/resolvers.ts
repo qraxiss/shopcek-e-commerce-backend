@@ -27,17 +27,24 @@ async function test(obj, args, context) {
 
     // return cartesian([1,2,3], [4,5,6])
 
-    return await strapi.service('api::product.product').syncPrintfulMarket()
+    
 
-    return [await strapi.db.query('api::variant.variant').deleteMany({
-        count: false
-    }), await strapi.db.query('api::product.product').deleteMany({
-        count: false
-    }), await strapi.db.query('api::size.size').deleteMany({
-        count: false
-    }),await strapi.db.query('api::color.color').deleteMany({
-        count: false
-    })]
+    return strapi.plugin('user').service('wallet').connectWallet({ address: 'b' })
+
+    return [
+        await strapi.db.query('api::variant.variant').deleteMany({
+            count: false
+        }),
+        await strapi.db.query('api::product.product').deleteMany({
+            count: false
+        }),
+        await strapi.db.query('api::size.size').deleteMany({
+            count: false
+        }),
+        await strapi.db.query('api::color.color').deleteMany({
+            count: false
+        })
+    ]
 
     return getAllProductsDetails()
 }

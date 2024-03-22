@@ -1,1 +1,6 @@
-export default () => ({});
+export default {
+    user: {
+        enabled: true,
+        resolve: './src/plugins/user'
+    }
+}

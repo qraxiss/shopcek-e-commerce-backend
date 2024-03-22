@@ -575,6 +575,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
         role: Attribute.Relation<'plugin::users-permissions.user', 'manyToOne', 'plugin::users-permissions.role'>
         cart: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'api::cart.cart'>
         orders: Attribute.Relation<'plugin::users-permissions.user', 'oneToMany', 'api::order.order'>
+        wallet: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'api::wallet.wallet'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'admin::user'> & Attribute.Private
@@ -751,6 +752,26 @@ export interface ApiVariantVariant extends Schema.CollectionType {
     }
 }
 
+export interface ApiWalletWallet extends Schema.CollectionType {
+    collectionName: 'wallets'
+    info: {
+        singularName: 'wallet'
+        pluralName: 'wallets'
+        displayName: 'Wallet'
+    }
+    options: {
+        draftAndPublish: false
+    }
+    attributes: {
+        address: Attribute.String & Attribute.Required & Attribute.Unique
+        user: Attribute.Relation<'api::wallet.wallet', 'oneToOne', 'plugin::users-permissions.user'>
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'api::wallet.wallet', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::wallet.wallet', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
 declare module '@strapi/types' {
     export module Shared {
         export interface ContentTypes {
@@ -776,6 +797,7 @@ declare module '@strapi/types' {
             'api::product.product': ApiProductProduct
             'api::size.size': ApiSizeSize
             'api::variant.variant': ApiVariantVariant
+            'api::wallet.wallet': ApiWalletWallet
         }
     }
 }
