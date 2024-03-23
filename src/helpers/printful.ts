@@ -97,3 +97,20 @@ export async function getAllProductsDetails() {
         })
     )
 }
+
+
+export async function newOrderPrintful({ recipient, items }) {
+    let data = printfulRequestWrapper(
+        await printfulClient.post(`/orders`, {
+            items,
+            recipient,
+            packing_slip: {
+                email: 'info@shopcek.com',
+                message: 'iLoveCrypto',
+                store_name: 'Shopcek'
+            }
+        })
+    )
+
+    return data
+}

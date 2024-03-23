@@ -28,6 +28,18 @@
       "relation": "oneToOne",
       "target": "api::cart.cart",
       "inversedBy": "order"
+    },
+    "recipient": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::recipient.recipient",
+      "inversedBy": "orders"
+    },
+    "printful_order": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::printful-order.printful-order",
+      "mappedBy": "order"
     }
   }
 }

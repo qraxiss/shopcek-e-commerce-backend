@@ -9,8 +9,7 @@
     "displayName": "User"
   },
   "options": {
-    "draftAndPublish": false,
-    "timestamps": true
+    "draftAndPublish": false
   },
   "attributes": {
     "username": {
@@ -82,6 +81,12 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::wallet.wallet",
+      "mappedBy": "user"
+    },
+    "recipient": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::recipient.recipient",
       "mappedBy": "user"
     }
   }

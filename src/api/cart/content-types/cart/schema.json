@@ -26,12 +26,12 @@
     },
     "price": {
       "type": "float",
-      "required": true,
+      "required": false,
       "default": 0
     },
     "count": {
       "type": "integer",
-      "required": true,
+      "required": false,
       "default": 0
     },
     "order": {

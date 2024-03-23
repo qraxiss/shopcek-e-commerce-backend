@@ -548,7 +548,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     }
     options: {
         draftAndPublish: false
-        timestamps: true
     }
     attributes: {
         username: Attribute.String &
@@ -576,6 +575,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
         cart: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'api::cart.cart'>
         orders: Attribute.Relation<'plugin::users-permissions.user', 'oneToMany', 'api::order.order'>
         wallet: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'api::wallet.wallet'>
+        recipient: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'api::recipient.recipient'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'admin::user'> & Attribute.Private
@@ -597,8 +597,8 @@ export interface ApiCartCart extends Schema.CollectionType {
     attributes: {
         user: Attribute.Relation<'api::cart.cart', 'oneToOne', 'plugin::users-permissions.user'>
         items: Attribute.Relation<'api::cart.cart', 'manyToMany', 'api::item.item'>
-        price: Attribute.Float & Attribute.Required & Attribute.DefaultTo<0>
-        count: Attribute.Integer & Attribute.Required & Attribute.DefaultTo<0>
+        price: Attribute.Float & Attribute.DefaultTo<0>
+        count: Attribute.Integer & Attribute.DefaultTo<0>
         order: Attribute.Relation<'api::cart.cart', 'oneToOne', 'api::order.order'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
@@ -667,10 +667,39 @@ export interface ApiOrderOrder extends Schema.CollectionType {
         user: Attribute.Relation<'api::order.order', 'manyToOne', 'plugin::users-permissions.user'>
         transaction: Attribute.String & Attribute.Unique
         cart: Attribute.Relation<'api::order.order', 'oneToOne', 'api::cart.cart'>
+        recipient: Attribute.Relation<'api::order.order', 'manyToOne', 'api::recipient.recipient'>
+        printful_order: Attribute.Relation<'api::order.order', 'oneToOne', 'api::printful-order.printful-order'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::order.order', 'oneToOne', 'admin::user'> & Attribute.Private
         updatedBy: Attribute.Relation<'api::order.order', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
+export interface ApiPrintfulOrderPrintfulOrder extends Schema.CollectionType {
+    collectionName: 'printful_orders'
+    info: {
+        singularName: 'printful-order'
+        pluralName: 'printful-orders'
+        displayName: 'Printful Order'
+        description: ''
+    }
+    options: {
+        draftAndPublish: false
+    }
+    attributes: {
+        error: Attribute.String
+        shipping: Attribute.String
+        shipping_service_name: Attribute.String
+        status: Attribute.String
+        costs: Attribute.JSON
+        pricing_breakdown: Attribute.JSON
+        retail_costs: Attribute.JSON
+        order: Attribute.Relation<'api::printful-order.printful-order', 'oneToOne', 'api::order.order'>
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'api::printful-order.printful-order', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::printful-order.printful-order', 'oneToOne', 'admin::user'> & Attribute.Private
     }
 }
 
@@ -700,6 +729,40 @@ export interface ApiProductProduct extends Schema.CollectionType {
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::product.product', 'oneToOne', 'admin::user'> & Attribute.Private
         updatedBy: Attribute.Relation<'api::product.product', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
+export interface ApiRecipientRecipient extends Schema.CollectionType {
+    collectionName: 'recipients'
+    info: {
+        singularName: 'recipient'
+        pluralName: 'recipients'
+        displayName: 'Recipient'
+        description: ''
+    }
+    options: {
+        draftAndPublish: false
+    }
+    attributes: {
+        name: Attribute.String & Attribute.DefaultTo<'Shopcek'>
+        company: Attribute.String & Attribute.DefaultTo<'Shopcek'>
+        address1: Attribute.String & Attribute.DefaultTo<'Amsterdam Van Gogh Museum'>
+        address2: Attribute.String
+        city: Attribute.String & Attribute.DefaultTo<'Chatsworth'>
+        state_code: Attribute.String & Attribute.DefaultTo<'CA'>
+        state_name: Attribute.String & Attribute.DefaultTo<'California'>
+        country_code: Attribute.String & Attribute.DefaultTo<'US'>
+        country_name: Attribute.String & Attribute.DefaultTo<'United States'>
+        zip: Attribute.String & Attribute.DefaultTo<'91311'>
+        phone: Attribute.String & Attribute.DefaultTo<'+905420269538'>
+        email: Attribute.String & Attribute.DefaultTo<'qraxiss@gmail.com'>
+        tax_number: Attribute.String & Attribute.DefaultTo<'123.456.789-10'>
+        user: Attribute.Relation<'api::recipient.recipient', 'oneToOne', 'plugin::users-permissions.user'>
+        orders: Attribute.Relation<'api::recipient.recipient', 'oneToMany', 'api::order.order'>
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'api::recipient.recipient', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::recipient.recipient', 'oneToOne', 'admin::user'> & Attribute.Private
     }
 }
 
@@ -793,7 +856,9 @@ declare module '@strapi/types' {
             'api::color.color': ApiColorColor
             'api::item.item': ApiItemItem
             'api::order.order': ApiOrderOrder
+            'api::printful-order.printful-order': ApiPrintfulOrderPrintfulOrder
             'api::product.product': ApiProductProduct
+            'api::recipient.recipient': ApiRecipientRecipient
             'api::size.size': ApiSizeSize
             'api::variant.variant': ApiVariantVariant
             'api::wallet.wallet': ApiWalletWallet

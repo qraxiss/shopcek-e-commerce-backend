@@ -27,7 +27,22 @@ async function test(obj, args, context) {
 
     // return cartesian([1,2,3], [4,5,6])
 
-    return await strapi.service('api::product.product').syncPrintfulMarket()
+    const recipient = await strapi.db.query('api::recipient.recipient').findOne({
+        where: {
+            user: strapi.requestContext.get().state.user.id
+        }
+    })
+
+    return await strapi.service('api::order.order').placePrintfulOrder({recipientId: 3})
+
+
+    return await strapi.plugin('user').service('wallet').connectWallet({ address: 'qraxiss' })
+
+    
+
+
+
+
 
 
     return await strapi.service('api::cart.cart').updateCount({
@@ -44,7 +59,6 @@ async function test(obj, args, context) {
 
     return strapi.requestContext.get().state.user
 
-    return strapi.plugin('user').service('wallet').connectWallet({ address: 'b313dssd1' })
 
     
 

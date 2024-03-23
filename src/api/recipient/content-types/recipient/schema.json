@@ -1,0 +1,79 @@
+{
+  "kind": "collectionType",
+  "collectionName": "recipients",
+  "info": {
+    "singularName": "recipient",
+    "pluralName": "recipients",
+    "displayName": "Recipient",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "default": "Shopcek"
+    },
+    "company": {
+      "type": "string",
+      "default": "Shopcek"
+    },
+    "address1": {
+      "type": "string",
+      "default": "Amsterdam Van Gogh Museum"
+    },
+    "address2": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string",
+      "default": "Chatsworth"
+    },
+    "state_code": {
+      "type": "string",
+      "default": "CA"
+    },
+    "state_name": {
+      "type": "string",
+      "default": "California"
+    },
+    "country_code": {
+      "type": "string",
+      "default": "US"
+    },
+    "country_name": {
+      "type": "string",
+      "default": "United States"
+    },
+    "zip": {
+      "type": "string",
+      "default": "91311"
+    },
+    "phone": {
+      "type": "string",
+      "default": "+905420269538"
+    },
+    "email": {
+      "type": "string",
+      "default": "qraxiss@gmail.com"
+    },
+    "tax_number": {
+      "type": "string",
+      "default": "123.456.789-10"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "recipient"
+    },
+    "orders": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::order.order",
+      "mappedBy": "recipient"
+    }
+  }
+}
