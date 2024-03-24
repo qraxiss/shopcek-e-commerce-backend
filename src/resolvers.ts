@@ -1,9 +1,7 @@
 import product from './api/product/resolvers/product'
+import cart from './api/cart/resolvers/cart'
 
 import { getAllProductsDetails } from './helpers/printful'
-
-import { cartesian } from './helpers/math'
-
 async function test(obj, args, context) {
     // return await strapi.service('api::product.product').createPrintfulProduct({
     //     product: {
@@ -38,13 +36,6 @@ async function test(obj, args, context) {
 
     return await strapi.plugin('user').service('wallet').connectWallet({ address: 'qraxiss' })
 
-    
-
-
-
-
-
-
     return await strapi.service('api::cart.cart').updateCount({
         itemId: 3,
         count: 5
@@ -66,7 +57,10 @@ async function test(obj, args, context) {
 }
 
 export function registerResolvers() {
+    strapi.plugin('graphql').service('extension').shadowCRUD('api::cart.cart').disableActions(['create', 'update', 'delete', 'findOne', 'create'])
+
     strapi.service('plugin::graphql.extension').use(product)
+    strapi.service('plugin::graphql.extension').use(cart)
 
     strapi.service('plugin::graphql.extension').use(({ strapi }) => ({
         typeDefs: `
@@ -74,12 +68,7 @@ export function registerResolvers() {
                     test(data:JSON): JSON
                 }
             `,
-        resolversConfig: {
-            Query: {},
-            Mutation: {}
-        },
         resolvers: {
-            Query: {},
             Mutation: {
                 test: {
                     resolve: test
