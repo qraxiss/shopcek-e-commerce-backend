@@ -26,7 +26,9 @@ async function product(obj, { slug }: { slug: string }, context) {
 export default ({ strapi }) => ({
     typeDefs,
     resolversConfig: {
-        Query: {},
+        'Query.product': {
+            auth: false
+        },
         Mutation: {}
     },
     resolvers: {

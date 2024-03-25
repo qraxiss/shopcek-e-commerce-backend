@@ -25,7 +25,34 @@ export default ({ strapi }: { strapi: Strapi }) => ({
         return strapi.plugin('users-permissions').service('jwt').issue({ id: user.id })
     },
 
-    async loginWithWallet({ id }: { id: number }) {
+    async loginWithWallet({ id, cartId }: { id: number; cartId: number }) {
+        const newCart = await strapi.entityService?.findOne('api::cart.cart', cartId, {
+            populate: {
+                items: {
+                    populate: {
+                        variant: true
+                    }
+                }
+            }
+        })
+
+        const user = await strapi.db?.query('plugin::users-permissions.user').findOne({
+            where: {
+                id
+            },
+            populate: {
+                cart: '*'
+            }
+        })
+
+        console.log(
+            await Promise.all(
+                newCart!.items.map(async (item) => {
+                    await strapi.service('api::item.item').createSync({ cartId: user.cart.id, variantId: item.variant.id, count: item.count })
+                })
+            )
+        )
+
         return strapi.plugin('users-permissions').service('jwt').issue({ id: id })
     },
 
@@ -44,14 +71,16 @@ export default ({ strapi }: { strapi: Strapi }) => ({
         }
 
         if (!wallet.user) {
-            console.log(await strapi.db?.query('api::wallet.wallet').delete({
-                where: {
-                    id: wallet.id
-                }
-            }))
+            console.log(
+                await strapi.db?.query('api::wallet.wallet').delete({
+                    where: {
+                        id: wallet.id
+                    }
+                })
+            )
             throw new Error('Try again!')
         }
 
-        return strapi.plugin('user').service('wallet').loginWithWallet(wallet.user)
+        return strapi.plugin('user').service('wallet').loginWithWallet({ id: wallet.user.id, cartId })
     }
 })
