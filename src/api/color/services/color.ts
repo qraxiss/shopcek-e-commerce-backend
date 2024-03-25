@@ -18,7 +18,6 @@ function services({ strapi }: { strapi: Strapi }) {
 
         async findAndCreateIfNotExist({ value }: { value: string }) {
             const data = await strapi.service(service).findByValue({ value })
-            console.log(data, value)
             if (!data) {
                 try {
                     return await strapi.entityService.create(service, {

@@ -1,7 +1,7 @@
 import { Strapi } from '@strapi/strapi'
 
 export default ({ strapi }: { strapi: Strapi }) => ({
-    async registerWithWallet({ address }: { address: string }) {
+    async registerWithWallet({ address, cartId }: { address: string; cartId?: string }) {
         const walletObj = await strapi.entityService?.create('api::wallet.wallet', {
             data: {
                 address
@@ -11,18 +11,13 @@ export default ({ strapi }: { strapi: Strapi }) => ({
         const user = await strapi.db?.query('plugin::users-permissions.user').create({
             data: {
                 wallet: walletObj?.id,
-                role: [1]
-            }
-        })
-
-        const cart = await strapi.entityService?.create('api::cart.cart', {
-            data: {
-                user: user.id
+                role: [1],
+                cart: cartId
             }
         })
 
         const recipient = await strapi.entityService?.create('api::recipient.recipient', {
-            data:{
+            data: {
                 user: user.id
             }
         })
@@ -34,22 +29,27 @@ export default ({ strapi }: { strapi: Strapi }) => ({
         return strapi.plugin('users-permissions').service('jwt').issue({ id: id })
     },
 
-    async connectWallet({ address }: { address: string }) {
+    async connectWallet({ address, cartId }: { address: string; cartId?: string }) {
         const wallet = await strapi.db?.query('api::wallet.wallet').findOne({
             where: {
                 address
             },
             populate: {
-                user: '*',
+                user: '*'
             }
         })
 
         if (!wallet) {
-            return strapi.plugin('user').service('wallet').registerWithWallet({ address })
+            return strapi.plugin('user').service('wallet').registerWithWallet({ address, cartId })
         }
 
-        if (!wallet.user){
-
+        if (!wallet.user) {
+            console.log(await strapi.db?.query('api::wallet.wallet').delete({
+                where: {
+                    id: wallet.id
+                }
+            }))
+            throw new Error('Try again!')
         }
 
         return strapi.plugin('user').service('wallet').loginWithWallet(wallet.user)

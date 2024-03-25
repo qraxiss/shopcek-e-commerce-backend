@@ -1,7 +1,7 @@
 import { GraphQLError } from 'graphql'
 type operation = 'delete' | 'add' | 'update' | 'empty'
 
-export async function operations(obj, { operation, cartId, input }: { operation: string; cartId?: number; input?: any }, context) {
+export async function operations(obj, { operation, cartId, input }: { operation: operation; cartId?: number; input?: any }, context) {
     if (!input && operation !== 'empty') {
         throw new GraphQLError('input must be defined')
     }
@@ -21,6 +21,11 @@ export async function operations(obj, { operation, cartId, input }: { operation:
                 cart: '*'
             }
         })
+
+        if (!user.cart){
+            throw new GraphQLError('User have no cart!')
+        }
+
         cartId = user.cart.id
     }
 
@@ -51,7 +56,7 @@ export async function operations(obj, { operation, cartId, input }: { operation:
             return await add({ cartId, ...input })
         }
         case 'delete': {
-            return await deleteItem(input)
+            return await deleteItem({cartId, ...input})
         }
     }
 }
@@ -64,10 +69,10 @@ async function empty({ cartId }) {
     return await strapi.service('api::cart.cart').emptyCart({ cartId })
 }
 
-async function deleteItem({ itemId }) {
-    return await strapi.service('api::cart.cart').deleteItem({ itemId })
+async function deleteItem({ itemId, cartId }) {
+    return await strapi.service('api::cart.cart').deleteItem({ itemId, cartId })
 }
 
-async function add({ cartId, variantId }) {
-    return await strapi.service('api::cart.cart').addItem({ cartId, variantId })
+async function add({ cartId, variantId, count }) {
+    return await strapi.service('api::cart.cart').addItem({ cartId, variantId, count })
 }

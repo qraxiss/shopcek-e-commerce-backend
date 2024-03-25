@@ -57,7 +57,8 @@ async function test(obj, args, context) {
 }
 
 export function registerResolvers() {
-    strapi.plugin('graphql').service('extension').shadowCRUD('api::cart.cart').disableActions(['create', 'update', 'delete', 'findOne', 'create'])
+    strapi.plugin('graphql').service('extension').shadowCRUD('api::cart.cart').disableActions(['create', 'update', 'delete', 'findOne'])
+    strapi.plugin('graphql').service('extension').shadowCRUD('api::product.product').disableActions(['findOne'])
 
     strapi.service('plugin::graphql.extension').use(product)
     strapi.service('plugin::graphql.extension').use(cart)

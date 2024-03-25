@@ -2,7 +2,7 @@ import { GraphQLError } from 'graphql'
 
 const typeDefs = `
     type Mutation {
-        connectWallet(address:String): String!
+        connectWallet(address:String!, cartId:ID): String!
     }
 
     type UserQuery {
@@ -16,12 +16,14 @@ const typeDefs = `
     }
 `
 
-async function connectWallet(obj, { address }, context) {
+async function connectWallet(obj, { address, cartId }, context) {
     if (context.state.user) {
         throw new GraphQLError('You already logged in!')
     }
 
-    return await strapi.plugin('user').service('wallet').connectWallet({ address })
+    console.log(address,cartId)
+
+    return await strapi.plugin('user').service('wallet').connectWallet({ address, cartId })
 }
 
 async function user(obj,args,context){

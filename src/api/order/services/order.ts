@@ -48,7 +48,6 @@ function services({ strapi }: { strapi: Strapi }) {
         },
 
         async placePrintfulOrder({ recipientId }: { recipientId: number }) {
-            console.log(recipientId)
 
             const order = await strapi.service('api::order.order').placeOrder({ recipientId: recipientId })
             const items = await Promise.all(

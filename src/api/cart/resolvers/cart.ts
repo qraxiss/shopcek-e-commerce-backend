@@ -5,12 +5,21 @@ import { getCartId } from './cart-id'
 import { operations } from './operations'
 
 export const typeDefs = `
+    type CartOperation {
+        id: ID
+        status: Boolean!
+    }
+
     type Mutation {
-        cart(operation:String!, cartId: ID, input:JSON): JSON!
+        cart(operation:String!, cartId: ID, input:JSON): CartOperation!
     }
 
     type Query {
         cart(id: ID): Cart!
+    }
+
+    extend type Cart {
+        id: ID!
     }
 
     type Query {

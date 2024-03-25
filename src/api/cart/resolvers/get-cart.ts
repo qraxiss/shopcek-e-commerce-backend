@@ -8,9 +8,11 @@ export async function getCart(obj, { id }, context) {
         return await publicCart({ id })
     }
 
+    return await strapi.entityService.create('api::cart.cart', {
+        data: {}
+    })
     
-
-    throw new GraphQLError('ID must definied without login!')
+    // throw new GraphQLError('ID must definied without login!')
 }
 
 export async function userCart({ context }) {
