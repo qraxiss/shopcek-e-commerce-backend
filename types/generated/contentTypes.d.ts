@@ -645,6 +645,7 @@ export interface ApiItemItem extends Schema.CollectionType {
         count: Attribute.Integer & Attribute.DefaultTo<1>
         product: Attribute.Relation<'api::item.item', 'manyToOne', 'api::product.product'>
         carts: Attribute.Relation<'api::item.item', 'manyToMany', 'api::cart.cart'>
+        totalPrice: Attribute.Decimal & Attribute.DefaultTo<0>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::item.item', 'oneToOne', 'admin::user'> & Attribute.Private

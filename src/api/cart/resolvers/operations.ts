@@ -50,7 +50,7 @@ export async function operations(obj, { operation, cartId, input }: { operation:
             return await empty({ cartId })
         }
         case 'update': {
-            return await update(input)
+            return await update({cartId, ...input})
         }
         case 'add': {
             return await add({ cartId, ...input })
@@ -61,8 +61,8 @@ export async function operations(obj, { operation, cartId, input }: { operation:
     }
 }
 
-async function update({ itemId, count }) {
-    return await strapi.service('api::cart.cart').updateCount({ itemId, count })
+async function update({ itemId, count, cartId }) {
+    return await strapi.service('api::cart.cart').updateCount({ itemId, count, cartId })
 }
 
 async function empty({ cartId }) {

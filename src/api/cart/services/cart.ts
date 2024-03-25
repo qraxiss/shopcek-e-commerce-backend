@@ -7,56 +7,7 @@ import { factories, Strapi } from '@strapi/strapi'
 function services({ strapi }: { strapi: Strapi }) {
     return {
         async addItem({ cartId, variantId, count }: { cartId: number; variantId: number; count: number }) {
-            const cart = await strapi.entityService.findOne('api::cart.cart', cartId, {
-                populate: {
-                    items: {
-                        populate: {
-                            variant: true
-                        }
-                    }
-                }
-            })
-
-            let item
-
-            // if item already created
-            item = cart.items.find((item) => {
-                return item.variant.id === Number(variantId)
-            })
-
-            if (item) {
-                const result = await strapi.db.query('api::item.item').update({
-                    where: {
-                        id: item.id
-                    },
-                    data: {
-                        count: count + item.count
-                    }
-                })
-
-                return {
-                    status: !!result,
-                    id: item.id
-                }
-            }
-
-            item = await strapi.entityService.create('api::item.item', {
-                data: {
-                    variant: variantId
-                }
-            })
-
-            await strapi.entityService.update('api::cart.cart', cartId, {
-                data: {
-                    items: {
-                        connect: [item.id]
-                    },
-                    count: cart.count + 1
-                },
-                populate: {
-                    items: true
-                }
-            })
+            const item = await strapi.service('api::item.item').createSync({cartId, variantId, count})
 
             return {
                 status: !!item,
@@ -64,15 +15,8 @@ function services({ strapi }: { strapi: Strapi }) {
             }
         },
 
-        async deleteItem({ itemId, cartId }: { cartId: number; itemId: number }) {
-            const result = await strapi.entityService.delete('api::item.item', itemId)
-            const cart = await strapi.entityService.findOne('api::cart.cart', cartId)
-            await strapi.entityService.update('api::cart.cart', cartId, {
-                data: {
-                    count: cart.count - 1
-                }
-            })
-            
+        async deleteItem({ itemId }: { itemId: number }) {
+            const result = await strapi.service('api::item.item').deleteSync({id: itemId})
             return {
                 status: !!result
             }
@@ -106,20 +50,19 @@ function services({ strapi }: { strapi: Strapi }) {
             }
         },
 
-        async updateCount({ itemId, count }: { itemId: number; count: number }) {
+        async updateCount({ itemId, count, cartId }: { itemId: number; count: number; cartId: number }) {
             let result
-            if (count<=0){
-                strapi.service('api::cart.cart').deleteItem({ itemId })
+            if (count <= 0) {
+                strapi.service('api::cart.cart').deleteItem({ itemId, cartId })
             }
-            
-            result = await strapi.entityService.update('api::item.item', itemId, {
-                data: {
-                    count
-                }
+
+            result = await strapi.service('api::item.item').updateSync({
+                id: itemId,
+                count
             })
 
             return {
-                status: result ? result.count === count : false
+                status: !!result
             }
         }
     }
