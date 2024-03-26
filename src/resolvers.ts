@@ -1,5 +1,6 @@
 import product from './api/product/resolvers/product'
 import cart from './api/cart/resolvers/cart'
+import order from './api/order/resolvers/order'
 
 import { getAllProductsDetails } from './helpers/printful'
 async function test(obj, args, context) {
@@ -62,6 +63,7 @@ export function registerResolvers() {
 
     strapi.service('plugin::graphql.extension').use(product)
     strapi.service('plugin::graphql.extension').use(cart)
+    strapi.service('plugin::graphql.extension').use(order)
 
     strapi.service('plugin::graphql.extension').use(({ strapi }) => ({
         typeDefs: `
