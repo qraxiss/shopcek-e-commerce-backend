@@ -1,14 +1,30 @@
-import {Strapi} from '@strapi/strapi'
+import { Strapi } from '@strapi/strapi'
+import { getOrders } from './user-orders'
 import { placeOrder } from './place-order'
 export const typeDefs = `
     type Mutation {
-        placeOrder(transaction:String!, recepient: JSON): JSON!
+        placeOrder(transaction:String!, recepient: JSON): JSON!   
+    }
+
+    type UserOrder {
+        count: Int!
+        price: Float!
+        id: ID!
+    }
+
+    type Query {
+        userOrders: [UserOrder]!
     }
 `
 
-export default ({strapi}: {strapi: Strapi})=>({
+export default ({ strapi }: { strapi: Strapi }) => ({
     typeDefs,
     resolvers: {
+        Query: {
+            userOrders: {
+                resolve: getOrders
+            }
+        },
         Mutation: {
             placeOrder: placeOrder
         }

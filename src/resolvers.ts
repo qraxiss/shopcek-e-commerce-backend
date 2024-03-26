@@ -32,8 +32,7 @@ async function test(obj, args, context) {
         }
     })
 
-    return await strapi.service('api::order.order').placePrintfulOrder({recipientId: 3})
-
+    return await strapi.service('api::order.order').placePrintfulOrder({ recipientId: 3 })
 
     return await strapi.plugin('user').service('wallet').connectWallet({ address: 'qraxiss' })
 
@@ -44,26 +43,23 @@ async function test(obj, args, context) {
 
     return await strapi.entityService.findOne('api::cart.cart', 2, {
         populate: {
-            'items': true
+            items: true
         }
     })
 
-
     return strapi.requestContext.get().state.user
-
-
-    
 
     return getAllProductsDetails()
 }
 
-export function registerResolvers() {
-    strapi.plugin('graphql').service('extension').shadowCRUD('api::cart.cart').disableActions(['create', 'update', 'delete', 'findOne'])
-    strapi.plugin('graphql').service('extension').shadowCRUD('api::product.product').disableActions(['findOne'])
+export async function registerResolvers() {
+    await strapi.plugin('graphql').service('extension').shadowCRUD('api::cart.cart').disableActions(['create', 'update', 'delete', 'findOne'])
+    await strapi.plugin('graphql').service('extension').shadowCRUD('api::order.order').disableAction('findMany')
+    await strapi.plugin('graphql').service('extension').shadowCRUD('api::product.product').disableActions(['findOne'])
 
-    strapi.service('plugin::graphql.extension').use(product)
-    strapi.service('plugin::graphql.extension').use(cart)
-    strapi.service('plugin::graphql.extension').use(order)
+    await strapi.service('plugin::graphql.extension').use(product)
+    await strapi.service('plugin::graphql.extension').use(cart)
+    await strapi.service('plugin::graphql.extension').use(order)
 
     strapi.service('plugin::graphql.extension').use(({ strapi }) => ({
         typeDefs: `
