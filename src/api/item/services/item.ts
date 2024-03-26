@@ -69,31 +69,56 @@ function services({ strapi }: { strapi: Strapi }) {
         },
 
         async updateSync({ id, count }) {
+            if (count <= 0) {
+                return await strapi.service(service).deleteSync({ id })
+            }
+
             const item = await strapi.entityService.findOne(service, id, {
                 populate: {
-                    carts: true,
+                    carts: {
+                        populate: {
+                            items: {
+                                populate: {
+                                    variant: true
+                                }
+                            }
+                        }
+                    },
                     variant: true
                 }
             })
 
             const itemPrice = item.variant.price * count
-
-            await Promise.all(
-                item.carts.map(async (cart) => {
-                    return await strapi.entityService.update('api::cart.cart', cart.id, {
-                        data: {
-                            price: cart.price + (itemPrice - item.totalPrice)
-                        }
-                    })
-                })
-            )
-
-            return await strapi.entityService.update(service, id, {
+            const updatedItem = await strapi.entityService.update(service, id, {
                 data: {
                     totalPrice: itemPrice,
                     count
                 }
             })
+
+            await Promise.all(
+                item.carts.map(async (cart) => {
+                    const count = cart.items.length
+                    let price = 0
+                    cart.items.forEach((item) => {
+                        if (item.id === updatedItem.id){
+                            price = price + itemPrice
+                        }else {
+                            price = price + item.variant.price * item.count
+                        }
+                        
+                    })
+
+                    return await strapi.entityService.update('api::cart.cart', cart.id, {
+                        data: {
+                            price,
+                            count
+                        }
+                    })
+                })
+            )
+
+            return updatedItem
         }
     }
 }
