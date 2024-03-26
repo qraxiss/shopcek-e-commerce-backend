@@ -1,3 +1,5 @@
+import {GraphQLError} from 'graphql'
+
 export async function placeOrder(obj, {transaction, recipient}, context){
     const user = await strapi.db.query('plugin::users-permissions.user').findOne({
         where: {
@@ -14,6 +16,12 @@ export async function placeOrder(obj, {transaction, recipient}, context){
         transaction
     })
 
-    return result
+    if (result.error){
+        throw new GraphQLError(result.error)
+    }
+
+
+
+    return result.order.id
 
 }

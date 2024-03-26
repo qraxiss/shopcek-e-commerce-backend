@@ -47,7 +47,7 @@ function services({ strapi }: { strapi: Strapi }) {
             return order
         },
 
-        async placePrintfulOrder({ recipientId, transaction }: { recipientId: number, transaction:string  }) {
+        async placePrintfulOrder({ recipientId, transaction }: { recipientId: number, transaction: string  }) {
             const order = await strapi.service('api::order.order').placeOrder({ recipientId: recipientId, transaction })
             const items = await Promise.all(
                 order.cart.items.map(async (item) => {
@@ -66,6 +66,9 @@ function services({ strapi }: { strapi: Strapi }) {
                 data: {
                     order: order.id,
                     ...printful
+                },
+                populate: {
+                    order: true
                 }
             })
         }
