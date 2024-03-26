@@ -20,8 +20,6 @@ export async function placeOrder(obj, {transaction, recipient}, context){
         throw new GraphQLError(result.error)
     }
 
-
-
     return result.order.id
 
 }

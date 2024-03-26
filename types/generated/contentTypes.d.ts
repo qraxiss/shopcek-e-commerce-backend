@@ -629,6 +629,67 @@ export interface ApiColorColor extends Schema.CollectionType {
     }
 }
 
+export interface ApiEarnEarn extends Schema.CollectionType {
+    collectionName: 'earns'
+    info: {
+        singularName: 'earn'
+        pluralName: 'earns'
+        displayName: 'earn'
+    }
+    options: {
+        draftAndPublish: false
+    }
+    attributes: {
+        logins: Attribute.Relation<'api::earn.earn', 'oneToMany', 'api::earn-login.earn-login'>
+        stays: Attribute.Relation<'api::earn.earn', 'oneToMany', 'api::earn-stay.earn-stay'>
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'api::earn.earn', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::earn.earn', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
+export interface ApiEarnLoginEarnLogin extends Schema.CollectionType {
+    collectionName: 'earn_logins'
+    info: {
+        singularName: 'earn-login'
+        pluralName: 'earn-logins'
+        displayName: 'earn-login'
+        description: ''
+    }
+    options: {
+        draftAndPublish: true
+    }
+    attributes: {
+        earn: Attribute.Relation<'api::earn-login.earn-login', 'manyToOne', 'api::earn.earn'>
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        publishedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'api::earn-login.earn-login', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::earn-login.earn-login', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
+export interface ApiEarnStayEarnStay extends Schema.CollectionType {
+    collectionName: 'earn_stays'
+    info: {
+        singularName: 'earn-stay'
+        pluralName: 'earn-stays'
+        displayName: 'Earn-stay'
+    }
+    options: {
+        draftAndPublish: true
+    }
+    attributes: {
+        earn: Attribute.Relation<'api::earn-stay.earn-stay', 'manyToOne', 'api::earn.earn'>
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        publishedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'api::earn-stay.earn-stay', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::earn-stay.earn-stay', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
 export interface ApiItemItem extends Schema.CollectionType {
     collectionName: 'items'
     info: {
@@ -855,6 +916,9 @@ declare module '@strapi/types' {
             'plugin::users-permissions.user': PluginUsersPermissionsUser
             'api::cart.cart': ApiCartCart
             'api::color.color': ApiColorColor
+            'api::earn.earn': ApiEarnEarn
+            'api::earn-login.earn-login': ApiEarnLoginEarnLogin
+            'api::earn-stay.earn-stay': ApiEarnStayEarnStay
             'api::item.item': ApiItemItem
             'api::order.order': ApiOrderOrder
             'api::printful-order.printful-order': ApiPrintfulOrderPrintfulOrder

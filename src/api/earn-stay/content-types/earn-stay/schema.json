@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "earn_stays",
+  "info": {
+    "singularName": "earn-stay",
+    "pluralName": "earn-stays",
+    "displayName": "Earn-stay"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "earn": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::earn.earn",
+      "inversedBy": "stays"
+    }
+  }
+}

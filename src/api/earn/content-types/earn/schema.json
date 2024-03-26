@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "earns",
+  "info": {
+    "singularName": "earn",
+    "pluralName": "earns",
+    "displayName": "earn"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "logins": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::earn-login.earn-login",
+      "mappedBy": "earn"
+    },
+    "stays": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::earn-stay.earn-stay",
+      "mappedBy": "earn"
+    }
+  }
+}

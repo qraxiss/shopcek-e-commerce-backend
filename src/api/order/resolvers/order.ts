@@ -10,6 +10,8 @@ export const typeDefs = `
         count: Int!
         price: Float!
         id: ID!
+        createdAt: String!
+        error: String
     }
 
     type Query {

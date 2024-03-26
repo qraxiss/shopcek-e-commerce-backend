@@ -15,6 +15,7 @@ export async function getOrders(obj, args, context) {
             }
         },
         populate: {
+            printful_order: true,
             cart: true
         }
     })
@@ -24,6 +25,8 @@ export async function getOrders(obj, args, context) {
     return orders.map(order=>({
         id: order.id,
         count: order.cart.count,
-        price: order.cart.price
+        price: order.cart.price,
+        createdAt: order.createdAt,
+        error: order.printful_order.error,
     }))
 }
