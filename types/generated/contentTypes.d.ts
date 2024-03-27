@@ -577,6 +577,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
         wallet: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'api::wallet.wallet'>
         recipient: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'api::recipient.recipient'>
         earn: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'api::earn.earn'>
+        domains: Attribute.Relation<'plugin::users-permissions.user', 'oneToMany', 'api::domain.domain'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'admin::user'> & Attribute.Private
@@ -627,6 +628,26 @@ export interface ApiColorColor extends Schema.CollectionType {
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::color.color', 'oneToOne', 'admin::user'> & Attribute.Private
         updatedBy: Attribute.Relation<'api::color.color', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
+export interface ApiDomainDomain extends Schema.CollectionType {
+    collectionName: 'domains'
+    info: {
+        singularName: 'domain'
+        pluralName: 'domains'
+        displayName: 'Domain'
+    }
+    options: {
+        draftAndPublish: false
+    }
+    attributes: {
+        username: Attribute.String & Attribute.Unique
+        user: Attribute.Relation<'api::domain.domain', 'manyToOne', 'plugin::users-permissions.user'>
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'api::domain.domain', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::domain.domain', 'oneToOne', 'admin::user'> & Attribute.Private
     }
 }
 
@@ -960,6 +981,25 @@ export interface ApiWalletWallet extends Schema.CollectionType {
     }
 }
 
+export interface ApiWheelRewardWheelReward extends Schema.SingleType {
+    collectionName: 'wheel_rewards'
+    info: {
+        singularName: 'wheel-reward'
+        pluralName: 'wheel-rewards'
+        displayName: 'Wheel Reward'
+    }
+    options: {
+        draftAndPublish: false
+    }
+    attributes: {
+        rewards: Attribute.Relation<'api::wheel-reward.wheel-reward', 'oneToMany', 'api::reward.reward'>
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'api::wheel-reward.wheel-reward', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::wheel-reward.wheel-reward', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
 declare module '@strapi/types' {
     export module Shared {
         export interface ContentTypes {
@@ -980,6 +1020,7 @@ declare module '@strapi/types' {
             'plugin::users-permissions.user': PluginUsersPermissionsUser
             'api::cart.cart': ApiCartCart
             'api::color.color': ApiColorColor
+            'api::domain.domain': ApiDomainDomain
             'api::earn.earn': ApiEarnEarn
             'api::earn-login.earn-login': ApiEarnLoginEarnLogin
             'api::earn-spin.earn-spin': ApiEarnSpinEarnSpin
@@ -994,6 +1035,7 @@ declare module '@strapi/types' {
             'api::size.size': ApiSizeSize
             'api::variant.variant': ApiVariantVariant
             'api::wallet.wallet': ApiWalletWallet
+            'api::wheel-reward.wheel-reward': ApiWheelRewardWheelReward
         }
     }
 }

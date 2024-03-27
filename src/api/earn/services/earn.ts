@@ -39,7 +39,7 @@ function services({ strapi }: { strapi: Strapi }) {
                 return createClaim()
             }
 
-            if (moment().diff(moment(lastClaim.createdAt), 'seconds') <= 1) {
+            if (moment().diff(moment(lastClaim.createdAt), 'seconds') <= 10) {
                 throw new Error("You can't claim before 24 hours!")
             }
 

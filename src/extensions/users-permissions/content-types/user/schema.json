@@ -94,6 +94,12 @@
       "relation": "oneToOne",
       "target": "api::earn.earn",
       "mappedBy": "user"
+    },
+    "domains": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::domain.domain",
+      "mappedBy": "user"
     }
   }
 }
