@@ -18,7 +18,32 @@ async function earnId(context) {
 }
 
 export async function claim(obj, { service }, context) {
-    return await earn().claim({ service, earn: await earnId(context) })
+    const result = await earn().claim({ service, earn: await earnId(context) })
+
+    switch (service) {
+        case 'login': {
+            const streak = await earn().getStreak({ service, earn: await earnId(context) })
+
+            const loginRewards = await strapi.entityService.findOne('api::login-reward.login-reward', 1, {
+                populate: {
+                    rewards: true
+                }
+            })
+
+            const xp = loginRewards.rewards[streak].reward as number
+            const earnData = await strapi.entityService.findOne('api::earn.earn', (await earnId(context)) as any)
+            const update = await strapi.entityService.update('api::earn.earn', (await earnId(context)) as any, {
+                data: {
+                    xp: earnData.xp + xp
+                }
+            })
+
+            return result
+        }
+        default: {
+            return result
+        }
+    }
 }
 
 export async function getLastClaim(obj, { service }, context) {
