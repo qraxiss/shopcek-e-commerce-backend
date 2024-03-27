@@ -1,0 +1,22 @@
+{
+  "kind": "collectionType",
+  "collectionName": "spin_rewards",
+  "info": {
+    "singularName": "spin-reward",
+    "pluralName": "spin-rewards",
+    "displayName": "Spin Reward"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "reward": {
+      "type": "json"
+    },
+    "type": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

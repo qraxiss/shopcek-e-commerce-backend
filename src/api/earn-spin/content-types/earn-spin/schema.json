@@ -1,11 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "earn_stays",
+  "collectionName": "earn_spins",
   "info": {
-    "singularName": "earn-stay",
-    "pluralName": "earn-stays",
-    "displayName": "Earn-stay",
-    "description": ""
+    "singularName": "earn-spin",
+    "pluralName": "earn-spins",
+    "displayName": "earn-spin"
   },
   "options": {
     "draftAndPublish": false
@@ -16,7 +15,7 @@
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::earn.earn",
-      "inversedBy": "stays"
+      "inversedBy": "spins"
     }
   }
 }

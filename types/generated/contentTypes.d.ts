@@ -576,6 +576,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
         orders: Attribute.Relation<'plugin::users-permissions.user', 'oneToMany', 'api::order.order'>
         wallet: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'api::wallet.wallet'>
         recipient: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'api::recipient.recipient'>
+        earn: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'api::earn.earn'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'admin::user'> & Attribute.Private
@@ -635,13 +636,17 @@ export interface ApiEarnEarn extends Schema.CollectionType {
         singularName: 'earn'
         pluralName: 'earns'
         displayName: 'earn'
+        description: ''
     }
     options: {
         draftAndPublish: false
     }
     attributes: {
+        spins: Attribute.Relation<'api::earn.earn', 'oneToMany', 'api::earn-spin.earn-spin'>
         logins: Attribute.Relation<'api::earn.earn', 'oneToMany', 'api::earn-login.earn-login'>
         stays: Attribute.Relation<'api::earn.earn', 'oneToMany', 'api::earn-stay.earn-stay'>
+        sessionStart: Attribute.DateTime
+        user: Attribute.Relation<'api::earn.earn', 'oneToOne', 'plugin::users-permissions.user'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::earn.earn', 'oneToOne', 'admin::user'> & Attribute.Private
@@ -655,18 +660,35 @@ export interface ApiEarnLoginEarnLogin extends Schema.CollectionType {
         singularName: 'earn-login'
         pluralName: 'earn-logins'
         displayName: 'earn-login'
-        description: ''
     }
     options: {
-        draftAndPublish: true
+        draftAndPublish: false
     }
     attributes: {
         earn: Attribute.Relation<'api::earn-login.earn-login', 'manyToOne', 'api::earn.earn'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
-        publishedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::earn-login.earn-login', 'oneToOne', 'admin::user'> & Attribute.Private
         updatedBy: Attribute.Relation<'api::earn-login.earn-login', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
+export interface ApiEarnSpinEarnSpin extends Schema.CollectionType {
+    collectionName: 'earn_spins'
+    info: {
+        singularName: 'earn-spin'
+        pluralName: 'earn-spins'
+        displayName: 'earn-spin'
+    }
+    options: {
+        draftAndPublish: false
+    }
+    attributes: {
+        earn: Attribute.Relation<'api::earn-spin.earn-spin', 'manyToOne', 'api::earn.earn'>
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'api::earn-spin.earn-spin', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::earn-spin.earn-spin', 'oneToOne', 'admin::user'> & Attribute.Private
     }
 }
 
@@ -676,15 +698,15 @@ export interface ApiEarnStayEarnStay extends Schema.CollectionType {
         singularName: 'earn-stay'
         pluralName: 'earn-stays'
         displayName: 'Earn-stay'
+        description: ''
     }
     options: {
-        draftAndPublish: true
+        draftAndPublish: false
     }
     attributes: {
         earn: Attribute.Relation<'api::earn-stay.earn-stay', 'manyToOne', 'api::earn.earn'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
-        publishedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::earn-stay.earn-stay', 'oneToOne', 'admin::user'> & Attribute.Private
         updatedBy: Attribute.Relation<'api::earn-stay.earn-stay', 'oneToOne', 'admin::user'> & Attribute.Private
     }
@@ -850,6 +872,26 @@ export interface ApiSizeSize extends Schema.CollectionType {
     }
 }
 
+export interface ApiSpinRewardSpinReward extends Schema.CollectionType {
+    collectionName: 'spin_rewards'
+    info: {
+        singularName: 'spin-reward'
+        pluralName: 'spin-rewards'
+        displayName: 'Spin Reward'
+    }
+    options: {
+        draftAndPublish: false
+    }
+    attributes: {
+        reward: Attribute.JSON
+        type: Attribute.String & Attribute.Required
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'api::spin-reward.spin-reward', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::spin-reward.spin-reward', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
 export interface ApiVariantVariant extends Schema.CollectionType {
     collectionName: 'variants'
     info: {
@@ -882,6 +924,7 @@ export interface ApiWalletWallet extends Schema.CollectionType {
         singularName: 'wallet'
         pluralName: 'wallets'
         displayName: 'Wallet'
+        description: ''
     }
     options: {
         draftAndPublish: false
@@ -918,6 +961,7 @@ declare module '@strapi/types' {
             'api::color.color': ApiColorColor
             'api::earn.earn': ApiEarnEarn
             'api::earn-login.earn-login': ApiEarnLoginEarnLogin
+            'api::earn-spin.earn-spin': ApiEarnSpinEarnSpin
             'api::earn-stay.earn-stay': ApiEarnStayEarnStay
             'api::item.item': ApiItemItem
             'api::order.order': ApiOrderOrder
@@ -925,6 +969,7 @@ declare module '@strapi/types' {
             'api::product.product': ApiProductProduct
             'api::recipient.recipient': ApiRecipientRecipient
             'api::size.size': ApiSizeSize
+            'api::spin-reward.spin-reward': ApiSpinRewardSpinReward
             'api::variant.variant': ApiVariantVariant
             'api::wallet.wallet': ApiWalletWallet
         }

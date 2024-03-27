@@ -4,13 +4,20 @@
   "info": {
     "singularName": "earn",
     "pluralName": "earns",
-    "displayName": "earn"
+    "displayName": "earn",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
+    "spins": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::earn-spin.earn-spin",
+      "mappedBy": "earn"
+    },
     "logins": {
       "type": "relation",
       "relation": "oneToMany",
@@ -22,6 +29,15 @@
       "relation": "oneToMany",
       "target": "api::earn-stay.earn-stay",
       "mappedBy": "earn"
+    },
+    "sessionStart": {
+      "type": "datetime"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "earn"
     }
   }
 }

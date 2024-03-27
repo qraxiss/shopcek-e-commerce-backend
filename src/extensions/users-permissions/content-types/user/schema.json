@@ -88,6 +88,12 @@
       "relation": "oneToOne",
       "target": "api::recipient.recipient",
       "mappedBy": "user"
+    },
+    "earn": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::earn.earn",
+      "mappedBy": "user"
     }
   }
 }

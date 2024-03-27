@@ -1,55 +1,10 @@
 import product from './api/product/resolvers/product'
 import cart from './api/cart/resolvers/cart'
 import order from './api/order/resolvers/order'
+import earn from './api/earn/resolvers/earn'
 
-import { getAllProductsDetails } from './helpers/printful'
 async function test(obj, args, context) {
-    // return await strapi.service('api::product.product').createPrintfulProduct({
-    //     product: {
-    //         name: 'Travel mug with a handle',
-    //         image: 'https://files.cdn.printful.com/files/1a1/1a1907c208f06007a280197bc4410878_preview.png',
-    //         price: 22,
-    //         sizes: ['25 oz'],
-    //         colors: ['White']
-    //     },
-    //     variants: [
-    //         {
-    //             price: 22,
-    //             image: 'https://files.cdn.printful.com/files/5e4/5e4abe7b4d2e4e54de6151f7f628636b_preview.png',
-    //             size: '25 oz',
-    //             color: 'White',
-    //             printful_id: 4287721568
-    //         }
-    //     ],
-    //     printful_id: 338000032
-    // })
-
-    // return cartesian([1,2,3], [4,5,6])
-
-    const recipient = await strapi.db.query('api::recipient.recipient').findOne({
-        where: {
-            user: strapi.requestContext.get().state.user.id
-        }
-    })
-
-    return await strapi.service('api::order.order').placePrintfulOrder({ recipientId: 3 })
-
-    return await strapi.plugin('user').service('wallet').connectWallet({ address: 'qraxiss' })
-
-    return await strapi.service('api::cart.cart').updateCount({
-        itemId: 3,
-        count: 5
-    })
-
-    return await strapi.entityService.findOne('api::cart.cart', 2, {
-        populate: {
-            items: true
-        }
-    })
-
-    return strapi.requestContext.get().state.user
-
-    return getAllProductsDetails()
+    return "test"
 }
 
 export async function registerResolvers() {
@@ -60,6 +15,7 @@ export async function registerResolvers() {
     await strapi.service('plugin::graphql.extension').use(product)
     await strapi.service('plugin::graphql.extension').use(cart)
     await strapi.service('plugin::graphql.extension').use(order)
+    await strapi.service('plugin::graphql.extension').use(earn)
 
     strapi.service('plugin::graphql.extension').use(({ strapi }) => ({
         typeDefs: `

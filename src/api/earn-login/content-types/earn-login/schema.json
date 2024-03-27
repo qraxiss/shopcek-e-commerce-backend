@@ -4,11 +4,10 @@
   "info": {
     "singularName": "earn-login",
     "pluralName": "earn-logins",
-    "displayName": "earn-login",
-    "description": ""
+    "displayName": "earn-login"
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {

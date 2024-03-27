@@ -1,5 +1,9 @@
 import { Strapi } from '@strapi/strapi'
 
+function earn() {
+    return strapi.service('api::earn.earn')
+}
+
 export default ({ strapi }: { strapi: Strapi }) => ({
     async registerWithWallet({ address, cartId }: { address: string; cartId?: string }) {
         const walletObj = await strapi.entityService?.create('api::wallet.wallet', {
@@ -15,6 +19,8 @@ export default ({ strapi }: { strapi: Strapi }) => ({
                 cart: cartId
             }
         })
+
+        await earn().createEarnForUser(user)
 
         const recipient = await strapi.entityService?.create('api::recipient.recipient', {
             data: {

@@ -4,7 +4,8 @@
   "info": {
     "singularName": "wallet",
     "pluralName": "wallets",
-    "displayName": "Wallet"
+    "displayName": "Wallet",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
