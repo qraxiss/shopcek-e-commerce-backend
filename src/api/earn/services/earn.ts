@@ -17,7 +17,8 @@ function services({ strapi }: { strapi: Strapi }) {
             return await strapi.entityService.create(mainService, {
                 data: {
                     user: id,
-                    sessionStart: new Date()
+                    sessionStart: new Date(),
+                    xp: 0
                 }
             })
         },

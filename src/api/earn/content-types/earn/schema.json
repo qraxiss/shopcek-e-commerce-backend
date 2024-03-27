@@ -38,6 +38,11 @@
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "earn"
+    },
+    "xp": {
+      "type": "integer",
+      "required": true,
+      "default": 0
     }
   }
 }

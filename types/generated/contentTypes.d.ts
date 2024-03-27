@@ -647,6 +647,7 @@ export interface ApiEarnEarn extends Schema.CollectionType {
         stays: Attribute.Relation<'api::earn.earn', 'oneToMany', 'api::earn-stay.earn-stay'>
         sessionStart: Attribute.DateTime
         user: Attribute.Relation<'api::earn.earn', 'oneToOne', 'plugin::users-permissions.user'>
+        xp: Attribute.Integer & Attribute.Required & Attribute.DefaultTo<0>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::earn.earn', 'oneToOne', 'admin::user'> & Attribute.Private
@@ -733,6 +734,25 @@ export interface ApiItemItem extends Schema.CollectionType {
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::item.item', 'oneToOne', 'admin::user'> & Attribute.Private
         updatedBy: Attribute.Relation<'api::item.item', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
+export interface ApiLoginRewardLoginReward extends Schema.SingleType {
+    collectionName: 'login_rewards'
+    info: {
+        singularName: 'login-reward'
+        pluralName: 'login-rewards'
+        displayName: 'Login Reward'
+    }
+    options: {
+        draftAndPublish: false
+    }
+    attributes: {
+        rewards: Attribute.Relation<'api::login-reward.login-reward', 'oneToMany', 'api::reward.reward'>
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'api::login-reward.login-reward', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::login-reward.login-reward', 'oneToOne', 'admin::user'> & Attribute.Private
     }
 }
 
@@ -850,6 +870,27 @@ export interface ApiRecipientRecipient extends Schema.CollectionType {
     }
 }
 
+export interface ApiRewardReward extends Schema.CollectionType {
+    collectionName: 'rewards'
+    info: {
+        singularName: 'reward'
+        pluralName: 'rewards'
+        displayName: 'Reward'
+    }
+    options: {
+        draftAndPublish: false
+    }
+    attributes: {
+        name: Attribute.String
+        reward: Attribute.JSON
+        type: Attribute.String
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'api::reward.reward', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::reward.reward', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
 export interface ApiSizeSize extends Schema.CollectionType {
     collectionName: 'sizes'
     info: {
@@ -869,26 +910,6 @@ export interface ApiSizeSize extends Schema.CollectionType {
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::size.size', 'oneToOne', 'admin::user'> & Attribute.Private
         updatedBy: Attribute.Relation<'api::size.size', 'oneToOne', 'admin::user'> & Attribute.Private
-    }
-}
-
-export interface ApiSpinRewardSpinReward extends Schema.CollectionType {
-    collectionName: 'spin_rewards'
-    info: {
-        singularName: 'spin-reward'
-        pluralName: 'spin-rewards'
-        displayName: 'Spin Reward'
-    }
-    options: {
-        draftAndPublish: false
-    }
-    attributes: {
-        reward: Attribute.JSON
-        type: Attribute.String & Attribute.Required
-        createdAt: Attribute.DateTime
-        updatedAt: Attribute.DateTime
-        createdBy: Attribute.Relation<'api::spin-reward.spin-reward', 'oneToOne', 'admin::user'> & Attribute.Private
-        updatedBy: Attribute.Relation<'api::spin-reward.spin-reward', 'oneToOne', 'admin::user'> & Attribute.Private
     }
 }
 
@@ -964,12 +985,13 @@ declare module '@strapi/types' {
             'api::earn-spin.earn-spin': ApiEarnSpinEarnSpin
             'api::earn-stay.earn-stay': ApiEarnStayEarnStay
             'api::item.item': ApiItemItem
+            'api::login-reward.login-reward': ApiLoginRewardLoginReward
             'api::order.order': ApiOrderOrder
             'api::printful-order.printful-order': ApiPrintfulOrderPrintfulOrder
             'api::product.product': ApiProductProduct
             'api::recipient.recipient': ApiRecipientRecipient
+            'api::reward.reward': ApiRewardReward
             'api::size.size': ApiSizeSize
-            'api::spin-reward.spin-reward': ApiSpinRewardSpinReward
             'api::variant.variant': ApiVariantVariant
             'api::wallet.wallet': ApiWalletWallet
         }
