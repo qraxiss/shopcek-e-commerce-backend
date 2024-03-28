@@ -9,10 +9,12 @@ async function wishlistId(context) {
                 id: context.state.user.id
             },
             populate: {
-                wishlistId: '*'
+                wishlist: '*'
             }
         })
     ).wishlist.id
+
+    console.log(id)
 
     return id
 }
@@ -42,7 +44,7 @@ export async function removeFromWishlist(obj, { slug }, context) {
 }
 
 export async function userWishlist(obj, args, context) {
-    return await wishlist().userWishlist({
+    return await wishlist().getWishlist({
         wishlistId: await wishlistId(context)
     })
 }
