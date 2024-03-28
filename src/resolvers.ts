@@ -2,6 +2,7 @@ import product from './api/product/resolvers/product'
 import cart from './api/cart/resolvers/cart'
 import order from './api/order/resolvers/order'
 import earn from './api/earn/resolvers/earn'
+import domain from './api/domain/resolvers/domain'
 
 async function test(obj, args, context) {
     return "test"
@@ -16,6 +17,7 @@ export async function registerResolvers() {
     await strapi.service('plugin::graphql.extension').use(cart)
     await strapi.service('plugin::graphql.extension').use(order)
     await strapi.service('plugin::graphql.extension').use(earn)
+    await strapi.service('plugin::graphql.extension').use(domain)
 
     strapi.service('plugin::graphql.extension').use(({ strapi }) => ({
         typeDefs: `

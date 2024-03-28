@@ -1,9 +1,11 @@
 import { Strapi } from '@strapi/strapi'
 import { buyDomain } from './buy-domain'
 import { checkDomain } from './check-domain'
+import { domains } from './domains'
 const typeDefs = `
     type Query {
         checkDomain(username:String!): Boolean!
+        userDomains: [Domain]
     }
 
     type Mutation {
@@ -17,7 +19,11 @@ export default ({ strapi }: { strapi: Strapi }) => ({
         Query: {
             checkDomain: {
                 resolve: checkDomain
+            },
+            userDomains: {
+                resolve: domains
             }
+
         },
         Mutation: {
             buyDomain: {
