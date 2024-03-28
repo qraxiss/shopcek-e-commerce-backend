@@ -55,6 +55,12 @@
       "type": "string",
       "required": true,
       "unique": true
+    },
+    "wishlists": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::wishlist.wishlist",
+      "mappedBy": "items"
     }
   }
 }

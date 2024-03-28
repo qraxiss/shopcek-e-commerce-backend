@@ -3,10 +3,10 @@ export async function buyDomain(obj, { username, transaction }, context) {
         throw new Error('transaction not valid')
     }
 
-    return !!(await strapi.entityService.create('api::domain.domain', {
+    return await strapi.entityService.create('api::domain.domain', {
         data: {
             username,
             user: context.state.user.id
         }
-    }))
+    })
 }

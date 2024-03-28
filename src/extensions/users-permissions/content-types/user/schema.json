@@ -100,6 +100,17 @@
       "relation": "oneToMany",
       "target": "api::domain.domain",
       "mappedBy": "user"
+    },
+    "choosen": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::domain.domain"
+    },
+    "wishlist": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::wishlist.wishlist",
+      "mappedBy": "user"
     }
   }
 }

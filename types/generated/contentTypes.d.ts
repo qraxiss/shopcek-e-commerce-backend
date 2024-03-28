@@ -578,6 +578,8 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
         recipient: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'api::recipient.recipient'>
         earn: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'api::earn.earn'>
         domains: Attribute.Relation<'plugin::users-permissions.user', 'oneToMany', 'api::domain.domain'>
+        choosen: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'api::domain.domain'>
+        wishlist: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'api::wishlist.wishlist'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'admin::user'> & Attribute.Private
@@ -850,6 +852,7 @@ export interface ApiProductProduct extends Schema.CollectionType {
         items: Attribute.Relation<'api::product.product', 'oneToMany', 'api::item.item'>
         printful_id: Attribute.BigInteger
         slug: Attribute.String & Attribute.Required & Attribute.Unique
+        wishlists: Attribute.Relation<'api::product.product', 'manyToMany', 'api::wishlist.wishlist'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::product.product', 'oneToOne', 'admin::user'> & Attribute.Private
@@ -1000,6 +1003,26 @@ export interface ApiWheelRewardWheelReward extends Schema.SingleType {
     }
 }
 
+export interface ApiWishlistWishlist extends Schema.CollectionType {
+    collectionName: 'wishlists'
+    info: {
+        singularName: 'wishlist'
+        pluralName: 'wishlists'
+        displayName: 'Wishlist'
+    }
+    options: {
+        draftAndPublish: false
+    }
+    attributes: {
+        user: Attribute.Relation<'api::wishlist.wishlist', 'oneToOne', 'plugin::users-permissions.user'>
+        items: Attribute.Relation<'api::wishlist.wishlist', 'manyToMany', 'api::product.product'>
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'api::wishlist.wishlist', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::wishlist.wishlist', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
 declare module '@strapi/types' {
     export module Shared {
         export interface ContentTypes {
@@ -1036,6 +1059,7 @@ declare module '@strapi/types' {
             'api::variant.variant': ApiVariantVariant
             'api::wallet.wallet': ApiWalletWallet
             'api::wheel-reward.wheel-reward': ApiWheelRewardWheelReward
+            'api::wishlist.wishlist': ApiWishlistWishlist
         }
     }
 }
