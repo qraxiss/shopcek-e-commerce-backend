@@ -21,8 +21,6 @@ async function connectWallet(obj, { address, cartId }, context) {
         throw new GraphQLError('You already logged in!')
     }
 
-    console.log(address, cartId)
-
     return await strapi.plugin('user').service('wallet').connectWallet({ address, cartId })
 }
 

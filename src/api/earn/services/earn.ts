@@ -48,13 +48,20 @@ function services({ strapi }: { strapi: Strapi }) {
 
         async getLastClaim({ service, earn }: { service: string; earn: number }) {
             service = serviceUID(service)
-
-            return await strapi.db.query(service).findOne({
+            const lastClaim = await strapi.db.query(service).findOne({
                 where: {
                     earn
                 },
                 orderBy: { id: 'desc' }
             })
+
+            if (!lastClaim){
+                return {
+                    createdAt : new Date('2021')
+                }
+            }
+
+            return lastClaim
         },
 
         async getStreak({ service, earn }: { service: string; earn: number }) {
