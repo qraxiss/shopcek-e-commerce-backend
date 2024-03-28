@@ -22,25 +22,25 @@ export async function operations(obj, { operation, cartId, input }: { operation:
             }
         })
 
-        if (!user.cart){
+        if (!user.cart) {
             throw new GraphQLError('User have no cart!')
         }
 
         cartId = user.cart.id
     }
 
-    if (!user && cartId){
+    if (!user && cartId) {
         const cart = await strapi.entityService.findOne('api::cart.cart', cartId, {
             populate: {
-                user:true
+                user: true
             }
         })
 
-        if (!cart){
+        if (!cart) {
             throw new GraphQLError('Cart not found!')
         }
 
-        if (cart.user){
+        if (cart.user) {
             throw new GraphQLError('You cant access this cart!')
         }
     }
@@ -50,13 +50,13 @@ export async function operations(obj, { operation, cartId, input }: { operation:
             return await empty({ cartId })
         }
         case 'update': {
-            return await update({cartId, ...input})
+            return await update({ cartId, ...input })
         }
         case 'add': {
             return await add({ cartId, ...input })
         }
         case 'delete': {
-            return await deleteItem({cartId, ...input})
+            return await deleteItem({ cartId, ...input })
         }
     }
 }

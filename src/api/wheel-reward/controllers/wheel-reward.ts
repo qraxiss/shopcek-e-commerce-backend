@@ -4,4 +4,4 @@
 
 import { factories } from '@strapi/strapi'
 
-export default factories.createCoreController('api::wheel-reward.wheel-reward');
+export default factories.createCoreController('api::wheel-reward.wheel-reward')

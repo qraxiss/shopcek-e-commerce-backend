@@ -4,4 +4,4 @@
 
 import { factories } from '@strapi/strapi'
 
-export default factories.createCoreController('api::earn-spin.earn-spin');
+export default factories.createCoreController('api::earn-spin.earn-spin')

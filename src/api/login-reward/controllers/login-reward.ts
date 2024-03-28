@@ -4,4 +4,4 @@
 
 import { factories } from '@strapi/strapi'
 
-export default factories.createCoreController('api::login-reward.login-reward');
+export default factories.createCoreController('api::login-reward.login-reward')

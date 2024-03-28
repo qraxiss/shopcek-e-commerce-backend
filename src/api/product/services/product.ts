@@ -65,7 +65,6 @@ function services({ strapi: Strapi }) {
             //     count: false
             // })
 
-
             const products = await getAllProductsDetails()
             const result = []
             for (let index = 0; index < products.length; index++) {

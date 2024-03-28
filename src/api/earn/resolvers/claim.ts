@@ -76,7 +76,6 @@ export async function claim(obj, { service }, context) {
             })
 
             return result
-
         }
         default: {
             return result

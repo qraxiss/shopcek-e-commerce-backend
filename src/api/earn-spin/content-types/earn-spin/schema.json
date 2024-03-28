@@ -1,21 +1,21 @@
 {
-  "kind": "collectionType",
-  "collectionName": "earn_spins",
-  "info": {
-    "singularName": "earn-spin",
-    "pluralName": "earn-spins",
-    "displayName": "earn-spin"
-  },
-  "options": {
-    "draftAndPublish": false
-  },
-  "pluginOptions": {},
-  "attributes": {
-    "earn": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::earn.earn",
-      "inversedBy": "spins"
+    "kind": "collectionType",
+    "collectionName": "earn_spins",
+    "info": {
+        "singularName": "earn-spin",
+        "pluralName": "earn-spins",
+        "displayName": "earn-spin"
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "earn": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::earn.earn",
+            "inversedBy": "spins"
+        }
     }
-  }
 }

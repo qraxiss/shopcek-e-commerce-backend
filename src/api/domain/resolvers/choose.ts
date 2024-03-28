@@ -16,12 +16,14 @@ export async function choose(obj, { username }, context) {
 }
 
 export async function choosen(obj, args, context) {
-    return (await strapi.db.query('plugin::users-permissions.user').findOne({
-        where: {
-            id: context.state.user.id
-        },
-        populate: {
-            choosen: '*'
-        }
-    })).choosen
+    return (
+        await strapi.db.query('plugin::users-permissions.user').findOne({
+            where: {
+                id: context.state.user.id
+            },
+            populate: {
+                choosen: '*'
+            }
+        })
+    ).choosen
 }

@@ -7,13 +7,13 @@ import { newOrderPrintful, getVariant } from '../../../helpers/printful'
 
 function services({ strapi }: { strapi: Strapi }) {
     return {
-        async placeOrder({ recipientId,transaction }: { recipientId: number, transaction:string }) {
+        async placeOrder({ recipientId, transaction }: { recipientId: number; transaction: string }) {
             const user = await strapi.db.query('plugin::users-permissions.user').findOne({
                 where: {
                     id: strapi.requestContext.get().state.user.id
                 },
                 populate: {
-                    cart: true,
+                    cart: true
                 }
             })
 
@@ -47,7 +47,7 @@ function services({ strapi }: { strapi: Strapi }) {
             return order
         },
 
-        async placePrintfulOrder({ recipientId, transaction }: { recipientId: number, transaction: string  }) {
+        async placePrintfulOrder({ recipientId, transaction }: { recipientId: number; transaction: string }) {
             const order = await strapi.service('api::order.order').placeOrder({ recipientId: recipientId, transaction })
             const items = await Promise.all(
                 order.cart.items.map(async (item) => {

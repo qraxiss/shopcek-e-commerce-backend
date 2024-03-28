@@ -55,9 +55,9 @@ function services({ strapi }: { strapi: Strapi }) {
                 orderBy: { id: 'desc' }
             })
 
-            if (!lastClaim){
+            if (!lastClaim) {
                 return {
-                    createdAt : new Date('2021')
+                    createdAt: new Date('2021')
                 }
             }
 
@@ -78,8 +78,7 @@ function services({ strapi }: { strapi: Strapi }) {
             return mod
         },
 
-
-        async startSessionTime({earn}){
+        async startSessionTime({ earn }) {
             return await strapi.entityService.update(mainService, earn, {
                 data: {
                     sessionStart: new Date()

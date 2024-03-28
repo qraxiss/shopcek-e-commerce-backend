@@ -2,6 +2,6 @@
  * reward service
  */
 
-import { factories } from '@strapi/strapi';
+import { factories } from '@strapi/strapi'
 
-export default factories.createCoreService('api::reward.reward');
+export default factories.createCoreService('api::reward.reward')

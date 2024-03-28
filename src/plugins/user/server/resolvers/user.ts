@@ -24,14 +24,14 @@ async function connectWallet(obj, { address, cartId }, context) {
     return await strapi.plugin('user').service('wallet').connectWallet({ address, cartId })
 }
 
-async function user(obj,args,context){
+async function user(obj, args, context) {
     return await strapi.db.query('plugin::users-permissions.user').findOne({
         where: {
             id: context.state.user.id
         },
         populate: {
-            recipient: "*",
-            wallet: "*",
+            recipient: '*',
+            wallet: '*'
         }
     })
 }

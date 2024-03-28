@@ -1,48 +1,48 @@
 {
-  "kind": "collectionType",
-  "collectionName": "earns",
-  "info": {
-    "singularName": "earn",
-    "pluralName": "earns",
-    "displayName": "earn",
-    "description": ""
-  },
-  "options": {
-    "draftAndPublish": false
-  },
-  "pluginOptions": {},
-  "attributes": {
-    "spins": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::earn-spin.earn-spin",
-      "mappedBy": "earn"
+    "kind": "collectionType",
+    "collectionName": "earns",
+    "info": {
+        "singularName": "earn",
+        "pluralName": "earns",
+        "displayName": "earn",
+        "description": ""
     },
-    "logins": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::earn-login.earn-login",
-      "mappedBy": "earn"
+    "options": {
+        "draftAndPublish": false
     },
-    "stays": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::earn-stay.earn-stay",
-      "mappedBy": "earn"
-    },
-    "sessionStart": {
-      "type": "datetime"
-    },
-    "user": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "earn"
-    },
-    "xp": {
-      "type": "integer",
-      "required": true,
-      "default": 0
+    "pluginOptions": {},
+    "attributes": {
+        "spins": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::earn-spin.earn-spin",
+            "mappedBy": "earn"
+        },
+        "logins": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::earn-login.earn-login",
+            "mappedBy": "earn"
+        },
+        "stays": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::earn-stay.earn-stay",
+            "mappedBy": "earn"
+        },
+        "sessionStart": {
+            "type": "datetime"
+        },
+        "user": {
+            "type": "relation",
+            "relation": "oneToOne",
+            "target": "plugin::users-permissions.user",
+            "inversedBy": "earn"
+        },
+        "xp": {
+            "type": "integer",
+            "required": true,
+            "default": 0
+        }
     }
-  }
 }

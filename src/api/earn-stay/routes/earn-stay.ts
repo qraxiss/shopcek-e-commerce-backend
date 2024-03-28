@@ -2,6 +2,6 @@
  * earn-stay router
  */
 
-import { factories } from '@strapi/strapi';
+import { factories } from '@strapi/strapi'
 
-export default factories.createCoreRouter('api::earn-stay.earn-stay');
+export default factories.createCoreRouter('api::earn-stay.earn-stay')

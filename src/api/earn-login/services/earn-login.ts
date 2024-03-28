@@ -2,16 +2,12 @@
  * earn-login service
  */
 
-import { factories, Strapi } from '@strapi/strapi';
+import { factories, Strapi } from '@strapi/strapi'
 
-function services({strapi}: {strapi:Strapi}){
+function services({ strapi }: { strapi: Strapi }) {
     const service = 'api::earn-login.earn-login'
-    
-    return {
 
-        
-
-    }
+    return {}
 }
 
-export default factories.createCoreService('api::earn-login.earn-login');
+export default factories.createCoreService('api::earn-login.earn-login')

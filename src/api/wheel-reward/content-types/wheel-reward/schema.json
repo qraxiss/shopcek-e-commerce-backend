@@ -1,20 +1,20 @@
 {
-  "kind": "singleType",
-  "collectionName": "wheel_rewards",
-  "info": {
-    "singularName": "wheel-reward",
-    "pluralName": "wheel-rewards",
-    "displayName": "Wheel Reward"
-  },
-  "options": {
-    "draftAndPublish": false
-  },
-  "pluginOptions": {},
-  "attributes": {
-    "rewards": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::reward.reward"
+    "kind": "singleType",
+    "collectionName": "wheel_rewards",
+    "info": {
+        "singularName": "wheel-reward",
+        "pluralName": "wheel-rewards",
+        "displayName": "Wheel Reward"
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "rewards": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::reward.reward"
+        }
     }
-  }
 }

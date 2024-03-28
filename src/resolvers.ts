@@ -6,9 +6,8 @@ import domain from './api/domain/resolvers/domain'
 import wishlist from './api/wishlist/resolvers/wishlist'
 import recipient from './api/recipient/resolvers/recipient'
 
-
 async function test(obj, args, context) {
-    return "test"
+    return 'test'
 }
 
 export async function registerResolvers() {

@@ -101,12 +101,11 @@ function services({ strapi }: { strapi: Strapi }) {
                     const count = cart.items.length
                     let price = 0
                     cart.items.forEach((item) => {
-                        if (item.id === updatedItem.id){
+                        if (item.id === updatedItem.id) {
                             price = price + itemPrice
-                        }else {
+                        } else {
                             price = price + item.variant.price * item.count
                         }
-                        
                     })
 
                     return await strapi.entityService.update('api::cart.cart', cart.id, {

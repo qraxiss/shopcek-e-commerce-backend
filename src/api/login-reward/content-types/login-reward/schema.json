@@ -1,20 +1,20 @@
 {
-  "kind": "singleType",
-  "collectionName": "login_rewards",
-  "info": {
-    "singularName": "login-reward",
-    "pluralName": "login-rewards",
-    "displayName": "Login Reward"
-  },
-  "options": {
-    "draftAndPublish": false
-  },
-  "pluginOptions": {},
-  "attributes": {
-    "rewards": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::reward.reward"
+    "kind": "singleType",
+    "collectionName": "login_rewards",
+    "info": {
+        "singularName": "login-reward",
+        "pluralName": "login-rewards",
+        "displayName": "Login Reward"
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "rewards": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::reward.reward"
+        }
     }
-  }
 }

@@ -19,7 +19,6 @@ async function product(obj, { slug }: { slug: string }, context) {
         }
     })
 
-
     return product
 }
 

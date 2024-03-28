@@ -7,7 +7,7 @@ import { factories, Strapi } from '@strapi/strapi'
 function services({ strapi }: { strapi: Strapi }) {
     return {
         async addItem({ cartId, variantId, count }: { cartId: number; variantId: number; count: number }) {
-            const item = await strapi.service('api::item.item').createSync({cartId, variantId, count})
+            const item = await strapi.service('api::item.item').createSync({ cartId, variantId, count })
 
             return {
                 status: !!item,
@@ -16,7 +16,7 @@ function services({ strapi }: { strapi: Strapi }) {
         },
 
         async deleteItem({ itemId }: { itemId: number }) {
-            const result = await strapi.service('api::item.item').deleteSync({id: itemId})
+            const result = await strapi.service('api::item.item').deleteSync({ id: itemId })
             return {
                 status: !!result
             }

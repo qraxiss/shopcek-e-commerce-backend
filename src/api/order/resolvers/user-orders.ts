@@ -20,13 +20,11 @@ export async function getOrders(obj, args, context) {
         }
     })
 
-    
-
-    return orders.map(order=>({
+    return orders.map((order) => ({
         id: order.id,
         count: order.cart.count,
         price: order.cart.price,
         createdAt: order.createdAt,
-        error: order.printful_order.error,
+        error: order.printful_order.error
     }))
 }

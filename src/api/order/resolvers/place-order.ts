@@ -1,19 +1,19 @@
-import {GraphQLError} from 'graphql'
+import { GraphQLError } from 'graphql'
 
-export async function placeOrder(obj, {transaction, recipient}, context){
+export async function placeOrder(obj, { transaction, recipient }, context) {
     let createdRecipientId
-    if (recipient){
+    if (recipient) {
         createdRecipientId = await strapi.entityService.create('api::recipient.recipient', {
             data: recipient
         })
     }
-    
+
     const user = await strapi.db.query('plugin::users-permissions.user').findOne({
         where: {
             id: context.state.user.id
         },
         populate: {
-            recipient: "*"
+            recipient: '*'
         }
     })
 
@@ -22,10 +22,9 @@ export async function placeOrder(obj, {transaction, recipient}, context){
         transaction
     })
 
-    if (result.error){
+    if (result.error) {
         throw new GraphQLError(result.error)
     }
 
     return result.order.id
-
 }

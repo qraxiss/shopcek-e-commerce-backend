@@ -4,4 +4,4 @@
 
 import { factories } from '@strapi/strapi'
 
-export default factories.createCoreController('api::recipient.recipient');
+export default factories.createCoreController('api::recipient.recipient')

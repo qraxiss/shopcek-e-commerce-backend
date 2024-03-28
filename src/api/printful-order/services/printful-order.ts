@@ -2,6 +2,6 @@
  * printful-order service
  */
 
-import { factories } from '@strapi/strapi';
+import { factories } from '@strapi/strapi'
 
-export default factories.createCoreService('api::printful-order.printful-order');
+export default factories.createCoreService('api::printful-order.printful-order')
