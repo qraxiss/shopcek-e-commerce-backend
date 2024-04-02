@@ -587,6 +587,28 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     }
 }
 
+export interface ApiApplyApply extends Schema.CollectionType {
+    collectionName: 'applies'
+    info: {
+        singularName: 'apply'
+        pluralName: 'applies'
+        displayName: 'apply'
+    }
+    options: {
+        draftAndPublish: false
+    }
+    attributes: {
+        telegramHandle: Attribute.String
+        email: Attribute.Email
+        name: Attribute.String
+        partnerName: Attribute.String
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'api::apply.apply', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::apply.apply', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
 export interface ApiCartCart extends Schema.CollectionType {
     collectionName: 'carts'
     info: {
@@ -1041,6 +1063,7 @@ declare module '@strapi/types' {
             'plugin::users-permissions.permission': PluginUsersPermissionsPermission
             'plugin::users-permissions.role': PluginUsersPermissionsRole
             'plugin::users-permissions.user': PluginUsersPermissionsUser
+            'api::apply.apply': ApiApplyApply
             'api::cart.cart': ApiCartCart
             'api::color.color': ApiColorColor
             'api::domain.domain': ApiDomainDomain

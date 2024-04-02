@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "applies",
+  "info": {
+    "singularName": "apply",
+    "pluralName": "applies",
+    "displayName": "apply"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "telegramHandle": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "name": {
+      "type": "string"
+    },
+    "partnerName": {
+      "type": "string"
+    }
+  }
+}
