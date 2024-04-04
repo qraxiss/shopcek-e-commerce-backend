@@ -593,6 +593,7 @@ export interface ApiApplyApply extends Schema.CollectionType {
         singularName: 'apply'
         pluralName: 'applies'
         displayName: 'apply'
+        description: ''
     }
     options: {
         draftAndPublish: false
@@ -602,6 +603,7 @@ export interface ApiApplyApply extends Schema.CollectionType {
         email: Attribute.Email
         name: Attribute.String
         partnerName: Attribute.String
+        type: Attribute.String
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::apply.apply', 'oneToOne', 'admin::user'> & Attribute.Private
