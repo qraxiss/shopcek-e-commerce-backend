@@ -3,6 +3,9 @@
  */
 
 import { factories, Strapi } from '@strapi/strapi'
+import colors from '../../../helpers/colors_db.json'
+
+console.log(colors)
 
 function services({ strapi }: { strapi: Strapi }) {
     const service = 'api::color.color'
@@ -20,9 +23,11 @@ function services({ strapi }: { strapi: Strapi }) {
             const data = await strapi.service(service).findByValue({ value })
             if (!data) {
                 try {
+                    const hex = colors[value]
                     return await strapi.entityService.create(service, {
                         data: {
-                            value
+                            value,
+                            hex
                         }
                     })
                 } catch {}

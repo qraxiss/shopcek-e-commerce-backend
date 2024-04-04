@@ -52,18 +52,18 @@ function services({ strapi: Strapi }) {
         },
 
         async syncPrintfulMarket() {
-            // await strapi.db.query('api::variant.variant').deleteMany({
-            //     count: false
-            // }),
-            // await strapi.db.query('api::product.product').deleteMany({
-            //     count: false
-            // }),
-            // await strapi.db.query('api::size.size').deleteMany({
-            //     count: false
-            // }),
-            // await strapi.db.query('api::color.color').deleteMany({
-            //     count: false
-            // })
+            await strapi.db.query('api::variant.variant').deleteMany({
+                count: false
+            }),
+            await strapi.db.query('api::product.product').deleteMany({
+                count: false
+            }),
+            await strapi.db.query('api::size.size').deleteMany({
+                count: false
+            }),
+            await strapi.db.query('api::color.color').deleteMany({
+                count: false
+            })
 
             const products = await getAllProductsDetails()
             const result = []
