@@ -8,7 +8,9 @@ import recipient from './api/recipient/resolvers/recipient'
 import apply from './api/apply/resolvers/apply'
 
 async function test(obj, args, context) {
-    return 'test'
+    return await strapi.service('api::category.category').createWithSlug({
+        name: 'selam kanka Naber'
+    })
 }
 
 export async function registerResolvers() {

@@ -1,36 +1,36 @@
 {
-  "kind": "collectionType",
-  "collectionName": "colors",
-  "info": {
-    "singularName": "color",
-    "pluralName": "colors",
-    "displayName": "Color",
-    "description": ""
-  },
-  "options": {
-    "draftAndPublish": false
-  },
-  "pluginOptions": {},
-  "attributes": {
-    "value": {
-      "type": "string",
-      "required": true,
-      "unique": true
+    "kind": "collectionType",
+    "collectionName": "colors",
+    "info": {
+        "singularName": "color",
+        "pluralName": "colors",
+        "displayName": "Color",
+        "description": ""
     },
-    "products": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::product.product",
-      "mappedBy": "colors"
+    "options": {
+        "draftAndPublish": false
     },
-    "variants": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::variant.variant",
-      "mappedBy": "color"
-    },
-    "hex": {
-      "type": "string"
+    "pluginOptions": {},
+    "attributes": {
+        "value": {
+            "type": "string",
+            "required": true,
+            "unique": true
+        },
+        "products": {
+            "type": "relation",
+            "relation": "manyToMany",
+            "target": "api::product.product",
+            "mappedBy": "colors"
+        },
+        "variants": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::variant.variant",
+            "mappedBy": "color"
+        },
+        "hex": {
+            "type": "string"
+        }
     }
-  }
 }

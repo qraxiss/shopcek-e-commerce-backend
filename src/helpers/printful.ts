@@ -91,7 +91,9 @@ export async function getAllProductsDetails() {
     let data = await getAllProducts()
     return await Promise.all(
         data.map(async (item) => {
-            let variants = await getVariants(item)
+            let variantsPromise = getVariants(item)
+            variantsPromise.catch(console.log)
+            let variants = await variantsPromise
             return {
                 ...item,
                 price: variants.variants[0].price,

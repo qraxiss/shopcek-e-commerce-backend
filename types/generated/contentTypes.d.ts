@@ -635,6 +635,51 @@ export interface ApiCartCart extends Schema.CollectionType {
     }
 }
 
+export interface ApiCategoryCategory extends Schema.CollectionType {
+    collectionName: 'categories'
+    info: {
+        singularName: 'category'
+        pluralName: 'categories'
+        displayName: 'Category'
+        description: ''
+    }
+    options: {
+        draftAndPublish: false
+    }
+    attributes: {
+        slug: Attribute.String & Attribute.Unique
+        name: Attribute.String
+        products: Attribute.Relation<'api::category.category', 'manyToMany', 'api::product.product'>
+        sub_categories: Attribute.Relation<'api::category.category', 'manyToMany', 'api::category.category'>
+        parent_categories: Attribute.Relation<'api::category.category', 'manyToMany', 'api::category.category'>
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'api::category.category', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::category.category', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
+export interface ApiCollectionCollection extends Schema.CollectionType {
+    collectionName: 'collections'
+    info: {
+        singularName: 'collection'
+        pluralName: 'collections'
+        displayName: 'Collection'
+        description: ''
+    }
+    options: {
+        draftAndPublish: false
+    }
+    attributes: {
+        slug: Attribute.String & Attribute.Unique
+        name: Attribute.String
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'api::collection.collection', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::collection.collection', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
 export interface ApiColorColor extends Schema.CollectionType {
     collectionName: 'colors'
     info: {
@@ -878,6 +923,7 @@ export interface ApiProductProduct extends Schema.CollectionType {
         printful_id: Attribute.BigInteger
         slug: Attribute.String & Attribute.Required & Attribute.Unique
         wishlists: Attribute.Relation<'api::product.product', 'manyToMany', 'api::wishlist.wishlist'>
+        categories: Attribute.Relation<'api::product.product', 'manyToMany', 'api::category.category'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::product.product', 'oneToOne', 'admin::user'> & Attribute.Private
@@ -1068,6 +1114,8 @@ declare module '@strapi/types' {
             'plugin::users-permissions.user': PluginUsersPermissionsUser
             'api::apply.apply': ApiApplyApply
             'api::cart.cart': ApiCartCart
+            'api::category.category': ApiCategoryCategory
+            'api::collection.collection': ApiCollectionCollection
             'api::color.color': ApiColorColor
             'api::domain.domain': ApiDomainDomain
             'api::earn.earn': ApiEarnEarn

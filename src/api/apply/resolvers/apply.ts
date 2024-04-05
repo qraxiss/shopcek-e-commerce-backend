@@ -27,7 +27,7 @@ export default ({ strapi }: { strapi: Strapi }) => ({
     },
     resolversConfig: {
         'Mutation.sendInformation': {
-            auth:false
+            auth: false
         }
     }
 })
