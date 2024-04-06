@@ -3,8 +3,13 @@ const typeDefs = `
         syncPrintfulMarket: JSON!
     }
 
+    type ProductDetails {
+        product: Product
+        variants: [Variant]
+    }
+
     type Query {
-        product(slug: String!): Product
+        product(slug: String!): ProductDetails
     }
 `
 
@@ -19,7 +24,18 @@ async function product(obj, { slug }: { slug: string }, context) {
         }
     })
 
-    return product
+    const variants = await strapi.entityService.findMany('api::variant.variant', {
+        filters: {
+            product: product.id
+        },
+
+        populate: {
+            color: true,
+            size: true
+        }
+    })
+
+    return { product, variants }
 }
 
 export default ({ strapi }) => ({

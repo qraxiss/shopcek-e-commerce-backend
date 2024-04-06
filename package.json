@@ -12,7 +12,8 @@
         "develop": "strapi develop",
         "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json}\"",
         "start": "strapi start",
-        "strapi": "strapi"
+        "strapi": "strapi",
+        "prebuild": "cd src/plugins/user && npm run build"
     },
     "dependencies": {
         "@strapi/plugin-cloud": "4.21.0",

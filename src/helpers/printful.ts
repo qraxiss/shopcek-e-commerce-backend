@@ -66,7 +66,9 @@ export async function getVariants({ printful_id }) {
     data = data.sync_variants.map((variant) => {
         return {
             price: Number(variant.retail_price),
-            image: variant.files[1].preview_url,
+            image: variant.files.find(item=>{
+                return item.type === "preview"
+            }).preview_url,
             size: variant.size,
             color: variant.color,
             printful_id: variant.id
