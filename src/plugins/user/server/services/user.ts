@@ -56,12 +56,10 @@ export default ({ strapi }: { strapi: Strapi }) => ({
             }
         })
 
-        console.log(
-            await Promise.all(
-                newCart!.items.map(async (item) => {
-                    await strapi.service('api::item.item').createSync({ cartId: user.cart.id, variantId: item.variant.id, count: item.count })
-                })
-            )
+        await Promise.all(
+            newCart!.items.map(async (item) => {
+                await strapi.service('api::item.item').createSync({ cartId: user.cart.id, variantId: item.variant.id, count: item.count })
+            })
         )
 
         return strapi.plugin('users-permissions').service('jwt').issue({ id: id })
@@ -82,13 +80,13 @@ export default ({ strapi }: { strapi: Strapi }) => ({
         }
 
         if (!wallet.user) {
-            console.log(
-                await strapi.db?.query('api::wallet.wallet').delete({
-                    where: {
-                        id: wallet.id
-                    }
-                })
-            )
+            // console.log(
+            //     await strapi.db?.query('api::wallet.wallet').delete({
+            //         where: {
+            //             id: wallet.id
+            //         }
+            //     })
+            // )
             throw new Error('Try again!')
         }
 

@@ -54,8 +54,6 @@ export async function claim(obj, { service }, context) {
             const earnData = await strapi.entityService.findOne('api::earn.earn', (await earnId(context)) as any)
             const seconds = moment().diff(moment(earnData.sessionStart), 'seconds')
 
-            console.log(seconds)
-
             let xp
             if (seconds < time['15m']) {
                 xp = 300

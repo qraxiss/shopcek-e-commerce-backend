@@ -5,8 +5,6 @@
 import { factories, Strapi } from '@strapi/strapi'
 import colors from '../../../helpers/colors_db.json'
 
-console.log(colors)
-
 function services({ strapi }: { strapi: Strapi }) {
     const service = 'api::color.color'
 

@@ -6,6 +6,7 @@ import domain from './api/domain/resolvers/domain'
 import wishlist from './api/wishlist/resolvers/wishlist'
 import recipient from './api/recipient/resolvers/recipient'
 import apply from './api/apply/resolvers/apply'
+import category from './api/category/resolvers/category'
 
 async function test(obj, args, context) {
     return await strapi.service('api::category.category').createWithSlug({
@@ -17,6 +18,7 @@ export async function registerResolvers() {
     await strapi.plugin('graphql').service('extension').shadowCRUD('api::cart.cart').disableActions(['create', 'update', 'delete', 'findOne'])
     await strapi.plugin('graphql').service('extension').shadowCRUD('api::order.order').disableAction('findMany')
     await strapi.plugin('graphql').service('extension').shadowCRUD('api::product.product').disableActions(['findOne'])
+    await strapi.plugin('graphql').service('extension').shadowCRUD('api::category.category').disableActions(['findOne', 'create'])
 
     await strapi.service('plugin::graphql.extension').use(product)
     await strapi.service('plugin::graphql.extension').use(cart)
@@ -26,6 +28,7 @@ export async function registerResolvers() {
     await strapi.service('plugin::graphql.extension').use(wishlist)
     await strapi.service('plugin::graphql.extension').use(recipient)
     await strapi.service('plugin::graphql.extension').use(apply)
+    await strapi.service('plugin::graphql.extension').use(category)
 
     strapi.service('plugin::graphql.extension').use(({ strapi }) => ({
         typeDefs: `

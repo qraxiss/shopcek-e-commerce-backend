@@ -3,7 +3,6 @@ import { config } from 'dotenv'
 
 config()
 
-console.log(process.env.PRINTFUL_TOKEN, process.env.PRINTFUL_STORE_ID)
 
 export let printfulClient = axios.create({
     baseURL: 'https://api.printful.com',

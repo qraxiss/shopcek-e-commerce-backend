@@ -14,8 +14,6 @@ async function wishlistId(context) {
         })
     ).wishlist.id
 
-    console.log(id)
-
     return id
 }
 
