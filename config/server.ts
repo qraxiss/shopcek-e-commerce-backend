@@ -7,5 +7,5 @@ export default ({ env }) => ({
     webhooks: {
         populateRelations: env.bool('WEBHOOKS_POPULATE_RELATIONS', false)
     },
-    url: "https://shopcek.com/api"
+    // url: "https://shopcek.com/api"
 })

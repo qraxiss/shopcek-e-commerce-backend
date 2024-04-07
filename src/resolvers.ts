@@ -9,9 +9,7 @@ import apply from './api/apply/resolvers/apply'
 import category from './api/category/resolvers/category'
 
 async function test(obj, args, context) {
-    return await strapi.service('api::category.category').createWithSlug({
-        name: 'selam kanka Naber'
-    })
+    return await strapi.service('api::product.product').search({name: 'hoodie'})
 }
 
 export async function registerResolvers() {

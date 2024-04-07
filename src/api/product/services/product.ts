@@ -108,6 +108,16 @@ function services({ strapi: Strapi }) {
                     colors: colorIds
                 })
             }
+        },
+
+        async search({name}){
+            return await strapi.entityService.findMany('api::product.product', {
+                filters: {
+                    name: {
+                        $containsi: name
+                    }
+                }
+            })
         }
     }
 }

@@ -10,6 +10,7 @@ const typeDefs = `
 
     type Query {
         product(slug: String!): ProductDetails
+        search(name: String!): [Product]
     }
 `
 
@@ -38,10 +39,17 @@ async function product(obj, { slug }: { slug: string }, context) {
     return { product, variants }
 }
 
+async function search(obj, { name }: { name: string }, context) {
+    return await strapi.service('api::product.product').search({ name })
+}
+
 export default ({ strapi }) => ({
     typeDefs,
     resolversConfig: {
         'Query.product': {
+            auth: false
+        },
+        'Query.search': {
             auth: false
         },
         Mutation: {}
@@ -50,6 +58,9 @@ export default ({ strapi }) => ({
         Query: {
             product: {
                 resolve: product
+            },
+            search: {
+                resolve: search
             }
         },
         Mutation: {
