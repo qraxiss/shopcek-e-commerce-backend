@@ -32,7 +32,7 @@ export async function claim(obj, { service }, context) {
                 }
             })
 
-            const xp = loginRewards.rewards[streak].reward as number
+            const xp = loginRewards.rewards[streak-1].reward as number
             const earnData = await strapi.entityService.findOne('api::earn.earn', (await earnId(context)) as any)
             const update = await strapi.entityService.update('api::earn.earn', (await earnId(context)) as any, {
                 data: {

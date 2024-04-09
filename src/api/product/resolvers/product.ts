@@ -3,9 +3,14 @@ const typeDefs = `
         syncPrintfulMarket: JSON!
     }
 
+    type VariantId {
+        variant: Variant
+        id: ID
+    }
+
     type ProductDetails {
         product: Product
-        variants: [Variant]
+        variants: [VariantId]
     }
 
     type Query {
@@ -19,11 +24,14 @@ async function syncPrintfulMarket() {
 }
 
 async function product(obj, { slug }: { slug: string }, context) {
+    console.log('test', slug)
     const product = await strapi.db.query('api::product.product').findOne({
         where: {
             slug
         }
     })
+
+    console.log(product)
 
     const variants = await strapi.entityService.findMany('api::variant.variant', {
         filters: {
@@ -36,7 +44,19 @@ async function product(obj, { slug }: { slug: string }, context) {
         }
     })
 
-    return { product, variants }
+    console.log(variants)
+
+    return {
+        product,
+        variants: variants.map((variant) => {
+            console.log(variant)
+            
+            return {
+                id: variant.id,
+                variant
+            }
+        })
+    }
 }
 
 async function search(obj, { name }: { name: string }, context) {
