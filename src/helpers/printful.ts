@@ -105,6 +105,30 @@ export async function getAllProductsDetails() {
 }
 
 export async function newOrderPrintful({ recipient, items }) {
+    for (let index = 0; index < items.length; index++) {
+        const item = items[index];
+        item.files = item.files.filter(file=>{
+            return file.type !== 'label_inside'
+        })
+
+        item.options = item.options.map(option=>{
+            return {
+                ...option,
+                value: Array.isArray(option.value) ? option.value.map(item=>{
+                    console.log(item)
+                    try {
+                        item = item.toUpperCase()
+                    }catch {
+                        
+                    }
+                    return item
+                }) : option.value
+            }
+        })
+
+        console.log(item.options)
+    }
+    
     let data = printfulRequestWrapper(
         await printfulClient.post(`/orders`, {
             items,
