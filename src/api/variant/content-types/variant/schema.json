@@ -1,49 +1,49 @@
 {
-    "kind": "collectionType",
-    "collectionName": "variants",
-    "info": {
-        "singularName": "variant",
-        "pluralName": "variants",
-        "displayName": "Variant",
-        "description": ""
+  "kind": "collectionType",
+  "collectionName": "variants",
+  "info": {
+    "singularName": "variant",
+    "pluralName": "variants",
+    "displayName": "Variant",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "variants"
     },
-    "options": {
-        "draftAndPublish": false
+    "size": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::size.size",
+      "inversedBy": "variants"
     },
-    "pluginOptions": {},
-    "attributes": {
-        "product": {
-            "type": "relation",
-            "relation": "manyToOne",
-            "target": "api::product.product",
-            "inversedBy": "variants"
-        },
-        "size": {
-            "type": "relation",
-            "relation": "manyToOne",
-            "target": "api::size.size",
-            "inversedBy": "variants"
-        },
-        "color": {
-            "type": "relation",
-            "relation": "manyToOne",
-            "target": "api::color.color",
-            "inversedBy": "variants"
-        },
-        "items": {
-            "type": "relation",
-            "relation": "oneToMany",
-            "target": "api::item.item",
-            "mappedBy": "variant"
-        },
-        "image": {
-            "type": "string"
-        },
-        "price": {
-            "type": "float"
-        },
-        "printful_id": {
-            "type": "biginteger"
-        }
+    "color": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::color.color",
+      "inversedBy": "variants"
+    },
+    "items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::item.item",
+      "mappedBy": "variant"
+    },
+    "image": {
+      "type": "string"
+    },
+    "price": {
+      "type": "float"
+    },
+    "printful_id": {
+      "type": "biginteger"
     }
+  }
 }

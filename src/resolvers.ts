@@ -8,8 +8,12 @@ import recipient from './api/recipient/resolvers/recipient'
 import apply from './api/apply/resolvers/apply'
 import category from './api/category/resolvers/category'
 
+import { getVariant } from './helpers/printful'
+
+import { syncThumbnails } from './helpers/thumbnails'
+
 async function test(obj, args, context) {
-    return await strapi.service('api::product.product').search({name: 'hoodie'})
+    return await syncThumbnails()
 }
 
 export async function registerResolvers() {

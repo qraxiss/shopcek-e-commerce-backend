@@ -3,6 +3,10 @@ export default {
         enabled: true,
         resolve: './src/plugins/user'
     },
+    // 'video-thumbnail': {
+    //     enabled: true,
+    //     resolve: './src/plugins/strapi-plugin-video-thumbnail' // path to plugin folder
+    //   },
     graphql: {
         config: {
             // endpoint: '/graphql',

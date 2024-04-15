@@ -1,6 +1,8 @@
+import { getScreenshot, syncThumbnails } from "../../../helpers/thumbnails"
 const typeDefs = `
     type Mutation {
         syncPrintfulMarket: JSON!
+        syncVideoThumbnails: JSON
     }
 
     type VariantId {
@@ -24,14 +26,14 @@ async function syncPrintfulMarket() {
 }
 
 async function product(obj, { slug }: { slug: string }, context) {
-    console.log('test', slug)
     const product = await strapi.db.query('api::product.product').findOne({
         where: {
             slug
+        },
+        populate: {
+            video: true
         }
     })
-
-    console.log(product)
 
     const variants = await strapi.entityService.findMany('api::variant.variant', {
         filters: {
@@ -44,13 +46,9 @@ async function product(obj, { slug }: { slug: string }, context) {
         }
     })
 
-    console.log(variants)
-
     return {
         product,
         variants: variants.map((variant) => {
-            console.log(variant)
-            
             return {
                 id: variant.id,
                 variant
@@ -61,6 +59,10 @@ async function product(obj, { slug }: { slug: string }, context) {
 
 async function search(obj, { name }: { name: string }, context) {
     return await strapi.service('api::product.product').search({ name })
+}
+
+async function syncVideoThumbnails(){
+    return await syncThumbnails()
 }
 
 export default ({ strapi }) => ({
@@ -86,6 +88,9 @@ export default ({ strapi }) => ({
         Mutation: {
             syncPrintfulMarket: {
                 resolve: syncPrintfulMarket
+            },
+            syncVideoThumbnails: {
+                resolve: syncVideoThumbnails
             }
         }
     }
