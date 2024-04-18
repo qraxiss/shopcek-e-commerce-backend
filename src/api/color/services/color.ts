@@ -28,7 +28,9 @@ function services({ strapi }: { strapi: Strapi }) {
                             hex
                         }
                     })
-                } catch {}
+                } catch (e) {
+                    // console.log(e)
+                }
             } else {
                 return data
             }
@@ -39,7 +41,10 @@ function services({ strapi }: { strapi: Strapi }) {
 
             for (let index = 0; index < values.length; index++) {
                 const value = values[index]
-                result.push(await strapi.service(service).findAndCreateIfNotExist({ value }))
+                const data = await strapi.service(service).findAndCreateIfNotExist({ value })
+                if (data) {
+                    result.push(data)
+                }
             }
             return result
         }

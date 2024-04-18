@@ -14,6 +14,7 @@ interface Product {
     colors: string[]
     image?: string
     description?: string | undefined
+    printful_id?: string | number
 }
 
 interface PrintfulProduct extends Product {
@@ -22,60 +23,91 @@ interface PrintfulProduct extends Product {
 
 function services({ strapi: Strapi }) {
     return {
-        async createPrintfulProduct({ printful_id, variants, product }: { printful_id: number; variants: any[]; product: PrintfulProduct }) {
-            const createdProduct = await strapi.service('api::product.product').createSyncProduct(product)
-            const productUpdateResult = await strapi.entityService.update('api::product.product', createdProduct.product.id, {
+        async createPrintfulProduct({
+            printful_id,
+            variants,
+            product,
+            colors,
+            sizes
+        }: {
+            printful_id: number
+            variants: any[]
+            product: PrintfulProduct
+            colors: any[]
+            sizes: any[]
+        }) {
+            const sizeIds = sizes.map((size) => {
+                return size.id
+            })
+
+            const colorIds = colors.map(color=>{
+                return color.id
+            })
+
+            const slug = slugGen(product.name)
+            const createdProduct = await strapi.entityService.create('api::product.product', {
                 data: {
+                    name: product.name,
+                    price: product.price,
+                    description: product.description,
+                    slug,
+                    image: product.image,
+                    colors: colorIds,
+                    sizes: sizeIds,
                     printful_id
                 }
             })
 
-            const updateVariantsData = []
-            for (let index = 0; index < variants.length; index++) {
-                const printfulVariant = variants[index]
-                const { id } = createdProduct.variants.find((localVariant) => {
-                    return localVariant.size.value === printfulVariant.size && localVariant.color.value === printfulVariant.color
-                })
+            const createdVariants = await strapi.service('api::variant.variant').createPrintfulVariants({
+                product: createdProduct.id,
+                sizes,
+                colors,
+                variants
+            })
 
-                updateVariantsData.push(
-                    await strapi.entityService.update('api::variant.variant', id, {
-                        data: {
-                            image: printfulVariant.image,
-                            printful_id: printfulVariant.printful_id,
-                            price: printfulVariant.price
-                        }
-                    })
-                )
+            return {
+                variants: createdVariants,
+                product: createdProduct
             }
-
-            return updateVariantsData
         },
 
         async syncPrintfulMarket() {
-            await strapi.db.query('api::variant.variant').deleteMany({
-                count: false
-            })
-            await strapi.db.query('api::product.product').deleteMany({
-                count: false
-            })
-            await strapi.db.query('api::size.size').deleteMany({
-                count: false
-            })
-            await strapi.db.query('api::color.color').deleteMany({
-                count: false
-            })
-
-            const products = await getAllProductsDetails()
-            const result = []
-            for (let index = 0; index < products.length; index++) {
-                const product = products[index]
-                result.push(await strapi.service('api::product.product').createPrintfulProduct({ ...product, product: product }))
+            let printful
+            try {
+                printful = await getAllProductsDetails()
+            } catch (e) {
+                console.log(e)
+                return 'Printful Data Error'
             }
 
-            return result
+                const colorResults = await strapi.service('api::color.color').bulkFinAndCreateIfNotExist({ values: printful.colors })
+                const sizeResults = await strapi.service('api::size.size').bulkFinAndCreateIfNotExist({ values: printful.sizes })
+
+
+                printful.variants.forEach(async (product) => {
+                    const colors = colorResults.filter((color) => {
+                        return product.colors.includes(color.value)
+                    })
+
+                    const sizes = sizeResults.filter((size) => {
+                        return product.sizes.includes(size.value)
+                    })
+
+                    await strapi
+                        .service('api::product.product')
+                        .createPrintfulProduct({ ...product, product: product, sizes, colors })
+                        .then((d) => {
+                            // console.log('✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅', product.name, 'created')
+                        })
+                        .catch((e) => {
+                            console.log('❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌', product.name, e)
+                        })
+                })
+                return printful
+            
         },
 
-        async createSyncProduct({ name, price, sizes, colors, description, image }: Product) {
+        async createSyncProduct({ name, price, sizes, colors, description, image, printful_id }: Product) {
             const colorResults = await strapi.service('api::color.color').bulkFinAndCreateIfNotExist({ values: colors })
             const colorIds = colorResults.map((color) => {
                 return color.id
@@ -87,7 +119,6 @@ function services({ strapi: Strapi }) {
             })
 
             const slug = slugGen(name)
-
             const product = await strapi.entityService.create('api::product.product', {
                 data: {
                     name,
@@ -96,21 +127,24 @@ function services({ strapi: Strapi }) {
                     slug,
                     image,
                     colors: colorIds,
-                    sizes: sizeIds
+                    sizes: sizeIds,
+                    printful_id
                 }
+            })
+
+            const variants = await strapi.service('api::variant.variant').createVariants({
+                product: product,
+                sizes: sizeIds,
+                colors: colorIds
             })
 
             return {
                 product,
-                variants: await strapi.service('api::variant.variant').createVariants({
-                    product: product.id,
-                    sizes: sizeIds,
-                    colors: colorIds
-                })
+                variants
             }
         },
 
-        async search({name}){
+        async search({ name }) {
             return await strapi.entityService.findMany('api::product.product', {
                 filters: {
                     name: {

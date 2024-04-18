@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { config } from 'dotenv'
+import { isNumber } from 'lodash'
 
 config()
-
 
 export let printfulClient = axios.create({
     baseURL: 'https://api.printful.com',
@@ -17,9 +17,13 @@ interface Item {
     image: string
     size: string
     color: string
+    printful_id?: string | number
 }
 
 // Function to get unique sizes and colors
+
+const allUniqueSizes: string[] = []
+const allUniqueColors: string[] = []
 const getUniqueSizesAndColors = (items: Item[]) => {
     const uniqueSizes: string[] = []
     const uniqueColors: string[] = []
@@ -31,6 +35,13 @@ const getUniqueSizesAndColors = (items: Item[]) => {
 
         if (!uniqueColors.includes(item.color)) {
             uniqueColors.push(item.color)
+        }
+        if (!allUniqueSizes.includes(item.size)) {
+            allUniqueSizes.push(item.size)
+        }
+
+        if (!allUniqueColors.includes(item.color)) {
+            allUniqueColors.push(item.color)
         }
     })
 
@@ -45,17 +56,24 @@ export async function getAllProducts() {
     let data = printfulRequestWrapper(
         await printfulClient.get('/store/products', {
             params: {
-                status: 'all'
+                status: 'all',
+                limit: 100
             }
         })
     )
 
-    return data.map((item) => {
+    const localProducts = await strapi.db.query('api::product.product').findMany()
+    const products = data.map((item) => {
         return {
             printful_id: item.id,
             name: item.name,
             image: item.thumbnail_url
         }
+    })
+    return products.filter((product) => {
+        return !localProducts.find((localProduct) => {
+            return Number(product.printful_id) === Number(localProduct.printful_id)
+        })
     })
 }
 
@@ -65,11 +83,11 @@ export async function getVariants({ printful_id }) {
     data = data.sync_variants.map((variant) => {
         return {
             price: Number(variant.retail_price),
-            image: variant.files.find(item=>{
-                return item.type === "preview"
+            image: variant.files.find((item) => {
+                return item.type === 'preview'
             }).preview_url,
-            size: variant.size,
-            color: variant.color,
+            size: String(variant.size),
+            color: String(variant.color),
             printful_id: variant.id
         }
     })
@@ -89,46 +107,76 @@ export async function getVariant({ printful_id }) {
 }
 
 export async function getAllProductsDetails() {
-    let data = await getAllProducts()
-    return await Promise.all(
+    const data = await getAllProducts()
+
+    const allVariants = Promise.all(
         data.map(async (item) => {
             let variantsPromise = getVariants(item)
-            variantsPromise.catch(console.log)
-            let variants = await variantsPromise
+            variantsPromise.catch((e) => {
+                console.error(e)
+            })
+            const variants = await variantsPromise
+            const localVariants = await strapi.entityService.findMany('api::variant.variant', {
+                populate: {
+                    product: true
+                }
+            })
+
+            variants.variants = variants.variants.filter((variant) => {
+                return !localVariants.find((localVariant) => {
+                    return Number(variant.printful_id) === Number(localVariant.printful_id)
+                })
+            })
+
+            await strapi.db.query('api::product.product').update({
+                where: {
+                    printful_id: item.printful_id
+                },
+                data: {
+                    variants: localVariants.filter((localVariant) => {
+                        return !localVariant.product
+                    })
+                },
+                populate: {
+                    variants: true
+                }
+            })
+
             return {
                 ...item,
-                price: variants.variants[0].price,
+                price: variants.variants[0]?.price || localVariants[0]?.price,
                 ...variants
             }
         })
     )
+    allVariants.then(() => console.log())
+
+    const result = {variants: await allVariants, sizes: allUniqueSizes, colors: allUniqueColors}
+    return result
 }
 
 export async function newOrderPrintful({ recipient, items }) {
     for (let index = 0; index < items.length; index++) {
-        const item = items[index];
-        item.files = item.files.filter(file=>{
+        const item = items[index]
+        item.files = item.files.filter((file) => {
             return file.type !== 'label_inside'
         })
 
-        item.options = item.options.map(option=>{
+        item.options = item.options.map((option) => {
             return {
                 ...option,
-                value: Array.isArray(option.value) ? option.value.map(item=>{
-                    console.log(item)
-                    try {
-                        item = item.toUpperCase()
-                    }catch {
-                        
-                    }
-                    return item
-                }) : option.value
+                value: Array.isArray(option.value)
+                    ? option.value.map((item) => {
+                          try {
+                              item = item.toUpperCase()
+                          } catch {}
+                          return item
+                      })
+                    : option.value
             }
         })
-
-        console.log(item.options)
     }
-    
+
     let data = printfulRequestWrapper(
         await printfulClient.post(`/orders`, {
             items,

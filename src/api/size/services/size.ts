@@ -18,17 +18,19 @@ function services({ strapi }: { strapi: Strapi }) {
 
         async findAndCreateIfNotExist({ value }: { value: string }) {
             const data = await strapi.service(service).findByValue({ value })
-            if (!data) {
-                try {
-                    return await strapi.entityService.create(service, {
-                        data: {
-                            value
-                        }
-                    })
-                } catch {}
-            } else {
+            if (data) {
                 return data
             }
+
+
+            try {
+                const data = await strapi.entityService.create(service, {
+                    data: {
+                        value
+                    }
+                })
+                return data
+            } catch {}
         },
 
         async bulkFinAndCreateIfNotExist({ values }: { values: string[] }) {
@@ -36,7 +38,11 @@ function services({ strapi }: { strapi: Strapi }) {
 
             for (let index = 0; index < values.length; index++) {
                 const value = values[index]
-                result.push(await strapi.service(service).findAndCreateIfNotExist({ value }))
+                const data = await strapi.service(service).findAndCreateIfNotExist({ value })
+
+                if (data) {
+                    result.push(data)
+                }
             }
             return result
         }

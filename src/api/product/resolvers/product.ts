@@ -31,7 +31,8 @@ async function product(obj, { slug }: { slug: string }, context) {
             slug
         },
         populate: {
-            video: true
+            video: true,
+            categories: true
         }
     })
 

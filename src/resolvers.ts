@@ -13,7 +13,20 @@ import { getVariant } from './helpers/printful'
 import { syncThumbnails } from './helpers/thumbnails'
 
 async function test(obj, args, context) {
-    return await syncThumbnails()
+    return [
+        await strapi.db.query('api::variant.variant').deleteMany({
+            count: false
+        }),
+        await strapi.db.query('api::product.product').deleteMany({
+            count: false
+        }),
+        await strapi.db.query('api::size.size').deleteMany({
+            count: false
+        }),
+        await strapi.db.query('api::color.color').deleteMany({
+            count: false
+        })
+    ]
 }
 
 export async function registerResolvers() {
