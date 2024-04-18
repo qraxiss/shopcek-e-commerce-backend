@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { config } from 'dotenv'
 import { isNumber } from 'lodash'
+import product from '../api/product/resolvers/product'
 
 config()
 
@@ -117,6 +118,11 @@ export async function getAllProductsDetails() {
             })
             const variants = await variantsPromise
             const localVariants = await strapi.entityService.findMany('api::variant.variant', {
+                filters: {
+                    printful_id: {
+                        $in: variants.variants.map((variant) => variant.printful_id)
+                    }
+                },
                 populate: {
                     product: true
                 }
@@ -128,17 +134,36 @@ export async function getAllProductsDetails() {
                 })
             })
 
+            localVariants
+                .filter((localVariant) => {
+                    return !localVariant.product
+                })
+                .forEach((variant) => {
+                    strapi.db.query('api::variant.variant').update({
+                        where: {
+                            printful_id: variant.printful_id
+                        },
+                        data: {
+                            product: variant.id
+                        }
+                    })
+                })
+
             await strapi.db.query('api::product.product').update({
                 where: {
                     printful_id: item.printful_id
                 },
                 data: {
-                    variants: localVariants.filter((localVariant) => {
-                        return !localVariant.product
-                    })
+                    variants: {
+                        connect: localVariants
+                            .filter((localVariant) => {
+                                return !localVariant.product
+                            })
+                            .map((localVariant) => localVariant.id)
+                    }
                 },
                 populate: {
-                    variants: true
+                    variants: '*'
                 }
             })
 
@@ -149,9 +174,7 @@ export async function getAllProductsDetails() {
             }
         })
     )
-    allVariants.then(() => console.log())
-
-    const result = {variants: await allVariants, sizes: allUniqueSizes, colors: allUniqueColors}
+    const result = { variants: await allVariants, sizes: allUniqueSizes, colors: allUniqueColors }
     return result
 }
 

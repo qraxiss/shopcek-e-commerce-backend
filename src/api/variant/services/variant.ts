@@ -41,11 +41,12 @@ function services({ strapi: Strapi }) {
                         return color.value == variant.color
                     })
 
+
                     try {
                         const localVariant = await strapi.entityService.create('api::variant.variant', {
                             data: {
                                 ...variant,
-                                product: product.id,
+                                product,
                                 size: size.id,
                                 color: color.id
                             },
