@@ -32,8 +32,8 @@
         "react": "^18.0.0",
         "react-dom": "^18.0.0",
         "react-router-dom": "5.3.4",
+        "siwe": "^2.3.2",
         "slugify": "^1.6.6",
-        "strapi-plugin-video-thumbnail": "^0.1.2",
         "styled-components": "5.3.3"
     },
     "engines": {
@@ -42,5 +42,12 @@
     },
     "strapi": {
         "uuid": "8df13882-85aa-4c64-9f5e-53e434638f9e"
+    },
+    "nodemonConfig": {
+        "ignore": [
+            "**/test/**",
+            "**/docs/**"
+        ],
+        "delay": 2500
     }
 }

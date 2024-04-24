@@ -7,27 +7,9 @@ import wishlist from './api/wishlist/resolvers/wishlist'
 import recipient from './api/recipient/resolvers/recipient'
 import apply from './api/apply/resolvers/apply'
 import category from './api/category/resolvers/category'
+import wallet from './api/wallet/resolvers/wallet'
 
-import { getVariant } from './helpers/printful'
-
-import { syncThumbnails } from './helpers/thumbnails'
-
-async function test(obj, args, context) {
-    return [
-        await strapi.db.query('api::variant.variant').deleteMany({
-            count: false
-        }),
-        await strapi.db.query('api::product.product').deleteMany({
-            count: false
-        }),
-        await strapi.db.query('api::size.size').deleteMany({
-            count: false
-        }),
-        await strapi.db.query('api::color.color').deleteMany({
-            count: false
-        })
-    ]
-}
+async function test(obj, args, context) {}
 
 export async function registerResolvers() {
     await strapi.plugin('graphql').service('extension').shadowCRUD('api::cart.cart').disableActions(['create', 'update', 'delete', 'findOne'])
@@ -44,6 +26,7 @@ export async function registerResolvers() {
     await strapi.service('plugin::graphql.extension').use(recipient)
     await strapi.service('plugin::graphql.extension').use(apply)
     await strapi.service('plugin::graphql.extension').use(category)
+    await strapi.service('plugin::graphql.extension').use(wallet)
 
     strapi.service('plugin::graphql.extension').use(({ strapi }) => ({
         typeDefs: `
