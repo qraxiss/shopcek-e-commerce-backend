@@ -653,6 +653,8 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
         sub_categories: Attribute.Relation<'api::category.category', 'manyToMany', 'api::category.category'>
         parent_categories: Attribute.Relation<'api::category.category', 'manyToMany', 'api::category.category'>
         type: Attribute.String & Attribute.DefaultTo<'category'>
+        icon: Attribute.Media
+        banner: Attribute.Media
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::category.category', 'oneToOne', 'admin::user'> & Attribute.Private
