@@ -8,7 +8,7 @@ const typeDefs = `
     }
 
     type Mutation {
-        verify(address: String!, signature: String!, message: String!): String!
+        verify(message: String!, signature: String!): String!
     }
 `
 
