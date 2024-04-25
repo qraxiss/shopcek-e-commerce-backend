@@ -1,4 +1,4 @@
-import wallet from './user'
+import wallet from './wallet'
 
 export default {
     wallet
