@@ -655,6 +655,7 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
         type: Attribute.String & Attribute.DefaultTo<'category'>
         icon: Attribute.Media
         banner: Attribute.Media
+        cover: Attribute.Media
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::category.category', 'oneToOne', 'admin::user'> & Attribute.Private
