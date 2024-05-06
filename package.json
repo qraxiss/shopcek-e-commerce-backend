@@ -8,12 +8,21 @@
         "name": "A Strapi developer"
     },
     "scripts": {
+        "admin": "strapi develop --watch-admin",
+        "prebuild": "cd src/plugins/user && npm run build",
         "build": "strapi build",
+        "console": "strapi console",
         "develop": "strapi develop",
         "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json}\"",
         "start": "strapi start",
-        "strapi": "strapi",
-        "prebuild": "cd src/plugins/user && npm run build"
+        "strapi": "strapi"
+    },
+    "nodemonConfig": {
+        "delay": 2500,
+        "ignore": [
+            "**/test/**",
+            "**/docs/**"
+        ]
     },
     "dependencies": {
         "@strapi/plugin-cloud": "4.21.0",
@@ -37,21 +46,14 @@
         "slugify": "^1.6.6",
         "styled-components": "5.3.3"
     },
+    "devDependencies": {
+        "@types/react-router-dom": "^5.3.3"
+    },
     "engines": {
         "node": ">=18.0.0 <=20.x.x",
         "npm": ">=6.0.0"
     },
     "strapi": {
         "uuid": "8df13882-85aa-4c64-9f5e-53e434638f9e"
-    },
-    "nodemonConfig": {
-        "ignore": [
-            "**/test/**",
-            "**/docs/**"
-        ],
-        "delay": 2500
-    },
-    "devDependencies": {
-        "@types/react-router-dom": "^5.3.3"
     }
 }
