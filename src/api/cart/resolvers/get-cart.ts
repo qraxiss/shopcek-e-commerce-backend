@@ -1,18 +1,11 @@
 import { GraphQLError } from 'graphql'
 
-export async function getCart(obj, { id }, context) {
-    if (context.state.user) {
-        return await userCart({ context })
-    }
-    if (id) {
-        return await publicCart({ id })
+export async function getCart(obj, args, context) {
+    if (!context.state.user) {
+        throw new GraphQLError('User have no cart!')
     }
 
-    return await strapi.entityService.create('api::cart.cart', {
-        data: {}
-    })
-
-    // throw new GraphQLError('ID must definied without login!')
+    return await userCart({ context })
 }
 
 export async function userCart({ context }) {

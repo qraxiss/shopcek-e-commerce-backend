@@ -1,78 +1,75 @@
 import { GraphQLError } from 'graphql'
 type operation = 'delete' | 'add' | 'update' | 'empty'
 
-export async function operations(obj, { operation, cartId, input }: { operation: operation; cartId?: number; input?: any }, context) {
+export async function operations(obj, { operation, input }: { operation: operation; cartId?: number; input?: any }, context) {
     if (!input && operation !== 'empty') {
         throw new GraphQLError('input must be defined')
     }
 
-    let user = strapi.requestContext.get().state.user
-
-    if (!user && !cartId) {
+    if (!strapi.requestContext.get().state.user) {
         throw new GraphQLError('Must be logged or define a cartId')
     }
 
-    if (user) {
-        user = await strapi.db.query('plugin::users-permissions.user').findOne({
-            where: {
-                id: user.id
-            },
-            populate: {
-                cart: '*'
-            }
-        })
-
-        if (!user.cart) {
-            throw new GraphQLError('User have no cart!')
+    const user = await strapi.db.query('plugin::users-permissions.user').findOne({
+        where: {
+            id: strapi.requestContext.get().state.user.id
+        },
+        populate: {
+            cart: '*'
         }
+    })
 
-        cartId = user.cart.id
+    if (!user.cart) {
+        throw new GraphQLError('User have no cart!')
     }
 
-    if (!user && cartId) {
-        const cart = await strapi.entityService.findOne('api::cart.cart', cartId, {
-            populate: {
-                user: true
-            }
-        })
+    const cartId = user.cart.id
 
-        if (!cart) {
-            throw new GraphQLError('Cart not found!')
-        }
+    // switch (operation) {
+    //     case 'empty': {
+    //         return await empty({ cartId })
+    //     }
+    //     case 'update': {
+    //         return await update({ cartId, ...input })
+    //     }
+    //     case 'add': {
+    //         return await add({ cartId, ...input })
+    //     }
+    //     case 'delete': {
+    //         return await deleteItem({ cartId, ...input })
+    //     }
+    // }
+}
 
-        if (cart.user) {
-            throw new GraphQLError('You cant access this cart!')
+async function getCartId(context) {
+    const user = await strapi.db.query('plugin::users-permissions.user').findOne({
+        where: {
+            id: context.state.user.id
+        },
+        populate: {
+            cart: '*'
         }
+    })
+
+    if (!user.cart) {
+        throw new GraphQLError('User have no cart!')
     }
 
-    switch (operation) {
-        case 'empty': {
-            return await empty({ cartId })
-        }
-        case 'update': {
-            return await update({ cartId, ...input })
-        }
-        case 'add': {
-            return await add({ cartId, ...input })
-        }
-        case 'delete': {
-            return await deleteItem({ cartId, ...input })
-        }
-    }
+    return user.cart.id
 }
 
-async function update({ itemId, count, cartId }) {
-    return await strapi.service('api::cart.cart').updateCount({ itemId, count, cartId })
+export async function updateItem(obj, { itemId, count }, context) {
+    return await strapi.service('api::cart.cart').updateCount({ itemId, count, cartId: await getCartId(context) })
 }
 
-async function empty({ cartId }) {
-    return await strapi.service('api::cart.cart').emptyCart({ cartId })
+export async function emptyCart(obj, args, context) {
+    return await strapi.service('api::cart.cart').emptyCart({ cartId: await getCartId(context) })
 }
 
-async function deleteItem({ itemId, cartId }) {
-    return await strapi.service('api::cart.cart').deleteItem({ itemId, cartId })
+export async function deleteItem(obj, { itemId }, context) {
+    return await strapi.service('api::cart.cart').deleteItem({ itemId, cartId: await getCartId(context) })
 }
 
-async function add({ cartId, variantId, count }) {
-    return await strapi.service('api::cart.cart').addItem({ cartId, variantId, count })
+export async function addItem(obj, { variantId, count }, context) {
+    return await strapi.service('api::cart.cart').addItem({ cartId: await getCartId(context), variantId, count })
 }

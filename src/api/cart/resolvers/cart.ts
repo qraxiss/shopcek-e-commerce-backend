@@ -2,8 +2,9 @@ import { Strapi } from '@strapi/strapi'
 import { getCart } from './get-cart'
 import { getCartId } from './cart-id'
 
-import { operations } from './operations'
+import { operations, addItem, updateItem, emptyCart, deleteItem } from './operations'
 
+//cart(operation:String!, input:JSON): CartOperation!
 export const typeDefs = `
     type CartOperation {
         id: ID
@@ -11,19 +12,18 @@ export const typeDefs = `
     }
 
     type Mutation {
-        cart(operation:String!, cartId: ID, input:JSON): CartOperation!
+        addItemToCart(variantId: ID!, count: Int = 1): CartOperation!
+        emptyCart: CartOperation!
+        deleteCartItem(itemId: ID!): CartOperation!
+        updateCartItem(itemId: ID!, count: Int!): CartOperation!
     }
 
     type Query {
-        cart(id: ID): Cart!
+        cart: Cart!
     }
 
     extend type Cart {
         id: ID!
-    }
-
-    type Query {
-        cartId: ID!
     }
 `
 
@@ -33,26 +33,32 @@ export default ({ strapi }: { strapi: Strapi }) => ({
         Query: {
             cart: {
                 resolve: getCart
-            },
-            cartId: {
-                resolve: getCartId
             }
         },
         Mutation: {
-            cart: {
-                resolve: operations
+            addItemToCart: {
+                resolve: addItem
+            },
+            deleteCartItem: {
+                resolve: deleteItem
+            },
+            emptyCart: {
+                resolve: emptyCart
+            },
+            updateCartItem: {
+                resolve: updateItem
             }
         }
-    },
-    resolversConfig: {
-        'Query.cart': {
-            auth: false
-        },
-        'Query.cartId': {
-            auth: false
-        },
-        'Mutation.cart': {
-            auth: false
-        }
     }
+    // resolversConfig: {
+    //     'Query.cart': {
+    //         auth: false
+    //     },
+    //     'Query.cartId': {
+    //         auth: false
+    //     },
+    //     'Mutation.cart': {
+    //         auth: false
+    //     }
+    // }
 })
