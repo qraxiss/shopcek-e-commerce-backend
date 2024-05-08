@@ -23,6 +23,12 @@ export default ({ strapi }: { strapi: Strapi }) => ({
             }
         })
 
+        const cart = await strapi.entityService!.create('api::cart.cart', {
+            data: {
+                user: user.id
+            }
+        })
+
         await earn().createEarnForUser(user)
         await wishlist().createWishlistForUser(user)
 
