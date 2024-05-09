@@ -675,10 +675,10 @@ export interface ApiColorColor extends Schema.CollectionType {
         draftAndPublish: false
     }
     attributes: {
-        value: Attribute.String & Attribute.Required & Attribute.Unique
+        value: Attribute.String & Attribute.Required
         products: Attribute.Relation<'api::color.color', 'manyToMany', 'api::product.product'>
         variants: Attribute.Relation<'api::color.color', 'oneToMany', 'api::variant.variant'>
-        hex: Attribute.String
+        hex: Attribute.String & Attribute.Required & Attribute.Unique
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::color.color', 'oneToOne', 'admin::user'> & Attribute.Private

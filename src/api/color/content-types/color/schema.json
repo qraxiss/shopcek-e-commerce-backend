@@ -15,7 +15,7 @@
     "value": {
       "type": "string",
       "required": true,
-      "unique": true
+      "unique": false
     },
     "products": {
       "type": "relation",
@@ -30,7 +30,9 @@
       "mappedBy": "color"
     },
     "hex": {
-      "type": "string"
+      "type": "string",
+      "unique": true,
+      "required": true
     }
   }
 }

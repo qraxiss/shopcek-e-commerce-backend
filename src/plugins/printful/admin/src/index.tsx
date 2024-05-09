@@ -5,7 +5,11 @@ import pluginId from './pluginId'
 import Initializer from './components/Initializer'
 import PluginIcon from './components/PluginIcon'
 
+import getTrad from './utils/getTrad'
+
 const name = pluginPkg.strapi.name
+
+import HomePage from './pages/NewPage'
 
 export default {
     register(app: any) {
@@ -35,6 +39,32 @@ export default {
             isReady: false,
             name
         }
+
+        app.createSettingSection(
+            {
+                id: 'printful',
+                intlLabel: {
+                    id: getTrad('Settings.section-label'),
+                    defaultMessage: 'Printful'
+                }
+            },
+            [
+                {
+                    intlLabel: {
+                        id: 'Pages.sync-products',
+                        defaultMessage: 'Sync Products'
+                    },
+                    id: 'product',
+                    to: `/settings/printful/product`,
+
+                    async Component() {
+                        const component = await import('./pages/NewPage')
+
+                        return component
+                    }
+                }
+            ]
+        )
 
         app.registerPlugin(plugin)
     },

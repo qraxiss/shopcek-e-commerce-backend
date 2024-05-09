@@ -17,8 +17,6 @@ const config = {
 
 export default {
     config,
-    bootstrap(app: any) {
-        console.log('test', app)
-    },
+    bootstrap(app: any) {},
     register(app: any) {}
 }

@@ -3,6 +3,10 @@ export default {
         enabled: true,
         resolve: './src/plugins/user'
     },
+    printful: {
+        enabled: true,
+        resolve: './src/plugins/printful'
+    },
     graphql: {
         config: {
             // endpoint: '/graphql',

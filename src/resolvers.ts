@@ -9,7 +9,9 @@ import apply from './api/apply/resolvers/apply'
 import category from './api/category/resolvers/category'
 import wallet from './api/wallet/resolvers/wallet'
 
-async function test(obj, args, context) {}
+async function test(obj, args, context) {
+    return await strapi.plugin('printful').service('variant').getAllVariantsForAllProducts()
+}
 
 export async function registerResolvers() {
     await strapi.plugin('graphql').service('extension').shadowCRUD('api::cart.cart').disableActions(['create', 'update', 'delete', 'findOne'])
