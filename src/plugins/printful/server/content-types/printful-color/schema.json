@@ -1,25 +1,31 @@
 {
-    "kind": "collectionType",
-    "collectionName": "printful_colors",
-    "info": {
-        "singularName": "printful-color",
-        "pluralName": "printful-colors",
-        "displayName": "Printful Color"
+  "kind": "collectionType",
+  "collectionName": "printful_colors",
+  "info": {
+    "singularName": "printful-color",
+    "pluralName": "printful-colors",
+    "displayName": "Printful Color"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": false
     },
-    "options": {
-        "draftAndPublish": false,
-        "comment": ""
+    "hex": {
+      "type": "string",
+      "unique": true,
+      "required": true
     },
-    "attributes": {
-        "name": {
-            "type": "string",
-            "required": true,
-            "unique": false
-        },
-        "hex": {
-            "type": "string",
-            "unique": true,
-            "required": true
-        }
+    "variants": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::printful.printful-variant",
+      "mappedBy": "color"
     }
+  }
 }

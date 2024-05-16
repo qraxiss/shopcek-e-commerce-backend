@@ -1,27 +1,45 @@
 {
-    "kind": "collectionType",
-    "collectionName": "printful_variants",
-    "info": {
-        "singularName": "printful-variant",
-        "pluralName": "printful-variants",
-        "displayName": "Printful Variant"
+  "kind": "collectionType",
+  "collectionName": "printful_variants",
+  "info": {
+    "singularName": "printful-variant",
+    "pluralName": "printful-variants",
+    "displayName": "Printful Variant",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "image": {
+      "type": "string"
     },
-    "options": {
-        "draftAndPublish": false,
-        "comment": ""
+    "price": {
+      "type": "float"
     },
-    "attributes": {
-        "image": {
-            "type": "string"
-        },
-        "price": {
-            "type": "float"
-        },
-        "printful_id": {
-            "type": "biginteger"
-        },
-        "variant_id": {
-            "type": "integer"
-        }
+    "printful_id": {
+      "type": "biginteger"
+    },
+    "variant_id": {
+      "type": "integer"
+    },
+    "size": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::printful.printful-size",
+      "inversedBy": "variants"
+    },
+    "color": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::printful.printful-color",
+      "inversedBy": "variants"
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::printful.printful-product",
+      "inversedBy": "variants"
     }
+  }
 }

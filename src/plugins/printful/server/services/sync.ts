@@ -1,6 +1,6 @@
 import { Strapi } from '@strapi/strapi'
 
-import { getUniqueSizesAndColors } from '../helpers/logic'
+import { getUniqueSizesAndColors } from '../helpers'
 
 import market from './market.json'
 

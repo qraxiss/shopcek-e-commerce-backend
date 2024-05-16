@@ -5,19 +5,19 @@ import printfulColor from './printful-color/schema.json'
 import printfulVariant from './printful-variant/schema.json'
 
 export default {
-    // 'printful-product': {
-    //     schema: printfulProduct
-    // },
-    // 'printful-order': {
-    //     schema: printfulOrder
-    // },
-    // 'printful-size': {
-    //     schema: printfulSize
-    // },
-    // 'printful-color': {
-    //     schema: printfulColor
-    // },
-    // 'printful-variant': {
-    //     schema: printfulVariant
-    // }
+    'printful-product': {
+        schema: printfulProduct
+    },
+    'printful-order': {
+        schema: printfulOrder
+    },
+    'printful-size': {
+        schema: printfulSize
+    },
+    'printful-color': {
+        schema: printfulColor
+    },
+    'printful-variant': {
+        schema: printfulVariant
+    }
 }

@@ -439,6 +439,129 @@ export interface PluginContentReleasesReleaseAction extends Schema.CollectionTyp
     }
 }
 
+export interface PluginPrintfulPrintfulProduct extends Schema.CollectionType {
+    collectionName: 'printful_products'
+    info: {
+        singularName: 'printful-product'
+        pluralName: 'printful-products'
+        displayName: 'Printful Product'
+    }
+    options: {
+        draftAndPublish: false
+        comment: ''
+    }
+    attributes: {
+        name: Attribute.String
+        description: Attribute.Text
+        image: Attribute.String
+        price: Attribute.Float
+        printful_id: Attribute.BigInteger
+        slug: Attribute.String & Attribute.Required & Attribute.Unique
+        video: Attribute.Media
+        product_id: Attribute.Integer
+        variants: Attribute.Relation<'plugin::printful.printful-product', 'oneToMany', 'plugin::printful.printful-variant'>
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'plugin::printful.printful-product', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'plugin::printful.printful-product', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
+export interface PluginPrintfulPrintfulOrder extends Schema.CollectionType {
+    collectionName: 'printful_orders_plugin'
+    info: {
+        singularName: 'printful-order'
+        pluralName: 'printful-orders'
+        displayName: 'Printful Order'
+    }
+    options: {
+        draftAndPublish: false
+        comment: ''
+    }
+    attributes: {
+        error: Attribute.String
+        shipping: Attribute.String
+        shipping_service_name: Attribute.String
+        status: Attribute.String
+        costs: Attribute.JSON
+        pricing_breakdown: Attribute.JSON
+        retail_costs: Attribute.JSON
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'plugin::printful.printful-order', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'plugin::printful.printful-order', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
+export interface PluginPrintfulPrintfulSize extends Schema.CollectionType {
+    collectionName: 'printful_sizes'
+    info: {
+        singularName: 'printful-size'
+        pluralName: 'printful-sizes'
+        displayName: 'Printful Size'
+    }
+    options: {
+        draftAndPublish: false
+        comment: ''
+    }
+    attributes: {
+        value: Attribute.String & Attribute.Required & Attribute.Unique
+        variants: Attribute.Relation<'plugin::printful.printful-size', 'oneToMany', 'plugin::printful.printful-variant'>
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'plugin::printful.printful-size', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'plugin::printful.printful-size', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
+export interface PluginPrintfulPrintfulColor extends Schema.CollectionType {
+    collectionName: 'printful_colors'
+    info: {
+        singularName: 'printful-color'
+        pluralName: 'printful-colors'
+        displayName: 'Printful Color'
+    }
+    options: {
+        draftAndPublish: false
+        comment: ''
+    }
+    attributes: {
+        name: Attribute.String & Attribute.Required
+        hex: Attribute.String & Attribute.Required & Attribute.Unique
+        variants: Attribute.Relation<'plugin::printful.printful-color', 'oneToMany', 'plugin::printful.printful-variant'>
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'plugin::printful.printful-color', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'plugin::printful.printful-color', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
+export interface PluginPrintfulPrintfulVariant extends Schema.CollectionType {
+    collectionName: 'printful_variants'
+    info: {
+        singularName: 'printful-variant'
+        pluralName: 'printful-variants'
+        displayName: 'Printful Variant'
+        description: ''
+    }
+    options: {
+        draftAndPublish: false
+    }
+    attributes: {
+        image: Attribute.String
+        price: Attribute.Float
+        printful_id: Attribute.BigInteger
+        variant_id: Attribute.Integer
+        size: Attribute.Relation<'plugin::printful.printful-variant', 'manyToOne', 'plugin::printful.printful-size'>
+        color: Attribute.Relation<'plugin::printful.printful-variant', 'manyToOne', 'plugin::printful.printful-color'>
+        product: Attribute.Relation<'plugin::printful.printful-variant', 'manyToOne', 'plugin::printful.printful-product'>
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'plugin::printful.printful-variant', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'plugin::printful.printful-variant', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
 export interface PluginI18NLocale extends Schema.CollectionType {
     collectionName: 'i18n_locale'
     info: {
@@ -1092,6 +1215,11 @@ declare module '@strapi/types' {
             'plugin::upload.folder': PluginUploadFolder
             'plugin::content-releases.release': PluginContentReleasesRelease
             'plugin::content-releases.release-action': PluginContentReleasesReleaseAction
+            'plugin::printful.printful-product': PluginPrintfulPrintfulProduct
+            'plugin::printful.printful-order': PluginPrintfulPrintfulOrder
+            'plugin::printful.printful-size': PluginPrintfulPrintfulSize
+            'plugin::printful.printful-color': PluginPrintfulPrintfulColor
+            'plugin::printful.printful-variant': PluginPrintfulPrintfulVariant
             'plugin::i18n.locale': PluginI18NLocale
             'plugin::users-permissions.permission': PluginUsersPermissionsPermission
             'plugin::users-permissions.role': PluginUsersPermissionsRole

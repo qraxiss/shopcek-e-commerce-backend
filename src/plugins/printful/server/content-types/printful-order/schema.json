@@ -1,6 +1,6 @@
 {
     "kind": "collectionType",
-    "collectionName": "printful_orders",
+    "collectionName": "printful_orders_plugin",
     "info": {
         "singularName": "printful-order",
         "pluralName": "printful-orders",
