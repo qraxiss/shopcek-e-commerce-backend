@@ -1,27 +1,25 @@
+/**
+ *  service
+ */
+
 import { Strapi } from '@strapi/strapi'
 
-import { getAllProducts } from '../api/product'
-
-interface PrintfulProduct {
-    name: string
-    price: number
-    sizes: number[] //relation
-    colors: number[] // relation
-    image: string
-    description: string | undefined
-    printful_id: string | number
-}
+import { mergeVariantData, getUniqueSizesAndColors } from '../helpers'
 
 export default ({ strapi }: { strapi: Strapi }) => ({
-    async getAllProducts() {
-        const result = await getAllProducts()
-        return result.map((item) => ({
-            printful_id: String(item.id),
-            image: item.thumbnail_url,
-            name: item.name
-        }))
-    },
-    async createProduct(product: PrintfulProduct) {
-        
+    async getPrintfulFullProduct(printful_id) {
+        const { product_id, variants: variantsDataP1 } = await strapi.plugin('printful').service('api').getVariants(printful_id)
+        const { description, variants: variantsDataP2 } = await strapi.plugin('printful').service('api').getProduct(product_id)
+
+        const variants = mergeVariantData(variantsDataP1, variantsDataP2)
+
+        return {
+            product_id,
+            description,
+            variants,
+            ...getUniqueSizesAndColors(variants)
+        }
     }
 })
+
+// export default factories.createCoreService('plugin::printful.printful-product', services)

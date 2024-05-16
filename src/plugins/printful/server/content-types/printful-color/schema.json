@@ -1,0 +1,25 @@
+{
+    "kind": "collectionType",
+    "collectionName": "printful_colors",
+    "info": {
+        "singularName": "printful-color",
+        "pluralName": "printful-colors",
+        "displayName": "Printful Color"
+    },
+    "options": {
+        "draftAndPublish": false,
+        "comment": ""
+    },
+    "attributes": {
+        "name": {
+            "type": "string",
+            "required": true,
+            "unique": false
+        },
+        "hex": {
+            "type": "string",
+            "unique": true,
+            "required": true
+        }
+    }
+}

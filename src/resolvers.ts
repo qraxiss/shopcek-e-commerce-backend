@@ -10,7 +10,7 @@ import category from './api/category/resolvers/category'
 import wallet from './api/wallet/resolvers/wallet'
 
 async function test(obj, args, context) {
-    return await strapi.plugin('printful').service('variant').getAllVariantsForAllProducts()
+    return await strapi.plugin('printful').service('sync').syncOptions()
 }
 
 export async function registerResolvers() {

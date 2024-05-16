@@ -1,0 +1,36 @@
+{
+    "kind": "collectionType",
+    "collectionName": "printful_orders",
+    "info": {
+        "singularName": "printful-order",
+        "pluralName": "printful-orders",
+        "displayName": "Printful Order"
+    },
+    "options": {
+        "draftAndPublish": false,
+        "comment": ""
+    },
+    "attributes": {
+        "error": {
+            "type": "string"
+        },
+        "shipping": {
+            "type": "string"
+        },
+        "shipping_service_name": {
+            "type": "string"
+        },
+        "status": {
+            "type": "string"
+        },
+        "costs": {
+            "type": "json"
+        },
+        "pricing_breakdown": {
+            "type": "json"
+        },
+        "retail_costs": {
+            "type": "json"
+        }
+    }
+}

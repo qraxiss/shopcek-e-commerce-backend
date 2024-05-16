@@ -1,0 +1,51 @@
+{
+    "kind": "collectionType",
+    "collectionName": "printful_products",
+    "info": {
+        "singularName": "printful-product",
+        "pluralName": "printful-products",
+        "displayName": "Printful Product"
+    },
+    "options": {
+        "draftAndPublish": false,
+        "comment": ""
+    },
+    "attributes": {
+        "name": {
+            "type": "string"
+        },
+
+        "description": {
+            "type": "text"
+        },
+        "image": {
+            "type": "string"
+        },
+        "price": {
+            "type": "float"
+        },
+        "items": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::item.item",
+            "mappedBy": "product"
+        },
+        "printful_id": {
+            "type": "biginteger"
+        },
+        "slug": {
+            "type": "string",
+            "required": true,
+            "unique": true
+        },
+        "video": {
+            "type": "media",
+            "multiple": false,
+            "required": false,
+            "allowedTypes": ["videos"]
+        },
+        "product_id": {
+            "type": "integer"
+        }
+    }
+}

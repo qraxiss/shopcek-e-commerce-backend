@@ -1,0 +1,27 @@
+{
+    "kind": "collectionType",
+    "collectionName": "printful_variants",
+    "info": {
+        "singularName": "printful-variant",
+        "pluralName": "printful-variants",
+        "displayName": "Printful Variant"
+    },
+    "options": {
+        "draftAndPublish": false,
+        "comment": ""
+    },
+    "attributes": {
+        "image": {
+            "type": "string"
+        },
+        "price": {
+            "type": "float"
+        },
+        "printful_id": {
+            "type": "biginteger"
+        },
+        "variant_id": {
+            "type": "integer"
+        }
+    }
+}

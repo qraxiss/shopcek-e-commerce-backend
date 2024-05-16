@@ -10,3 +10,7 @@ export async function getAllProducts() {
         })
     ).data.result
 }
+
+export async function getProduct(product_id) {
+    return (await client.get(`/products/${product_id}`)).data.result
+}
