@@ -4,6 +4,7 @@ import product from './product'
 import size from './size'
 import color from './color'
 import order from './order'
+import variant from './variant'
 
 export default {
     api,
@@ -11,5 +12,6 @@ export default {
     product,
     size,
     color,
-    order
+    order,
+    variant
 }

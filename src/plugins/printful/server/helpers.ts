@@ -1,17 +1,17 @@
-export function isInside(targetProduct: any, products: any[]): boolean {
+export function isInside(target: any, products: any[]): boolean {
     return !!products.find((product) => {
-        return targetProduct.printful_id === product.printful_id
+        return Number(target.printful_id) === Number(product.printful_id)
     })
 }
 
-export function syncInfoProducts(printfulProducts: any[], localProducts: any[]) {
+export function syncInfo(printful: any[], local: any[]): { sync: any[]; remove: any[] } {
     return {
-        delete: localProducts.filter((localProduct) => {
-            return !isInside(localProduct, printfulProducts)
+        remove: local.filter((localProduct) => {
+            return !isInside(localProduct, printful)
         }),
 
-        sync: printfulProducts.filter((printfulProduct) => {
-            return !isInside(printfulProduct, localProducts)
+        sync: printful.filter((printfulProduct) => {
+            return !isInside(printfulProduct, local)
         })
     }
 }
@@ -38,12 +38,15 @@ export function getUniqueSizesAndColors(anys: any[]) {
 }
 
 export function mergeVariantData(variantsDataP1: any[], variantsDataP2: any[]) {
-    return variantsDataP1.map((variantP1) => {
+    const variants = variantsDataP1.map((variantP1) => {
         const variantP2 = variantsDataP2.find((variantP2) => variantP1.variant_id === variantP2.variant_id)
-
-        return {
+        const variant = {
             ...variantP1,
             ...variantP2
         }
+
+        return variant
     })
+
+    return variants
 }

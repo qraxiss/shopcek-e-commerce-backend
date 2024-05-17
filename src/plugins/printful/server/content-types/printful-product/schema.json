@@ -1,52 +1,62 @@
 {
-  "kind": "collectionType",
-  "collectionName": "printful_products",
-  "info": {
-    "singularName": "printful-product",
-    "pluralName": "printful-products",
-    "displayName": "Printful Product"
-  },
-  "options": {
-    "draftAndPublish": false,
-    "comment": ""
-  },
-  "attributes": {
-    "name": {
-      "type": "string"
+    "kind": "collectionType",
+    "collectionName": "printful_products",
+    "info": {
+        "singularName": "printful-product",
+        "pluralName": "printful-products",
+        "displayName": "Printful Product",
+        "description": ""
     },
-    "description": {
-      "type": "text"
+    "options": {
+        "draftAndPublish": false
     },
-    "image": {
-      "type": "string"
-    },
-    "price": {
-      "type": "float"
-    },
-    "printful_id": {
-      "type": "biginteger"
-    },
-    "slug": {
-      "type": "string",
-      "required": true,
-      "unique": true
-    },
-    "video": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "videos"
-      ]
-    },
-    "product_id": {
-      "type": "integer"
-    },
-    "variants": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "plugin::printful.printful-variant",
-      "mappedBy": "product"
+    "attributes": {
+        "name": {
+            "type": "string"
+        },
+        "description": {
+            "type": "text"
+        },
+        "image": {
+            "type": "string"
+        },
+        "price": {
+            "type": "float"
+        },
+        "printful_id": {
+            "type": "biginteger"
+        },
+        "slug": {
+            "type": "string",
+            "required": true,
+            "unique": true
+        },
+        "video": {
+            "type": "media",
+            "multiple": false,
+            "required": false,
+            "allowedTypes": ["videos"]
+        },
+        "product_id": {
+            "type": "integer"
+        },
+        "variants": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "plugin::printful.printful-variant",
+            "mappedBy": "product"
+        },
+        "sizes": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "plugin::printful.printful-size",
+            "inversedBy": "products"
+        },
+        "colors": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "plugin::printful.printful-color",
+            "inversedBy": "products"
+        }
     }
-  }
 }

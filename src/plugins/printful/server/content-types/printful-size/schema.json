@@ -21,6 +21,12 @@
       "relation": "oneToMany",
       "target": "plugin::printful.printful-variant",
       "mappedBy": "size"
+    },
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::printful.printful-product",
+      "mappedBy": "size"
     }
   }
 }

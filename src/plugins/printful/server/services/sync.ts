@@ -1,17 +1,33 @@
 import { Strapi } from '@strapi/strapi'
 
-import { getUniqueSizesAndColors } from '../helpers'
+import { getUniqueSizesAndColors, syncInfo } from '../helpers'
 
-import market from './market.json'
+import { PRODUCT, VARIANT } from '../types'
+
+import { setOptions } from '../slices/options'
+import { store } from '../store'
 
 const marketOptions = (market) => {
+    const variants = marketVariants(market)
+    return getUniqueSizesAndColors(variants)
+}
+
+const marketVariants = (market) => {
     let variants: any[] = []
     for (let index = 0; index < market.length; index++) {
         const product = market[index]
         variants = [...variants, ...product.variants]
     }
 
-    return getUniqueSizesAndColors(variants)
+    return variants
+}
+
+function getOptions() {
+    const {
+        options: { data: options }
+    } = store.getState()
+
+    return options
 }
 
 export default ({ strapi }: { strapi: Strapi }) => ({
@@ -39,7 +55,78 @@ export default ({ strapi }: { strapi: Strapi }) => ({
         return printfulMarket
     },
 
-    async syncOptions() {
+    async createSyncProducts(products: PRODUCT[]) {
+        const syncProducts = await strapi.db?.query('plugin::printful.printful-product').findMany()
+
+        const { sync } = syncInfo(products, syncProducts!)
+
+        return await Promise.all(sync.map((product) => strapi.plugin('printful').service('sync').createSyncProduct(product)))
+    },
+
+    async createSyncProduct(product: PRODUCT) {
+        const options = getOptions()
+        const colors = product.colors.map(({ hex }) => {
+            return options.colors.find(({ hex: optionHex }) => {
+                return optionHex === hex
+            })
+        })
+        const sizes = product.sizes.map((size) => {
+            return options.sizes.find(({ value: optionSize }) => {
+                return size === optionSize
+            })
+        })
+
+        const localProduct = await strapi.db?.query('plugin::printful.printful-product').create({
+            data: {
+                ...product,
+                variants: undefined,
+                sizes: {
+                    connect: sizes.map((size) => size!.id)
+                },
+                colors: {
+                    connect: colors.map((color) => color!.id)
+                }
+            }
+        })
+
+        const variants = await strapi.plugin('printful').service('sync').createSyncVariants(product.variants, localProduct.id)
+
+        return { ...localProduct, variants }
+    },
+
+    async createSyncVariants(variants: VARIANT[], productId) {
+        const syncVariants = await strapi.db?.query('plugin::printful.printful-variant').findMany({
+            where: {
+                printful_id: variants.map((variant) => String(variant.printful_id))
+            }
+        })
+        const { sync } = syncInfo(variants, syncVariants!)
+
+        return await Promise.all(sync.map((variant) => strapi.plugin('printful').service('sync').createSyncVariant(variant, productId)))
+    },
+
+    async createSyncVariant(variant: VARIANT, productId) {
+        const options = getOptions()
+
+        return strapi.db?.query('plugin::printful.printful-variant').create({
+            data: {
+                ...variant,
+                product: productId,
+                color: options.colors.find((color) => variant.color.hex === color.hex)!.id,
+                size: options.sizes.find((size) => variant.size === size.value)!.id
+            }
+        })
+    },
+
+    async sync() {
+        // await strapi.db?.query('plugin::printful.printful-product').deleteMany()
+        // await strapi.db?.query('plugin::printful.printful-variant').deleteMany()
+        const market = await strapi.plugin('printful').service('sync').getAllMarketData()
+        store.dispatch(setOptions({ options: await strapi.plugin('printful').service('sync').syncOptions(market) }))
+        return await strapi.plugin('printful').service('sync').createSyncProducts(market)
+    },
+
+    async syncOptions(market) {
         const printfulOptions = marketOptions(market)
 
         const localOptions = {

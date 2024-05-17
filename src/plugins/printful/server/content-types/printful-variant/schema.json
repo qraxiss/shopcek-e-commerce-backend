@@ -40,6 +40,9 @@
       "relation": "manyToOne",
       "target": "plugin::printful.printful-product",
       "inversedBy": "variants"
+    },
+    "status": {
+      "type": "json"
     }
   }
 }

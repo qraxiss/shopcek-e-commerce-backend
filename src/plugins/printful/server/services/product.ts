@@ -19,6 +19,10 @@ export default ({ strapi }: { strapi: Strapi }) => ({
             variants,
             ...getUniqueSizesAndColors(variants)
         }
+    },
+
+    async getAll() {
+        return await strapi.db?.query('plugin::printful.printful-product').findMany()
     }
 })
 

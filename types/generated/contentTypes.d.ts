@@ -445,10 +445,10 @@ export interface PluginPrintfulPrintfulProduct extends Schema.CollectionType {
         singularName: 'printful-product'
         pluralName: 'printful-products'
         displayName: 'Printful Product'
+        description: ''
     }
     options: {
         draftAndPublish: false
-        comment: ''
     }
     attributes: {
         name: Attribute.String
@@ -460,6 +460,8 @@ export interface PluginPrintfulPrintfulProduct extends Schema.CollectionType {
         video: Attribute.Media
         product_id: Attribute.Integer
         variants: Attribute.Relation<'plugin::printful.printful-product', 'oneToMany', 'plugin::printful.printful-variant'>
+        sizes: Attribute.Relation<'plugin::printful.printful-product', 'manyToOne', 'plugin::printful.printful-size'>
+        colors: Attribute.Relation<'plugin::printful.printful-product', 'manyToOne', 'plugin::printful.printful-color'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'plugin::printful.printful-product', 'oneToOne', 'admin::user'> & Attribute.Private
@@ -507,6 +509,7 @@ export interface PluginPrintfulPrintfulSize extends Schema.CollectionType {
     attributes: {
         value: Attribute.String & Attribute.Required & Attribute.Unique
         variants: Attribute.Relation<'plugin::printful.printful-size', 'oneToMany', 'plugin::printful.printful-variant'>
+        products: Attribute.Relation<'plugin::printful.printful-size', 'oneToMany', 'plugin::printful.printful-product'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'plugin::printful.printful-size', 'oneToOne', 'admin::user'> & Attribute.Private
@@ -529,6 +532,7 @@ export interface PluginPrintfulPrintfulColor extends Schema.CollectionType {
         name: Attribute.String & Attribute.Required
         hex: Attribute.String & Attribute.Required & Attribute.Unique
         variants: Attribute.Relation<'plugin::printful.printful-color', 'oneToMany', 'plugin::printful.printful-variant'>
+        products: Attribute.Relation<'plugin::printful.printful-color', 'oneToMany', 'plugin::printful.printful-product'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'plugin::printful.printful-color', 'oneToOne', 'admin::user'> & Attribute.Private
@@ -555,6 +559,7 @@ export interface PluginPrintfulPrintfulVariant extends Schema.CollectionType {
         size: Attribute.Relation<'plugin::printful.printful-variant', 'manyToOne', 'plugin::printful.printful-size'>
         color: Attribute.Relation<'plugin::printful.printful-variant', 'manyToOne', 'plugin::printful.printful-color'>
         product: Attribute.Relation<'plugin::printful.printful-variant', 'manyToOne', 'plugin::printful.printful-product'>
+        status: Attribute.JSON
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'plugin::printful.printful-variant', 'oneToOne', 'admin::user'> & Attribute.Private
