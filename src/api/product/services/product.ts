@@ -40,7 +40,7 @@ function services({ strapi: Strapi }) {
                 return size.id
             })
 
-            const colorIds = colors.map(color=>{
+            const colorIds = colors.map((color) => {
                 return color.id
             })
 
@@ -73,6 +73,8 @@ function services({ strapi: Strapi }) {
 
         async syncPrintfulMarket() {
             let printful
+            await strapi.db.query('api::product.product').deleteMany()
+            await strapi.db.query('api::variant.variant').deleteMany()
             try {
                 printful = await getAllProductsDetails()
             } catch (e) {
@@ -80,31 +82,29 @@ function services({ strapi: Strapi }) {
                 return 'Printful Data Error'
             }
 
-                const colorResults = await strapi.service('api::color.color').bulkFinAndCreateIfNotExist({ values: printful.colors })
-                const sizeResults = await strapi.service('api::size.size').bulkFinAndCreateIfNotExist({ values: printful.sizes })
+            const colorResults = await strapi.service('api::color.color').bulkFinAndCreateIfNotExist({ values: printful.colors })
+            const sizeResults = await strapi.service('api::size.size').bulkFinAndCreateIfNotExist({ values: printful.sizes })
 
-
-                printful.variants.forEach(async (product) => {
-                    const colors = colorResults.filter((color) => {
-                        return product.colors.includes(color.value)
-                    })
-
-                    const sizes = sizeResults.filter((size) => {
-                        return product.sizes.includes(size.value)
-                    })
-
-                    await strapi
-                        .service('api::product.product')
-                        .createPrintfulProduct({ ...product, product: product, sizes, colors })
-                        .then((d) => {
-                            // console.log('✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅', product.name, 'created')
-                        })
-                        .catch((e) => {
-                            console.log('❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌', product.name, e)
-                        })
+            printful.variants.forEach(async (product) => {
+                const colors = colorResults.filter((color) => {
+                    return product.colors.includes(color.value)
                 })
-                return printful
-            
+
+                const sizes = sizeResults.filter((size) => {
+                    return product.sizes.includes(size.value)
+                })
+
+                await strapi
+                    .service('api::product.product')
+                    .createPrintfulProduct({ ...product, product: product, sizes, colors })
+                    .then((d) => {
+                        // console.log('✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅', product.name, 'created')
+                    })
+                    .catch((e) => {
+                        console.log('❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌', product.name, e)
+                    })
+            })
+            return printful
         },
 
         async createSyncProduct({ name, price, sizes, colors, description, image, printful_id }: Product) {
