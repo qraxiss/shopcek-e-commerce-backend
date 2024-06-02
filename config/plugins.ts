@@ -4,7 +4,7 @@ export default {
         resolve: './src/plugins/user'
     },
     printful: {
-        enabled: true,
+        enabled: false,
         resolve: './src/plugins/printful'
     },
     graphql: {
