@@ -8,22 +8,29 @@ function recipient() {
     return strapi.service('api::recipient.recipient')
 }
 
-async function getRecipientByUser(obj, args, context) {
+async function getRecipientByUser(obj, { title }, context) {
     return await recipient().getRecipientByUser({
-        userId: userId(context)
+        userId: userId(context),
+        title
     })
 }
 
-async function updateRecipientByUser(obj, { recipient: recipientData }, context) {
+async function updateRecipientByUser(obj, { recipient: recipientData, title }, context) {
     return await recipient().updateRecipientByUser({
         userId: userId(context),
-        recipient: recipientData
+        recipient: recipientData,
+        title
     })
+}
+
+async function getRecipientsByUser(obj, args, context) {
+    return await recipient().getRecipientsByUser({ userId: userId(context) })
 }
 
 const typeDefs = `
     type Query {
-        recipientByUser: JSON
+        recipientByUser(title: String!): JSON
+        recipientsByUser: [JSON]
     }
 
 
@@ -38,6 +45,9 @@ export default ({ strapi }: { strapi: Strapi }) => ({
         Query: {
             recipientByUser: {
                 resolve: getRecipientByUser
+            },
+            recipientsByUser: {
+                resolve: getRecipientsByUser
             }
         },
         Mutation: {

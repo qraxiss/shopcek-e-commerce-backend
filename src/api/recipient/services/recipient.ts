@@ -6,7 +6,16 @@ import { factories, Strapi } from '@strapi/strapi'
 
 function services({ strapi }: { strapi: Strapi }) {
     return {
-        async getRecipientByUser({ userId }) {
+        async getRecipientByUser({ userId, title }) {
+            return await strapi.db.query('api::recipient.recipient').findMany({
+                where: {
+                    user: userId,
+                    title
+                }
+            })
+        },
+
+        async getRecipientsByUser({ userId }) {
             return await strapi.db.query('api::recipient.recipient').findOne({
                 where: {
                     user: userId
@@ -14,10 +23,11 @@ function services({ strapi }: { strapi: Strapi }) {
             })
         },
 
-        async updateRecipientByUser({ userId, recipient }) {
+        async updateRecipientByUser({ userId, recipient, title }) {
             return await strapi.db.query('api::recipient.recipient').update({
                 where: {
-                    user: userId
+                    user: userId,
+                    title
                 },
                 data: recipient
             })
