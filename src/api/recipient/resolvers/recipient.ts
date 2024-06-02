@@ -35,7 +35,7 @@ const typeDefs = `
 
 
     type Mutation {
-        recipientByUser(recipient:JSON!): JSON
+        recipientByUser(recipient:JSON!, title: String!): JSON
     }
 `
 

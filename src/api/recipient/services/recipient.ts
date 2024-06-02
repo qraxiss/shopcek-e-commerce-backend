@@ -7,7 +7,7 @@ import { factories, Strapi } from '@strapi/strapi'
 function services({ strapi }: { strapi: Strapi }) {
     return {
         async getRecipientByUser({ userId, title }) {
-            return await strapi.db.query('api::recipient.recipient').findMany({
+            return await strapi.db.query('api::recipient.recipient').findOne({
                 where: {
                     user: userId,
                     title
@@ -16,7 +16,7 @@ function services({ strapi }: { strapi: Strapi }) {
         },
 
         async getRecipientsByUser({ userId }) {
-            return await strapi.db.query('api::recipient.recipient').findOne({
+            return await strapi.db.query('api::recipient.recipient').findMany({
                 where: {
                     user: userId
                 }
