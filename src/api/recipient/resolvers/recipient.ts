@@ -27,6 +27,10 @@ async function getRecipientsByUser(obj, args, context) {
     return await recipient().getRecipientsByUser({ userId: userId(context) })
 }
 
+async function createRecipientByUser(obj, { recipient: recipientData }, context) {
+    return await recipient().createRecipientByUser({ userId: userId(context), recipient: recipientData })
+}
+
 const typeDefs = `
     type Query {
         recipientByUser(title: String!): JSON
@@ -35,7 +39,8 @@ const typeDefs = `
 
 
     type Mutation {
-        recipientByUser(recipient:JSON!, title: String!): JSON
+        recipientByUser(recipient:JSON!, title: String!): JSON!
+        createRecipientByUser(recipient: JSON!): JSON!
     }
 `
 
@@ -53,6 +58,9 @@ export default ({ strapi }: { strapi: Strapi }) => ({
         Mutation: {
             recipientByUser: {
                 resolve: updateRecipientByUser
+            },
+            createRecipientByUser: {
+                resolve: createRecipientByUser
             }
         }
     }

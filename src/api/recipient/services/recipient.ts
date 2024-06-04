@@ -31,6 +31,15 @@ function services({ strapi }: { strapi: Strapi }) {
                 },
                 data: recipient
             })
+        },
+
+        async createRecipientByUser({ userId, recipient }) {
+            return await strapi.entityService.create('api::recipient.recipient', {
+                data: {
+                    user: userId,
+                    ...recipient
+                }
+            })
         }
     }
 }
