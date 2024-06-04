@@ -40,6 +40,15 @@ function services({ strapi }: { strapi: Strapi }) {
                     ...recipient
                 }
             })
+        },
+
+        async deleteRecipientByUser({ userId, title }) {
+            return await strapi.db.query('api::recipient.recipient').delete({
+                where: {
+                    title,
+                    user: userId
+                }
+            })
         }
     }
 }

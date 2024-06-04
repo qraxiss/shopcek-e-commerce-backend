@@ -31,6 +31,10 @@ async function createRecipientByUser(obj, { recipient: recipientData }, context)
     return await recipient().createRecipientByUser({ userId: userId(context), recipient: recipientData })
 }
 
+async function deleteRecipientByUser(obj, { title }, context) {
+    return await recipient().deleteRecipientByUser({ userId: userId(context), title })
+}
+
 const typeDefs = `
     type Query {
         recipientByUser(title: String!): JSON
@@ -41,6 +45,7 @@ const typeDefs = `
     type Mutation {
         recipientByUser(recipient:JSON!, title: String!): JSON!
         createRecipientByUser(recipient: JSON!): JSON!
+        deleteRecipientByUser(title: String!): JSON!
     }
 `
 
@@ -61,6 +66,9 @@ export default ({ strapi }: { strapi: Strapi }) => ({
             },
             createRecipientByUser: {
                 resolve: createRecipientByUser
+            },
+            deleteRecipientByUser: {
+                resolve: deleteRecipientByUser
             }
         }
     }
