@@ -63,6 +63,18 @@ function services({ strapi }: { strapi: Strapi }) {
         async selectRecipientByUser({ userId, id }) {
             const activeRecipient = await strapi.service('api::recipient.recipient').getActiveRecipient({ userId })
 
+            if (!activeRecipient) {
+                return strapi.db.query('api::recipient.recipient').update({
+                    where: {
+                        user: userId,
+                        id
+                    },
+                    data: {
+                        isActive: true
+                    }
+                })
+            }
+
             if (activeRecipient.id == id) {
                 return activeRecipient
             }
