@@ -15,6 +15,15 @@ function services({ strapi }: { strapi: Strapi }) {
             })
         },
 
+        async getActiveRecipient({ userId }) {
+            return await strapi.db.query('api::recipient.recipient').findOne({
+                where: {
+                    user: userId,
+                    isActive: true
+                }
+            })
+        },
+
         async getRecipientsByUser({ userId }) {
             return await strapi.db.query('api::recipient.recipient').findMany({
                 where: {
@@ -49,6 +58,35 @@ function services({ strapi }: { strapi: Strapi }) {
                     user: userId
                 }
             })
+        },
+
+        async selectRecipientByUser({ userId, id }) {
+            const activeRecipient = await strapi.service('api::recipient.recipient').getActiveRecipient({ userId })
+
+            if (activeRecipient.id == id) {
+                return activeRecipient
+            }
+
+            return Promise.all([
+                strapi.db.query('api::recipient.recipient').update({
+                    where: {
+                        user: userId,
+                        id: activeRecipient.id
+                    },
+                    data: {
+                        isActive: false
+                    }
+                }),
+                strapi.db.query('api::recipient.recipient').update({
+                    where: {
+                        user: userId,
+                        id
+                    },
+                    data: {
+                        isActive: true
+                    }
+                })
+            ])
         }
     }
 }

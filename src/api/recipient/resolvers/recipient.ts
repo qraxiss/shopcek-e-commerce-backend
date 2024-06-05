@@ -35,6 +35,10 @@ async function deleteRecipientByUser(obj, { id }, context) {
     return await recipient().deleteRecipientByUser({ userId: userId(context), id })
 }
 
+async function selectRecipientByUser(obj, { id }, context) {
+    return await recipient().selectRecipientByUser({ userId: userId(context), id })
+}
+
 const typeDefs = `
     type Query {
         recipientByUser(id: ID!): JSON
@@ -46,6 +50,7 @@ const typeDefs = `
         recipientByUser(recipient:JSON!, id: ID!): JSON!
         createRecipientByUser(recipient: JSON!): JSON!
         deleteRecipientByUser(id: ID!): JSON!
+        selectRecipientByUser(id: ID!): JSON!
     }
 `
 
@@ -69,6 +74,9 @@ export default ({ strapi }: { strapi: Strapi }) => ({
             },
             deleteRecipientByUser: {
                 resolve: deleteRecipientByUser
+            },
+            selectRecipientByUser: {
+                resolve: selectRecipientByUser
             }
         }
     }
