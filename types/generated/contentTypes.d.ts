@@ -927,22 +927,22 @@ export interface ApiRecipientRecipient extends Schema.CollectionType {
         draftAndPublish: false
     }
     attributes: {
-        name: Attribute.String & Attribute.DefaultTo<'Shopcek'>
-        company: Attribute.String & Attribute.DefaultTo<'Shopcek'>
-        address1: Attribute.String & Attribute.DefaultTo<'Amsterdam Van Gogh Museum'>
+        name: Attribute.String
+        company: Attribute.String
+        address1: Attribute.String
         address2: Attribute.String
-        city: Attribute.String & Attribute.DefaultTo<'Chatsworth'>
-        state_code: Attribute.String & Attribute.DefaultTo<'CA'>
-        state_name: Attribute.String & Attribute.DefaultTo<'California'>
-        country_code: Attribute.String & Attribute.DefaultTo<'US'>
-        country_name: Attribute.String & Attribute.DefaultTo<'United States'>
-        zip: Attribute.String & Attribute.DefaultTo<'91311'>
-        phone: Attribute.String & Attribute.DefaultTo<'+905420269538'>
-        email: Attribute.String & Attribute.DefaultTo<'qraxiss@gmail.com'>
-        tax_number: Attribute.String & Attribute.DefaultTo<'123.456.789-10'>
+        city: Attribute.String
+        state_code: Attribute.String
+        state_name: Attribute.String
+        country_code: Attribute.String
+        country_name: Attribute.String
+        zip: Attribute.String
+        phone: Attribute.String
+        email: Attribute.String
+        tax_number: Attribute.String
         user: Attribute.Relation<'api::recipient.recipient', 'manyToOne', 'plugin::users-permissions.user'>
         orders: Attribute.Relation<'api::recipient.recipient', 'oneToMany', 'api::order.order'>
-        title: Attribute.String & Attribute.Required & Attribute.DefaultTo<'Address'>
+        title: Attribute.String & Attribute.Required
         isActive: Attribute.Boolean & Attribute.Required & Attribute.DefaultTo<false>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
