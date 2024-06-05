@@ -943,6 +943,7 @@ export interface ApiRecipientRecipient extends Schema.CollectionType {
         user: Attribute.Relation<'api::recipient.recipient', 'manyToOne', 'plugin::users-permissions.user'>
         orders: Attribute.Relation<'api::recipient.recipient', 'oneToMany', 'api::order.order'>
         title: Attribute.String & Attribute.Required & Attribute.DefaultTo<'Address'>
+        isActive: Attribute.Boolean & Attribute.Required & Attribute.DefaultTo<false>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::recipient.recipient', 'oneToOne', 'admin::user'> & Attribute.Private

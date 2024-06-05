@@ -79,6 +79,11 @@
       "type": "string",
       "required": true,
       "default": "Address"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": false,
+      "required": true
     }
   }
 }

@@ -8,18 +8,18 @@ function recipient() {
     return strapi.service('api::recipient.recipient')
 }
 
-async function getRecipientByUser(obj, { title }, context) {
+async function getRecipientByUser(obj, { id }, context) {
     return await recipient().getRecipientByUser({
         userId: userId(context),
-        title
+        id
     })
 }
 
-async function updateRecipientByUser(obj, { recipient: recipientData, title }, context) {
+async function updateRecipientByUser(obj, { recipient: recipientData, id }, context) {
     return await recipient().updateRecipientByUser({
         userId: userId(context),
         recipient: recipientData,
-        title
+        id
     })
 }
 
@@ -31,21 +31,21 @@ async function createRecipientByUser(obj, { recipient: recipientData }, context)
     return await recipient().createRecipientByUser({ userId: userId(context), recipient: recipientData })
 }
 
-async function deleteRecipientByUser(obj, { title }, context) {
-    return await recipient().deleteRecipientByUser({ userId: userId(context), title })
+async function deleteRecipientByUser(obj, { id }, context) {
+    return await recipient().deleteRecipientByUser({ userId: userId(context), id })
 }
 
 const typeDefs = `
     type Query {
-        recipientByUser(title: String!): JSON
+        recipientByUser(id: ID!): JSON
         recipientsByUser: [JSON]
     }
 
 
     type Mutation {
-        recipientByUser(recipient:JSON!, title: String!): JSON!
+        recipientByUser(recipient:JSON!, id: ID!): JSON!
         createRecipientByUser(recipient: JSON!): JSON!
-        deleteRecipientByUser(title: String!): JSON!
+        deleteRecipientByUser(id: ID!): JSON!
     }
 `
 
