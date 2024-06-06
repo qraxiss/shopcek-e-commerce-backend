@@ -16,6 +16,7 @@ function services({ strapi }: { strapi: Strapi }) {
         },
 
         async getActiveRecipient({ userId }) {
+            console.log(userId)
             return await strapi.db.query('api::recipient.recipient').findOne({
                 where: {
                     user: userId,

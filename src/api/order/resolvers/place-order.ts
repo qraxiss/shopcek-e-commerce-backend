@@ -1,24 +1,7 @@
 import { GraphQLError } from 'graphql'
 
-export async function placeOrder(obj, { transaction, recipient }, context) {
-    let createdRecipientId
-    if (recipient) {
-        createdRecipientId = await strapi.entityService.create('api::recipient.recipient', {
-            data: recipient
-        })
-    }
-
-    const user = await strapi.db.query('plugin::users-permissions.user').findOne({
-        where: {
-            id: context.state.user.id
-        },
-        populate: {
-            recipient: '*'
-        }
-    })
-
+export async function placeOrder(obj, { transaction }, context) {
     const result = await strapi.service('api::order.order').placePrintfulOrder({
-        recipientId: createdRecipientId || user.recipient.id,
         transaction
     })
 

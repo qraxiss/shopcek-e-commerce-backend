@@ -7,22 +7,32 @@ import { newOrderPrintful, getVariant } from '../../../helpers/printful'
 
 function services({ strapi }: { strapi: Strapi }) {
     return {
-        async placeOrder({ recipientId, transaction }: { recipientId: number; transaction: string }) {
+        async placeOrder({ transaction }: { transaction: string }) {
+            const userId = strapi.requestContext.get().state.user.id
+
+            console.log(userId)
+
             const user = await strapi.db.query('plugin::users-permissions.user').findOne({
                 where: {
-                    id: strapi.requestContext.get().state.user.id
+                    id: userId
                 },
                 populate: {
                     cart: true
                 }
             })
 
+            const recipient = await strapi.service('api::recipient.recipient').getActiveRecipient({ userId })
+
+            if (!recipient) {
+                throw Error('You dont have selected address!')
+            }
+
             const order = await strapi.entityService.create('api::order.order', {
                 data: {
                     transaction,
                     user: user.id,
                     cart: user.cart.id,
-                    recipient: recipientId
+                    recipient: recipient.id
                 },
                 populate: {
                     recipient: true,
@@ -47,8 +57,8 @@ function services({ strapi }: { strapi: Strapi }) {
             return order
         },
 
-        async placePrintfulOrder({ recipientId, transaction }: { recipientId: number; transaction: string }) {
-            const order = await strapi.service('api::order.order').placeOrder({ recipientId: recipientId, transaction })
+        async placePrintfulOrder({ transaction }: { transaction: string }) {
+            const order = await strapi.service('api::order.order').placeOrder({ transaction })
             const items = await Promise.all(
                 order.cart.items.map(async (item) => {
                     return await getVariant({ printful_id: item.variant.printful_id })
