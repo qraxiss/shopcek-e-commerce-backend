@@ -61,7 +61,10 @@ function services({ strapi }: { strapi: Strapi }) {
             const order = await strapi.service('api::order.order').placeOrder({ transaction })
             const items = await Promise.all(
                 order.cart.items.map(async (item) => {
-                    return await getVariant({ printful_id: item.variant.printful_id })
+                    return {
+                        quantity: item.count,
+                        ...(await getVariant({ printful_id: item.variant.printful_id }))
+                    }
                 })
             )
 

@@ -214,3 +214,12 @@ export async function newOrderPrintful({ recipient, items }) {
 
     return data
 }
+
+export async function shippingRates({ recipient, items }) {
+    return printfulRequestWrapper(
+        await printfulClient.post('/shipping/rates', {
+            items,
+            recipient
+        })
+    )
+}

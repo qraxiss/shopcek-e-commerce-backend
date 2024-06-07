@@ -3,6 +3,7 @@ import { getCart } from './get-cart'
 import { getCartId } from './cart-id'
 
 import { operations, addItem, updateItem, emptyCart, deleteItem } from './operations'
+import { shippingRates } from './shipping-rates'
 
 //cart(operation:String!, input:JSON): CartOperation!
 export const typeDefs = `
@@ -20,6 +21,7 @@ export const typeDefs = `
 
     type Query {
         cart: Cart!
+        shippingRates: JSON!
     }
 
     extend type Cart {
@@ -33,6 +35,9 @@ export default ({ strapi }: { strapi: Strapi }) => ({
         Query: {
             cart: {
                 resolve: getCart
+            },
+            shippingRates: {
+                resolve: shippingRates
             }
         },
         Mutation: {

@@ -3,6 +3,7 @@
  */
 
 import { factories, Strapi } from '@strapi/strapi'
+import { shippingRates, getVariant } from '../../../helpers/printful'
 
 function services({ strapi }: { strapi: Strapi }) {
     return {
@@ -63,6 +64,46 @@ function services({ strapi }: { strapi: Strapi }) {
 
             return {
                 status: !!result
+            }
+        },
+
+        async userCart({ userId }) {
+            return await strapi.db.query('api::cart.cart').findOne({
+                where: {
+                    user: userId
+                },
+                populate: {
+                    items: {
+                        populate: {
+                            variant: '*'
+                        }
+                    }
+                }
+            })
+        },
+
+        async shippingRates({ userId }) {
+            const recipient = await strapi.service('api::recipient.recipient').getActiveRecipient({ userId })
+            if (!recipient) {
+                throw new Error('You have to select recipient!')
+            }
+            const cart = await strapi.service('api::cart.cart').userCart({ userId })
+            console.log(cart.items[0].variant)
+            const items = await Promise.all(
+                cart.items.map(async (item) => {
+                    return {
+                        quantity: item.count,
+                        ...(await getVariant({ printful_id: item.variant.printful_id }))
+                    }
+                })
+            )
+
+            try {
+                return await shippingRates({ recipient, items })
+            } catch (error: any) {
+                if (error.response) {
+                    return error.response.data // => the response payload
+                }
             }
         }
     }
