@@ -1,7 +1,7 @@
-import { slugGen } from '../../../../helpers/slug'
+import slugify from 'slugify'
 
 export default {
     async beforeCreate(event: any) {
-        event.params.data.slug = slugGen(event.params.data.name)
+        event.params.data.slug = slugify(event.params.data.name, { lower: true })
     }
 }
