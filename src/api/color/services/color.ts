@@ -29,7 +29,7 @@ function services({ strapi }: { strapi: Strapi }) {
                         }
                     })
                 } catch (e) {
-                    // console.log(e)
+                    // (e)
                 }
             } else {
                 return data

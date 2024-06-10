@@ -88,7 +88,6 @@ function services({ strapi }: { strapi: Strapi }) {
                 throw new Error('You have to select recipient!')
             }
             const cart = await strapi.service('api::cart.cart').userCart({ userId })
-            console.log(cart.items[0].variant)
             const items = await Promise.all(
                 cart.items.map(async (item) => {
                     return {

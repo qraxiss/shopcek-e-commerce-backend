@@ -10,8 +10,6 @@ function services({ strapi }: { strapi: Strapi }) {
         async placeOrder({ transaction }: { transaction: string }) {
             const userId = strapi.requestContext.get().state.user.id
 
-            console.log(userId)
-
             const user = await strapi.db.query('plugin::users-permissions.user').findOne({
                 where: {
                     id: userId
