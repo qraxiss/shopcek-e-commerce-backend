@@ -904,7 +904,7 @@ export interface ApiProductProduct extends Schema.CollectionType {
         price: Attribute.Float
         items: Attribute.Relation<'api::product.product', 'oneToMany', 'api::item.item'>
         printful_id: Attribute.BigInteger
-        slug: Attribute.String & Attribute.Required & Attribute.Unique
+        slug: Attribute.String & Attribute.Unique
         wishlists: Attribute.Relation<'api::product.product', 'manyToMany', 'api::wishlist.wishlist'>
         categories: Attribute.Relation<'api::product.product', 'manyToMany', 'api::category.category'>
         video: Attribute.Media

@@ -1,12 +1,16 @@
 import randomstring from 'randomstring'
 import slugify from 'slugify'
 
-export function slugGen(name: string) {
+export function slugGen(name: string, randomize = true) {
     return `${slugify(name, {
         lower: true
-    })}-${randomstring.generate({
-        length: 5,
-        charset: 'alphabetic',
-        capitalization: 'lowercase'
-    })}`
+    })}${
+        randomize
+            ? `-${randomstring.generate({
+                  length: 5,
+                  charset: 'alphabetic',
+                  capitalization: 'lowercase'
+              })}`
+            : ''
+    }`
 }

@@ -19,10 +19,10 @@ const typeDefs = `
 async function category(obj, { slug }: { slug: string }, context) {
     const category = await strapi.service('api::category.category').getBySlug({ slug })
 
-    if (!category){
+    if (!category) {
         return {
-            category:null,
-            products:null
+            category: null,
+            products: null
         }
     }
 
@@ -36,7 +36,9 @@ async function category(obj, { slug }: { slug: string }, context) {
 }
 
 async function createCategory(obj, { data }, context) {
-    return await strapi.service('api::category.category').createWithSlug({ data })
+    return await strapi.entityService.create('api::category.category', {
+        data
+    })
 }
 
 export default ({ strapi }: { strapi: Strapi }) => ({

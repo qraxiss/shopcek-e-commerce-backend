@@ -5,8 +5,6 @@
 import { factories, Strapi } from '@strapi/strapi'
 import { getAllProductsDetails } from '../../../helpers/printful'
 
-import { slugGen } from '../../../helpers/slug'
-
 interface Product {
     name: string
     price: number
@@ -44,13 +42,11 @@ function services({ strapi: Strapi }) {
                 return color.id
             })
 
-            const slug = slugGen(product.name)
             const createdProduct = await strapi.entityService.create('api::product.product', {
                 data: {
                     name: product.name,
                     price: product.price,
                     description: product.description,
-                    slug,
                     image: product.image,
                     colors: colorIds,
                     sizes: sizeIds,
@@ -118,13 +114,11 @@ function services({ strapi: Strapi }) {
                 return size.id
             })
 
-            const slug = slugGen(name)
             const product = await strapi.entityService.create('api::product.product', {
                 data: {
                     name,
                     price,
                     description,
-                    slug,
                     image,
                     colors: colorIds,
                     sizes: sizeIds,

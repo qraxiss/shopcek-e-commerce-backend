@@ -53,7 +53,7 @@
     },
     "slug": {
       "type": "string",
-      "required": true,
+      "required": false,
       "unique": true
     },
     "wishlists": {
@@ -69,11 +69,12 @@
       "mappedBy": "products"
     },
     "video": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "videos"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     }
   }
 }
