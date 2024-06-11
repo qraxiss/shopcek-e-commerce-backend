@@ -178,7 +178,7 @@ export async function getAllProductsDetails() {
     return result
 }
 
-export async function newOrderPrintful({ recipient, items }) {
+export async function newOrderPrintful({ recipient, items, shipping = 'STANDART' }) {
     for (let index = 0; index < items.length; index++) {
         const item = items[index]
         item.files = item.files.filter((file) => {
@@ -204,6 +204,7 @@ export async function newOrderPrintful({ recipient, items }) {
         await printfulClient.post(`/orders`, {
             items,
             recipient,
+            shipping,
             packing_slip: {
                 email: 'info@shopcek.com',
                 message: 'iLoveCrypto',

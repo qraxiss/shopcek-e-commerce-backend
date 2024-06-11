@@ -55,7 +55,7 @@ function services({ strapi }: { strapi: Strapi }) {
             return order
         },
 
-        async placePrintfulOrder({ transaction }: { transaction: string }) {
+        async placePrintfulOrder({ transaction, shipping }: { transaction: string; shipping: string }) {
             const order = await strapi.service('api::order.order').placeOrder({ transaction })
             const items = await Promise.all(
                 order.cart.items.map(async (item) => {
@@ -68,7 +68,7 @@ function services({ strapi }: { strapi: Strapi }) {
 
             let printful
             try {
-                printful = await newOrderPrintful({ items, recipient: order.recipient })
+                printful = await newOrderPrintful({ items, recipient: order.recipient, shipping })
             } catch (e: any) {
                 printful = { error: e.response.data.result }
             }

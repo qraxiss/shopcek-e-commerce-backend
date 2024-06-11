@@ -1,8 +1,9 @@
 import { GraphQLError } from 'graphql'
 
-export async function placeOrder(obj, { transaction }, context) {
+export async function placeOrder(obj, { transaction, shipping }, context) {
     const result = await strapi.service('api::order.order').placePrintfulOrder({
-        transaction
+        transaction,
+        shipping
     })
 
     if (result.error) {
