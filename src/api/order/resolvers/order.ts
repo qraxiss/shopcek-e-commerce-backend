@@ -3,7 +3,7 @@ import { getOrders } from './user-orders'
 import { placeOrder } from './place-order'
 export const typeDefs = `
     type Mutation {
-        placeOrder(transaction:String!, shipping: String = "STANDART", recepient: JSON): JSON!   
+        placeOrder(transaction:String!, shipping: String, recepient: JSON): JSON!   
     }
 
     type UserOrder {

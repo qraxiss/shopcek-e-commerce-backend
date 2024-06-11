@@ -178,7 +178,7 @@ export async function getAllProductsDetails() {
     return result
 }
 
-export async function newOrderPrintful({ recipient, items, shipping = 'STANDART' }) {
+export async function newOrderPrintful({ recipient, items, shipping }) {
     for (let index = 0; index < items.length; index++) {
         const item = items[index]
         item.files = item.files.filter((file) => {
