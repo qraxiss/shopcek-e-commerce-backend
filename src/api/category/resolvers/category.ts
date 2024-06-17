@@ -3,7 +3,7 @@ import { Strapi } from '@strapi/strapi'
 const typeDefs = `
     type CategoryDetails {
         category: Category
-        products: [ProductDetails]
+        products: [PrintfulProduct]
     }
 
 
