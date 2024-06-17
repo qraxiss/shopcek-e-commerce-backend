@@ -1,7 +1,5 @@
 import axios from 'axios'
 import { config } from 'dotenv'
-import { isNumber } from 'lodash'
-import product from '../api/product/resolvers/product'
 
 config()
 
@@ -117,7 +115,7 @@ export async function getAllProductsDetails() {
                 console.error(e)
             })
             const variants = await variantsPromise
-            const localVariants = await strapi.entityService.findMany('api::variant.variant', {
+            const localVariants = await strapi.entityService.findMany('api::printful.printful-variant', {
                 filters: {
                     printful_id: {
                         $in: variants.variants.map((variant) => variant.printful_id)

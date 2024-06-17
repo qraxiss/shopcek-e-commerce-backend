@@ -43,7 +43,7 @@ export default ({ strapi }: { strapi: Strapi }) => {
                 return await strapi.service('api::cart.item').updateSync({ id: item.id, count: total })
             }
 
-            const variant = await strapi.entityService.findOne('api::variant.variant', variantId)
+            const variant = await strapi.entityService.findOne('api::printful.printful-variant', variantId)
             const itemPrice = variant.price * count
 
             await strapi.entityService.update('api::cart.cart', cartId, {

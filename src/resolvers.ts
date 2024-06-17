@@ -18,10 +18,10 @@ export async function registerResolvers() {
     await strapi
         .plugin('graphql')
         .service('extension')
-        .shadowCRUD('api::item.item')
+        .shadowCRUD('api::cart.item')
         .disableActions(['create', 'update', 'delete', 'findMany', 'findOne'])
     await strapi.plugin('graphql').service('extension').shadowCRUD('api::order.order').disableAction('findMany')
-    await strapi.plugin('graphql').service('extension').shadowCRUD('api::product.product').disableActions(['findOne'])
+    // await strapi.plugin('graphql').service('extension').shadowCRUD('api::product.product').disableActions(['findOne'])
     await strapi.plugin('graphql').service('extension').shadowCRUD('api::category.category').disableActions(['findOne', 'create'])
 
     // await strapi.service('plugin::graphql.extension').use(product)

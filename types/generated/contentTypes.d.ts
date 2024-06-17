@@ -660,29 +660,6 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
     }
 }
 
-export interface ApiColorColor extends Schema.CollectionType {
-    collectionName: 'colors'
-    info: {
-        singularName: 'color'
-        pluralName: 'colors'
-        displayName: 'Color'
-        description: ''
-    }
-    options: {
-        draftAndPublish: false
-    }
-    attributes: {
-        value: Attribute.String & Attribute.Required
-        products: Attribute.Relation<'api::color.color', 'manyToMany', 'api::product.product'>
-        variants: Attribute.Relation<'api::color.color', 'oneToMany', 'api::variant.variant'>
-        hex: Attribute.String & Attribute.Required & Attribute.Unique
-        createdAt: Attribute.DateTime
-        updatedAt: Attribute.DateTime
-        createdBy: Attribute.Relation<'api::color.color', 'oneToOne', 'admin::user'> & Attribute.Private
-        updatedBy: Attribute.Relation<'api::color.color', 'oneToOne', 'admin::user'> & Attribute.Private
-    }
-}
-
 export interface ApiOrderOrder extends Schema.CollectionType {
     collectionName: 'orders'
     info: {
@@ -876,82 +853,6 @@ export interface ApiPrintfulPrintfulVariant extends Schema.CollectionType {
     }
 }
 
-export interface ApiProductProduct extends Schema.CollectionType {
-    collectionName: 'products'
-    info: {
-        singularName: 'product'
-        pluralName: 'products'
-        displayName: 'Product'
-        description: ''
-    }
-    options: {
-        draftAndPublish: false
-    }
-    attributes: {
-        name: Attribute.String
-        variants: Attribute.Relation<'api::product.product', 'oneToMany', 'api::variant.variant'>
-        description: Attribute.Text
-        sizes: Attribute.Relation<'api::product.product', 'manyToMany', 'api::size.size'>
-        colors: Attribute.Relation<'api::product.product', 'manyToMany', 'api::color.color'>
-        image: Attribute.String
-        price: Attribute.Float
-        printful_id: Attribute.BigInteger
-        slug: Attribute.String & Attribute.Unique
-        video: Attribute.Media
-        createdAt: Attribute.DateTime
-        updatedAt: Attribute.DateTime
-        createdBy: Attribute.Relation<'api::product.product', 'oneToOne', 'admin::user'> & Attribute.Private
-        updatedBy: Attribute.Relation<'api::product.product', 'oneToOne', 'admin::user'> & Attribute.Private
-    }
-}
-
-export interface ApiSizeSize extends Schema.CollectionType {
-    collectionName: 'sizes'
-    info: {
-        singularName: 'size'
-        pluralName: 'sizes'
-        displayName: 'Size'
-        description: ''
-    }
-    options: {
-        draftAndPublish: false
-    }
-    attributes: {
-        value: Attribute.String & Attribute.Required & Attribute.Unique
-        products: Attribute.Relation<'api::size.size', 'manyToMany', 'api::product.product'>
-        variants: Attribute.Relation<'api::size.size', 'oneToMany', 'api::variant.variant'>
-        createdAt: Attribute.DateTime
-        updatedAt: Attribute.DateTime
-        createdBy: Attribute.Relation<'api::size.size', 'oneToOne', 'admin::user'> & Attribute.Private
-        updatedBy: Attribute.Relation<'api::size.size', 'oneToOne', 'admin::user'> & Attribute.Private
-    }
-}
-
-export interface ApiVariantVariant extends Schema.CollectionType {
-    collectionName: 'variants'
-    info: {
-        singularName: 'variant'
-        pluralName: 'variants'
-        displayName: 'Variant'
-        description: ''
-    }
-    options: {
-        draftAndPublish: false
-    }
-    attributes: {
-        product: Attribute.Relation<'api::variant.variant', 'manyToOne', 'api::product.product'>
-        size: Attribute.Relation<'api::variant.variant', 'manyToOne', 'api::size.size'>
-        color: Attribute.Relation<'api::variant.variant', 'manyToOne', 'api::color.color'>
-        image: Attribute.String
-        price: Attribute.Float
-        printful_id: Attribute.BigInteger
-        createdAt: Attribute.DateTime
-        updatedAt: Attribute.DateTime
-        createdBy: Attribute.Relation<'api::variant.variant', 'oneToOne', 'admin::user'> & Attribute.Private
-        updatedBy: Attribute.Relation<'api::variant.variant', 'oneToOne', 'admin::user'> & Attribute.Private
-    }
-}
-
 export interface ApiWalletWallet extends Schema.CollectionType {
     collectionName: 'wallets'
     info: {
@@ -1015,7 +916,6 @@ declare module '@strapi/types' {
             'api::cart.cart': ApiCartCart
             'api::cart.item': ApiCartItem
             'api::category.category': ApiCategoryCategory
-            'api::color.color': ApiColorColor
             'api::order.order': ApiOrderOrder
             'api::order.recipient': ApiOrderRecipient
             'api::printful.printful-color': ApiPrintfulPrintfulColor
@@ -1023,9 +923,6 @@ declare module '@strapi/types' {
             'api::printful.printful-product': ApiPrintfulPrintfulProduct
             'api::printful.printful-size': ApiPrintfulPrintfulSize
             'api::printful.printful-variant': ApiPrintfulPrintfulVariant
-            'api::product.product': ApiProductProduct
-            'api::size.size': ApiSizeSize
-            'api::variant.variant': ApiVariantVariant
             'api::wallet.wallet': ApiWalletWallet
             'api::wishlist.wishlist': ApiWishlistWishlist
         }

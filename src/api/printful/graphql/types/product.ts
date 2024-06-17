@@ -1,17 +1,17 @@
 export default `
     type VariantId {
-        variant: Variant
+        variant: PrintfulVariant
         id: ID
     }
 
 
     type ProductDetails {
-        product: Product
+        product: PrintfulProduct
         variants: [VariantId]
     }
 
     type Query {
         product(slug: String!): ProductDetails
-        search(name: String!): [Product]
+        search(name: String!): [PrintfulProduct]
     }
 `
