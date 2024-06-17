@@ -30,12 +30,6 @@
       "target": "api::color.color",
       "inversedBy": "variants"
     },
-    "items": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::item.item",
-      "mappedBy": "variant"
-    },
     "image": {
       "type": "string"
     },

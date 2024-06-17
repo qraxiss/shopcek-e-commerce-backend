@@ -1,0 +1,81 @@
+{
+  "kind": "collectionType",
+  "collectionName": "printful_products",
+  "info": {
+    "singularName": "printful-product",
+    "pluralName": "printful-products",
+    "displayName": "Printful Product",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "image": {
+      "type": "string"
+    },
+    "price": {
+      "type": "float"
+    },
+    "printful_id": {
+      "type": "biginteger"
+    },
+    "slug": {
+      "type": "string",
+      "unique": true
+    },
+    "video": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "videos"
+      ]
+    },
+    "product_id": {
+      "type": "integer"
+    },
+    "variants": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::printful.printful-variant",
+      "mappedBy": "product"
+    },
+    "sizes": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::printful.printful-size",
+      "inversedBy": "products"
+    },
+    "colors": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::printful.printful-color",
+      "inversedBy": "products"
+    },
+    "items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::cart.item",
+      "mappedBy": "product"
+    },
+    "wishlists": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::wishlist.wishlist",
+      "mappedBy": "products"
+    },
+    "categories": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::category.category",
+      "mappedBy": "products"
+    }
+  }
+}

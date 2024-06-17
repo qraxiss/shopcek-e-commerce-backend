@@ -3,9 +3,8 @@
  */
 
 import { factories, Strapi } from '@strapi/strapi'
-import { getAllProductsDetails } from '../../../helpers/printful'
 
-interface Product {
+export interface Product {
     name: string
     price: number
     sizes: string[]
@@ -15,11 +14,9 @@ interface Product {
     printful_id?: string | number
 }
 
-interface PrintfulProduct extends Product {
-    printful_id: number
-}
+import { getAllProductsDetails } from '../../../helpers/printful'
 
-function services({ strapi: Strapi }) {
+export function services({ strapi: Strapi }) {
     return {
         async createPrintfulProduct({
             printful_id,
@@ -148,6 +145,10 @@ function services({ strapi: Strapi }) {
             })
         }
     }
+}
+
+export interface PrintfulProduct extends Product {
+    printful_id: number
 }
 
 export default factories.createCoreService('api::product.product', services)

@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "printful_sizes",
+  "info": {
+    "singularName": "printful-size",
+    "pluralName": "printful-sizes",
+    "displayName": "Printful Size"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {
+    "value": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "variants": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::printful.printful-variant",
+      "mappedBy": "size"
+    },
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::printful.printful-product",
+      "mappedBy": "sizes"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "kind": "collectionType",
+  "collectionName": "printful_variants",
+  "info": {
+    "singularName": "printful-variant",
+    "pluralName": "printful-variants",
+    "displayName": "Printful Variant",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "image": {
+      "type": "string"
+    },
+    "price": {
+      "type": "float"
+    },
+    "printful_id": {
+      "type": "biginteger"
+    },
+    "variant_id": {
+      "type": "integer"
+    },
+    "size": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::printful.printful-size",
+      "inversedBy": "variants"
+    },
+    "color": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::printful.printful-color",
+      "inversedBy": "variants"
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::printful.printful-product",
+      "inversedBy": "variants"
+    },
+    "status": {
+      "type": "json"
+    },
+    "items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::cart.item",
+      "mappedBy": "variant"
+    }
+  }
+}

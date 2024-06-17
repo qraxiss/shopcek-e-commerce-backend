@@ -5,10 +5,12 @@
 import { factories, Strapi } from '@strapi/strapi'
 import { shippingRates, getVariant } from '../../../helpers/printful'
 
+import item from './item'
+
 function services({ strapi }: { strapi: Strapi }) {
     return {
         async addItem({ cartId, variantId, count }: { cartId: number; variantId: number; count: number }) {
-            const item = await strapi.service('api::item.item').createSync({ cartId, variantId, count })
+            const item = await strapi.service('api::cart.item').createSync({ cartId, variantId, count })
 
             return {
                 status: !!item,
@@ -17,7 +19,7 @@ function services({ strapi }: { strapi: Strapi }) {
         },
 
         async deleteItem({ itemId }: { itemId: number }) {
-            const result = await strapi.service('api::item.item').deleteSync({ id: itemId })
+            const result = await strapi.service('api::cart.item').deleteSync({ id: itemId })
             return {
                 status: !!result
             }
@@ -38,7 +40,7 @@ function services({ strapi }: { strapi: Strapi }) {
                 return item.id
             })
 
-            const result = await strapi.db.query('api::item.item').deleteMany({
+            const result = await strapi.db.query('api::cart.item').deleteMany({
                 filters: {
                     items: {
                         $in: items
@@ -57,7 +59,7 @@ function services({ strapi }: { strapi: Strapi }) {
                 strapi.service('api::cart.cart').deleteItem({ itemId, cartId })
             }
 
-            result = await strapi.service('api::item.item').updateSync({
+            result = await strapi.service('api::cart.item').updateSync({
                 id: itemId,
                 count
             })
@@ -83,7 +85,7 @@ function services({ strapi }: { strapi: Strapi }) {
         },
 
         async shippingRates({ userId }) {
-            const recipient = await strapi.service('api::recipient.recipient').getActiveRecipient({ userId })
+            const recipient = await strapi.service('api::order.recipient').getActiveRecipient({ userId })
             if (!recipient) {
                 throw new Error('You have to select recipient!')
             }
@@ -104,7 +106,9 @@ function services({ strapi }: { strapi: Strapi }) {
                     return error.response.data // => the response payload
                 }
             }
-        }
+        },
+
+        item
     }
 }
 

@@ -20,12 +20,6 @@
     "name": {
       "type": "string"
     },
-    "products": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::product.product",
-      "inversedBy": "categories"
-    },
     "sub_categories": {
       "type": "relation",
       "relation": "manyToMany",
@@ -59,11 +53,18 @@
       ]
     },
     "cover": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
+    },
+    "products": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::printful.printful-product",
+      "inversedBy": "categories"
     }
   }
 }

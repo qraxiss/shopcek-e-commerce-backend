@@ -575,39 +575,12 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
         cart: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'api::cart.cart'>
         orders: Attribute.Relation<'plugin::users-permissions.user', 'oneToMany', 'api::order.order'>
         wallet: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'api::wallet.wallet'>
-        earn: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'api::earn.earn'>
-        domains: Attribute.Relation<'plugin::users-permissions.user', 'oneToMany', 'api::domain.domain'>
-        choosen: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'api::domain.domain'>
         wishlist: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'api::wishlist.wishlist'>
-        recipients: Attribute.Relation<'plugin::users-permissions.user', 'oneToMany', 'api::recipient.recipient'>
+        recipients: Attribute.Relation<'plugin::users-permissions.user', 'oneToMany', 'api::order.recipient'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'admin::user'> & Attribute.Private
         updatedBy: Attribute.Relation<'plugin::users-permissions.user', 'oneToOne', 'admin::user'> & Attribute.Private
-    }
-}
-
-export interface ApiApplyApply extends Schema.CollectionType {
-    collectionName: 'applies'
-    info: {
-        singularName: 'apply'
-        pluralName: 'applies'
-        displayName: 'apply'
-        description: ''
-    }
-    options: {
-        draftAndPublish: false
-    }
-    attributes: {
-        telegramHandle: Attribute.String
-        email: Attribute.Email
-        name: Attribute.String
-        partnerName: Attribute.String
-        type: Attribute.String
-        createdAt: Attribute.DateTime
-        updatedAt: Attribute.DateTime
-        createdBy: Attribute.Relation<'api::apply.apply', 'oneToOne', 'admin::user'> & Attribute.Private
-        updatedBy: Attribute.Relation<'api::apply.apply', 'oneToOne', 'admin::user'> & Attribute.Private
     }
 }
 
@@ -624,7 +597,7 @@ export interface ApiCartCart extends Schema.CollectionType {
     }
     attributes: {
         user: Attribute.Relation<'api::cart.cart', 'oneToOne', 'plugin::users-permissions.user'>
-        items: Attribute.Relation<'api::cart.cart', 'manyToMany', 'api::item.item'>
+        items: Attribute.Relation<'api::cart.cart', 'manyToMany', 'api::cart.item'>
         price: Attribute.Float & Attribute.DefaultTo<0>
         count: Attribute.Integer & Attribute.DefaultTo<0>
         order: Attribute.Relation<'api::cart.cart', 'oneToOne', 'api::order.order'>
@@ -632,6 +605,30 @@ export interface ApiCartCart extends Schema.CollectionType {
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::cart.cart', 'oneToOne', 'admin::user'> & Attribute.Private
         updatedBy: Attribute.Relation<'api::cart.cart', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
+export interface ApiCartItem extends Schema.CollectionType {
+    collectionName: 'items'
+    info: {
+        singularName: 'item'
+        pluralName: 'items'
+        displayName: 'Cart Item'
+        description: ''
+    }
+    options: {
+        draftAndPublish: false
+    }
+    attributes: {
+        count: Attribute.Integer & Attribute.DefaultTo<1>
+        carts: Attribute.Relation<'api::cart.item', 'manyToMany', 'api::cart.cart'>
+        totalPrice: Attribute.Decimal & Attribute.DefaultTo<0>
+        variant: Attribute.Relation<'api::cart.item', 'manyToOne', 'api::printful.printful-variant'>
+        product: Attribute.Relation<'api::cart.item', 'manyToOne', 'api::printful.printful-product'>
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'api::cart.item', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::cart.item', 'oneToOne', 'admin::user'> & Attribute.Private
     }
 }
 
@@ -649,13 +646,13 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
     attributes: {
         slug: Attribute.String & Attribute.Unique
         name: Attribute.String
-        products: Attribute.Relation<'api::category.category', 'manyToMany', 'api::product.product'>
         sub_categories: Attribute.Relation<'api::category.category', 'manyToMany', 'api::category.category'>
         parent_categories: Attribute.Relation<'api::category.category', 'manyToMany', 'api::category.category'>
         type: Attribute.String & Attribute.DefaultTo<'category'>
         icon: Attribute.Media
         banner: Attribute.Media
         cover: Attribute.Media
+        products: Attribute.Relation<'api::category.category', 'manyToMany', 'api::printful.printful-product'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::category.category', 'oneToOne', 'admin::user'> & Attribute.Private
@@ -686,152 +683,6 @@ export interface ApiColorColor extends Schema.CollectionType {
     }
 }
 
-export interface ApiDomainDomain extends Schema.CollectionType {
-    collectionName: 'domains'
-    info: {
-        singularName: 'domain'
-        pluralName: 'domains'
-        displayName: 'Domain'
-    }
-    options: {
-        draftAndPublish: false
-    }
-    attributes: {
-        username: Attribute.String & Attribute.Unique
-        user: Attribute.Relation<'api::domain.domain', 'manyToOne', 'plugin::users-permissions.user'>
-        createdAt: Attribute.DateTime
-        updatedAt: Attribute.DateTime
-        createdBy: Attribute.Relation<'api::domain.domain', 'oneToOne', 'admin::user'> & Attribute.Private
-        updatedBy: Attribute.Relation<'api::domain.domain', 'oneToOne', 'admin::user'> & Attribute.Private
-    }
-}
-
-export interface ApiEarnEarn extends Schema.CollectionType {
-    collectionName: 'earns'
-    info: {
-        singularName: 'earn'
-        pluralName: 'earns'
-        displayName: 'earn'
-        description: ''
-    }
-    options: {
-        draftAndPublish: false
-    }
-    attributes: {
-        spins: Attribute.Relation<'api::earn.earn', 'oneToMany', 'api::earn-spin.earn-spin'>
-        logins: Attribute.Relation<'api::earn.earn', 'oneToMany', 'api::earn-login.earn-login'>
-        stays: Attribute.Relation<'api::earn.earn', 'oneToMany', 'api::earn-stay.earn-stay'>
-        sessionStart: Attribute.DateTime
-        user: Attribute.Relation<'api::earn.earn', 'oneToOne', 'plugin::users-permissions.user'>
-        xp: Attribute.Integer & Attribute.Required & Attribute.DefaultTo<0>
-        createdAt: Attribute.DateTime
-        updatedAt: Attribute.DateTime
-        createdBy: Attribute.Relation<'api::earn.earn', 'oneToOne', 'admin::user'> & Attribute.Private
-        updatedBy: Attribute.Relation<'api::earn.earn', 'oneToOne', 'admin::user'> & Attribute.Private
-    }
-}
-
-export interface ApiEarnLoginEarnLogin extends Schema.CollectionType {
-    collectionName: 'earn_logins'
-    info: {
-        singularName: 'earn-login'
-        pluralName: 'earn-logins'
-        displayName: 'earn-login'
-    }
-    options: {
-        draftAndPublish: false
-    }
-    attributes: {
-        earn: Attribute.Relation<'api::earn-login.earn-login', 'manyToOne', 'api::earn.earn'>
-        createdAt: Attribute.DateTime
-        updatedAt: Attribute.DateTime
-        createdBy: Attribute.Relation<'api::earn-login.earn-login', 'oneToOne', 'admin::user'> & Attribute.Private
-        updatedBy: Attribute.Relation<'api::earn-login.earn-login', 'oneToOne', 'admin::user'> & Attribute.Private
-    }
-}
-
-export interface ApiEarnSpinEarnSpin extends Schema.CollectionType {
-    collectionName: 'earn_spins'
-    info: {
-        singularName: 'earn-spin'
-        pluralName: 'earn-spins'
-        displayName: 'earn-spin'
-    }
-    options: {
-        draftAndPublish: false
-    }
-    attributes: {
-        earn: Attribute.Relation<'api::earn-spin.earn-spin', 'manyToOne', 'api::earn.earn'>
-        createdAt: Attribute.DateTime
-        updatedAt: Attribute.DateTime
-        createdBy: Attribute.Relation<'api::earn-spin.earn-spin', 'oneToOne', 'admin::user'> & Attribute.Private
-        updatedBy: Attribute.Relation<'api::earn-spin.earn-spin', 'oneToOne', 'admin::user'> & Attribute.Private
-    }
-}
-
-export interface ApiEarnStayEarnStay extends Schema.CollectionType {
-    collectionName: 'earn_stays'
-    info: {
-        singularName: 'earn-stay'
-        pluralName: 'earn-stays'
-        displayName: 'Earn-stay'
-        description: ''
-    }
-    options: {
-        draftAndPublish: false
-    }
-    attributes: {
-        earn: Attribute.Relation<'api::earn-stay.earn-stay', 'manyToOne', 'api::earn.earn'>
-        createdAt: Attribute.DateTime
-        updatedAt: Attribute.DateTime
-        createdBy: Attribute.Relation<'api::earn-stay.earn-stay', 'oneToOne', 'admin::user'> & Attribute.Private
-        updatedBy: Attribute.Relation<'api::earn-stay.earn-stay', 'oneToOne', 'admin::user'> & Attribute.Private
-    }
-}
-
-export interface ApiItemItem extends Schema.CollectionType {
-    collectionName: 'items'
-    info: {
-        singularName: 'item'
-        pluralName: 'items'
-        displayName: 'Item'
-        description: ''
-    }
-    options: {
-        draftAndPublish: false
-    }
-    attributes: {
-        variant: Attribute.Relation<'api::item.item', 'manyToOne', 'api::variant.variant'>
-        count: Attribute.Integer & Attribute.DefaultTo<1>
-        product: Attribute.Relation<'api::item.item', 'manyToOne', 'api::product.product'>
-        carts: Attribute.Relation<'api::item.item', 'manyToMany', 'api::cart.cart'>
-        totalPrice: Attribute.Decimal & Attribute.DefaultTo<0>
-        createdAt: Attribute.DateTime
-        updatedAt: Attribute.DateTime
-        createdBy: Attribute.Relation<'api::item.item', 'oneToOne', 'admin::user'> & Attribute.Private
-        updatedBy: Attribute.Relation<'api::item.item', 'oneToOne', 'admin::user'> & Attribute.Private
-    }
-}
-
-export interface ApiLoginRewardLoginReward extends Schema.SingleType {
-    collectionName: 'login_rewards'
-    info: {
-        singularName: 'login-reward'
-        pluralName: 'login-rewards'
-        displayName: 'Login Reward'
-    }
-    options: {
-        draftAndPublish: false
-    }
-    attributes: {
-        rewards: Attribute.Relation<'api::login-reward.login-reward', 'oneToMany', 'api::reward.reward'>
-        createdAt: Attribute.DateTime
-        updatedAt: Attribute.DateTime
-        createdBy: Attribute.Relation<'api::login-reward.login-reward', 'oneToOne', 'admin::user'> & Attribute.Private
-        updatedBy: Attribute.Relation<'api::login-reward.login-reward', 'oneToOne', 'admin::user'> & Attribute.Private
-    }
-}
-
 export interface ApiOrderOrder extends Schema.CollectionType {
     collectionName: 'orders'
     info: {
@@ -847,8 +698,8 @@ export interface ApiOrderOrder extends Schema.CollectionType {
         user: Attribute.Relation<'api::order.order', 'manyToOne', 'plugin::users-permissions.user'>
         transaction: Attribute.String & Attribute.Unique
         cart: Attribute.Relation<'api::order.order', 'oneToOne', 'api::cart.cart'>
-        recipient: Attribute.Relation<'api::order.order', 'manyToOne', 'api::recipient.recipient'>
-        printful_order: Attribute.Relation<'api::order.order', 'oneToOne', 'api::printful-order.printful-order'>
+        recipient: Attribute.Relation<'api::order.order', 'manyToOne', 'api::order.recipient'>
+        printful_order: Attribute.Relation<'api::order.order', 'oneToOne', 'api::printful.printful-order'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::order.order', 'oneToOne', 'admin::user'> & Attribute.Private
@@ -856,66 +707,7 @@ export interface ApiOrderOrder extends Schema.CollectionType {
     }
 }
 
-export interface ApiPrintfulOrderPrintfulOrder extends Schema.CollectionType {
-    collectionName: 'printful_orders'
-    info: {
-        singularName: 'printful-order'
-        pluralName: 'printful-orders'
-        displayName: 'Printful Order'
-        description: ''
-    }
-    options: {
-        draftAndPublish: false
-    }
-    attributes: {
-        error: Attribute.String
-        shipping: Attribute.String
-        shipping_service_name: Attribute.String
-        status: Attribute.String
-        costs: Attribute.JSON
-        pricing_breakdown: Attribute.JSON
-        retail_costs: Attribute.JSON
-        order: Attribute.Relation<'api::printful-order.printful-order', 'oneToOne', 'api::order.order'>
-        createdAt: Attribute.DateTime
-        updatedAt: Attribute.DateTime
-        createdBy: Attribute.Relation<'api::printful-order.printful-order', 'oneToOne', 'admin::user'> & Attribute.Private
-        updatedBy: Attribute.Relation<'api::printful-order.printful-order', 'oneToOne', 'admin::user'> & Attribute.Private
-    }
-}
-
-export interface ApiProductProduct extends Schema.CollectionType {
-    collectionName: 'products'
-    info: {
-        singularName: 'product'
-        pluralName: 'products'
-        displayName: 'Product'
-        description: ''
-    }
-    options: {
-        draftAndPublish: false
-    }
-    attributes: {
-        name: Attribute.String
-        variants: Attribute.Relation<'api::product.product', 'oneToMany', 'api::variant.variant'>
-        description: Attribute.Text
-        sizes: Attribute.Relation<'api::product.product', 'manyToMany', 'api::size.size'>
-        colors: Attribute.Relation<'api::product.product', 'manyToMany', 'api::color.color'>
-        image: Attribute.String
-        price: Attribute.Float
-        items: Attribute.Relation<'api::product.product', 'oneToMany', 'api::item.item'>
-        printful_id: Attribute.BigInteger
-        slug: Attribute.String & Attribute.Unique
-        wishlists: Attribute.Relation<'api::product.product', 'manyToMany', 'api::wishlist.wishlist'>
-        categories: Attribute.Relation<'api::product.product', 'manyToMany', 'api::category.category'>
-        video: Attribute.Media
-        createdAt: Attribute.DateTime
-        updatedAt: Attribute.DateTime
-        createdBy: Attribute.Relation<'api::product.product', 'oneToOne', 'admin::user'> & Attribute.Private
-        updatedBy: Attribute.Relation<'api::product.product', 'oneToOne', 'admin::user'> & Attribute.Private
-    }
-}
-
-export interface ApiRecipientRecipient extends Schema.CollectionType {
+export interface ApiOrderRecipient extends Schema.CollectionType {
     collectionName: 'recipients'
     info: {
         singularName: 'recipient'
@@ -940,35 +732,176 @@ export interface ApiRecipientRecipient extends Schema.CollectionType {
         phone: Attribute.String
         email: Attribute.String
         tax_number: Attribute.String
-        user: Attribute.Relation<'api::recipient.recipient', 'manyToOne', 'plugin::users-permissions.user'>
-        orders: Attribute.Relation<'api::recipient.recipient', 'oneToMany', 'api::order.order'>
+        user: Attribute.Relation<'api::order.recipient', 'manyToOne', 'plugin::users-permissions.user'>
+        orders: Attribute.Relation<'api::order.recipient', 'oneToMany', 'api::order.order'>
         title: Attribute.String & Attribute.Required
         isActive: Attribute.Boolean & Attribute.Required & Attribute.DefaultTo<false>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
-        createdBy: Attribute.Relation<'api::recipient.recipient', 'oneToOne', 'admin::user'> & Attribute.Private
-        updatedBy: Attribute.Relation<'api::recipient.recipient', 'oneToOne', 'admin::user'> & Attribute.Private
+        createdBy: Attribute.Relation<'api::order.recipient', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::order.recipient', 'oneToOne', 'admin::user'> & Attribute.Private
     }
 }
 
-export interface ApiRewardReward extends Schema.CollectionType {
-    collectionName: 'rewards'
+export interface ApiPrintfulPrintfulColor extends Schema.CollectionType {
+    collectionName: 'printful_colors'
     info: {
-        singularName: 'reward'
-        pluralName: 'rewards'
-        displayName: 'Reward'
+        singularName: 'printful-color'
+        pluralName: 'printful-colors'
+        displayName: 'Printful Color'
+    }
+    options: {
+        draftAndPublish: false
+        comment: ''
+    }
+    attributes: {
+        name: Attribute.String & Attribute.Required
+        hex: Attribute.String & Attribute.Required & Attribute.Unique
+        variants: Attribute.Relation<'api::printful.printful-color', 'oneToMany', 'api::printful.printful-variant'>
+        products: Attribute.Relation<'api::printful.printful-color', 'oneToMany', 'api::printful.printful-product'>
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'api::printful.printful-color', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::printful.printful-color', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
+export interface ApiPrintfulPrintfulOrder extends Schema.CollectionType {
+    collectionName: 'printful_orders'
+    info: {
+        singularName: 'printful-order'
+        pluralName: 'printful-orders'
+        displayName: 'Printful Order'
+        description: ''
+    }
+    options: {
+        draftAndPublish: false
+    }
+    attributes: {
+        error: Attribute.String
+        shipping: Attribute.String
+        shipping_service_name: Attribute.String
+        status: Attribute.String
+        costs: Attribute.JSON
+        pricing_breakdown: Attribute.JSON
+        retail_costs: Attribute.JSON
+        order: Attribute.Relation<'api::printful.printful-order', 'oneToOne', 'api::order.order'>
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'api::printful.printful-order', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::printful.printful-order', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
+export interface ApiPrintfulPrintfulProduct extends Schema.CollectionType {
+    collectionName: 'printful_products'
+    info: {
+        singularName: 'printful-product'
+        pluralName: 'printful-products'
+        displayName: 'Printful Product'
+        description: ''
     }
     options: {
         draftAndPublish: false
     }
     attributes: {
         name: Attribute.String
-        reward: Attribute.JSON
-        type: Attribute.String
+        description: Attribute.Text
+        image: Attribute.String
+        price: Attribute.Float
+        printful_id: Attribute.BigInteger
+        slug: Attribute.String & Attribute.Unique
+        video: Attribute.Media
+        product_id: Attribute.Integer
+        variants: Attribute.Relation<'api::printful.printful-product', 'oneToMany', 'api::printful.printful-variant'>
+        sizes: Attribute.Relation<'api::printful.printful-product', 'manyToOne', 'api::printful.printful-size'>
+        colors: Attribute.Relation<'api::printful.printful-product', 'manyToOne', 'api::printful.printful-color'>
+        items: Attribute.Relation<'api::printful.printful-product', 'oneToMany', 'api::cart.item'>
+        wishlists: Attribute.Relation<'api::printful.printful-product', 'manyToMany', 'api::wishlist.wishlist'>
+        categories: Attribute.Relation<'api::printful.printful-product', 'manyToMany', 'api::category.category'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
-        createdBy: Attribute.Relation<'api::reward.reward', 'oneToOne', 'admin::user'> & Attribute.Private
-        updatedBy: Attribute.Relation<'api::reward.reward', 'oneToOne', 'admin::user'> & Attribute.Private
+        createdBy: Attribute.Relation<'api::printful.printful-product', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::printful.printful-product', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
+export interface ApiPrintfulPrintfulSize extends Schema.CollectionType {
+    collectionName: 'printful_sizes'
+    info: {
+        singularName: 'printful-size'
+        pluralName: 'printful-sizes'
+        displayName: 'Printful Size'
+    }
+    options: {
+        draftAndPublish: false
+        comment: ''
+    }
+    attributes: {
+        value: Attribute.String & Attribute.Required & Attribute.Unique
+        variants: Attribute.Relation<'api::printful.printful-size', 'oneToMany', 'api::printful.printful-variant'>
+        products: Attribute.Relation<'api::printful.printful-size', 'oneToMany', 'api::printful.printful-product'>
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'api::printful.printful-size', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::printful.printful-size', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
+export interface ApiPrintfulPrintfulVariant extends Schema.CollectionType {
+    collectionName: 'printful_variants'
+    info: {
+        singularName: 'printful-variant'
+        pluralName: 'printful-variants'
+        displayName: 'Printful Variant'
+        description: ''
+    }
+    options: {
+        draftAndPublish: false
+    }
+    attributes: {
+        image: Attribute.String
+        price: Attribute.Float
+        printful_id: Attribute.BigInteger
+        variant_id: Attribute.Integer
+        size: Attribute.Relation<'api::printful.printful-variant', 'manyToOne', 'api::printful.printful-size'>
+        color: Attribute.Relation<'api::printful.printful-variant', 'manyToOne', 'api::printful.printful-color'>
+        product: Attribute.Relation<'api::printful.printful-variant', 'manyToOne', 'api::printful.printful-product'>
+        status: Attribute.JSON
+        items: Attribute.Relation<'api::printful.printful-variant', 'oneToMany', 'api::cart.item'>
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'api::printful.printful-variant', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::printful.printful-variant', 'oneToOne', 'admin::user'> & Attribute.Private
+    }
+}
+
+export interface ApiProductProduct extends Schema.CollectionType {
+    collectionName: 'products'
+    info: {
+        singularName: 'product'
+        pluralName: 'products'
+        displayName: 'Product'
+        description: ''
+    }
+    options: {
+        draftAndPublish: false
+    }
+    attributes: {
+        name: Attribute.String
+        variants: Attribute.Relation<'api::product.product', 'oneToMany', 'api::variant.variant'>
+        description: Attribute.Text
+        sizes: Attribute.Relation<'api::product.product', 'manyToMany', 'api::size.size'>
+        colors: Attribute.Relation<'api::product.product', 'manyToMany', 'api::color.color'>
+        image: Attribute.String
+        price: Attribute.Float
+        printful_id: Attribute.BigInteger
+        slug: Attribute.String & Attribute.Unique
+        video: Attribute.Media
+        createdAt: Attribute.DateTime
+        updatedAt: Attribute.DateTime
+        createdBy: Attribute.Relation<'api::product.product', 'oneToOne', 'admin::user'> & Attribute.Private
+        updatedBy: Attribute.Relation<'api::product.product', 'oneToOne', 'admin::user'> & Attribute.Private
     }
 }
 
@@ -1009,7 +942,6 @@ export interface ApiVariantVariant extends Schema.CollectionType {
         product: Attribute.Relation<'api::variant.variant', 'manyToOne', 'api::product.product'>
         size: Attribute.Relation<'api::variant.variant', 'manyToOne', 'api::size.size'>
         color: Attribute.Relation<'api::variant.variant', 'manyToOne', 'api::color.color'>
-        items: Attribute.Relation<'api::variant.variant', 'oneToMany', 'api::item.item'>
         image: Attribute.String
         price: Attribute.Float
         printful_id: Attribute.BigInteger
@@ -1041,38 +973,20 @@ export interface ApiWalletWallet extends Schema.CollectionType {
     }
 }
 
-export interface ApiWheelRewardWheelReward extends Schema.SingleType {
-    collectionName: 'wheel_rewards'
-    info: {
-        singularName: 'wheel-reward'
-        pluralName: 'wheel-rewards'
-        displayName: 'Wheel Reward'
-    }
-    options: {
-        draftAndPublish: false
-    }
-    attributes: {
-        rewards: Attribute.Relation<'api::wheel-reward.wheel-reward', 'oneToMany', 'api::reward.reward'>
-        createdAt: Attribute.DateTime
-        updatedAt: Attribute.DateTime
-        createdBy: Attribute.Relation<'api::wheel-reward.wheel-reward', 'oneToOne', 'admin::user'> & Attribute.Private
-        updatedBy: Attribute.Relation<'api::wheel-reward.wheel-reward', 'oneToOne', 'admin::user'> & Attribute.Private
-    }
-}
-
 export interface ApiWishlistWishlist extends Schema.CollectionType {
     collectionName: 'wishlists'
     info: {
         singularName: 'wishlist'
         pluralName: 'wishlists'
         displayName: 'Wishlist'
+        description: ''
     }
     options: {
         draftAndPublish: false
     }
     attributes: {
         user: Attribute.Relation<'api::wishlist.wishlist', 'oneToOne', 'plugin::users-permissions.user'>
-        items: Attribute.Relation<'api::wishlist.wishlist', 'manyToMany', 'api::product.product'>
+        items: Attribute.Relation<'api::wishlist.wishlist', 'manyToMany', 'api::printful.printful-product'>
         createdAt: Attribute.DateTime
         updatedAt: Attribute.DateTime
         createdBy: Attribute.Relation<'api::wishlist.wishlist', 'oneToOne', 'admin::user'> & Attribute.Private
@@ -1098,26 +1012,21 @@ declare module '@strapi/types' {
             'plugin::users-permissions.permission': PluginUsersPermissionsPermission
             'plugin::users-permissions.role': PluginUsersPermissionsRole
             'plugin::users-permissions.user': PluginUsersPermissionsUser
-            'api::apply.apply': ApiApplyApply
             'api::cart.cart': ApiCartCart
+            'api::cart.item': ApiCartItem
             'api::category.category': ApiCategoryCategory
             'api::color.color': ApiColorColor
-            'api::domain.domain': ApiDomainDomain
-            'api::earn.earn': ApiEarnEarn
-            'api::earn-login.earn-login': ApiEarnLoginEarnLogin
-            'api::earn-spin.earn-spin': ApiEarnSpinEarnSpin
-            'api::earn-stay.earn-stay': ApiEarnStayEarnStay
-            'api::item.item': ApiItemItem
-            'api::login-reward.login-reward': ApiLoginRewardLoginReward
             'api::order.order': ApiOrderOrder
-            'api::printful-order.printful-order': ApiPrintfulOrderPrintfulOrder
+            'api::order.recipient': ApiOrderRecipient
+            'api::printful.printful-color': ApiPrintfulPrintfulColor
+            'api::printful.printful-order': ApiPrintfulPrintfulOrder
+            'api::printful.printful-product': ApiPrintfulPrintfulProduct
+            'api::printful.printful-size': ApiPrintfulPrintfulSize
+            'api::printful.printful-variant': ApiPrintfulPrintfulVariant
             'api::product.product': ApiProductProduct
-            'api::recipient.recipient': ApiRecipientRecipient
-            'api::reward.reward': ApiRewardReward
             'api::size.size': ApiSizeSize
             'api::variant.variant': ApiVariantVariant
             'api::wallet.wallet': ApiWalletWallet
-            'api::wheel-reward.wheel-reward': ApiWheelRewardWheelReward
             'api::wishlist.wishlist': ApiWishlistWishlist
         }
     }

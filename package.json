@@ -2,10 +2,10 @@
     "name": "backend",
     "version": "0.1.0",
     "private": true,
-    "description": "A Strapi application",
+    "description": "qraxiss",
     "license": "MIT",
     "author": {
-        "name": "A Strapi developer"
+        "name": "qraxiss"
     },
     "scripts": {
         "admin": "strapi develop --watch-admin",
@@ -31,9 +31,9 @@
         "@strapi/plugin-users-permissions": "4.21.0",
         "@strapi/strapi": "4.21.0",
         "axios": "^1.6.8",
-        "creatomate": "^1.1.0",
         "crypto": "^1.0.1",
         "dotenv": "^16.4.5",
+        "ethers": "^6.13.0",
         "fluent-ffmpeg": "^2.1.2",
         "lodash": "^4.17.21",
         "moment": "^2.30.1",
