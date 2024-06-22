@@ -3,11 +3,14 @@
  */
 
 export default {
-  // exampleAction: async (ctx, next) => {
-  //   try {
-  //     ctx.body = 'ok';
-  //   } catch (err) {
-  //     ctx.body = err;
-  //   }
-  // }
-};
+    exampleAction: async (ctx, next) => {
+        console.log(ctx.session, ctx.state.user)
+        ctx.session = ctx.state.user
+
+        try {
+            ctx.body = 'ok'
+        } catch (err) {
+            ctx.body = err
+        }
+    }
+}

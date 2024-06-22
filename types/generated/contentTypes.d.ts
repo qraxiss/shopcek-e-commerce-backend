@@ -726,10 +726,10 @@ export interface ApiPrintfulPrintfulColor extends Schema.CollectionType {
         singularName: 'printful-color'
         pluralName: 'printful-colors'
         displayName: 'Printful Color'
+        description: ''
     }
     options: {
         draftAndPublish: false
-        comment: ''
     }
     attributes: {
         name: Attribute.String & Attribute.Required

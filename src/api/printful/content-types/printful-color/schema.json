@@ -4,11 +4,11 @@
   "info": {
     "singularName": "printful-color",
     "pluralName": "printful-colors",
-    "displayName": "Printful Color"
+    "displayName": "Printful Color",
+    "description": ""
   },
   "options": {
-    "draftAndPublish": false,
-    "comment": ""
+    "draftAndPublish": false
   },
   "attributes": {
     "name": {

@@ -10,7 +10,8 @@ import printful from './api/printful/graphql'
 
 async function test(obj, args, context) {
     console.log(strapi.service('api::order.order'))
-    return 'sex'
+
+    return context.request.headers
 }
 
 export async function registerResolvers() {
