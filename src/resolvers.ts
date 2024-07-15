@@ -11,6 +11,7 @@ import wallet from './api/wallet/resolvers/wallet'
 
 async function test(obj, args, context) {
     const userId = strapi.requestContext.get().state.user.id
+    console.log(userId)
     return await strapi.service('api::order.order').shippingRates({ userId })
 }
 
